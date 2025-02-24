@@ -9,13 +9,13 @@ comment: コメント
 reading: 閲覧数
 archive_a: アーカイブ
 archive_b: "アーカイブ: {{ . -}}"
-page: ページ %d
+page: ページ {{ . -}}
 recent_posts: 最近の投稿
 newer: 次の記事
 older: 前の記事
 share: 共有
 powered_by: Powered by
-rss_feed: RSSフィード
+rss_feed: RSS フィード
 category: カテゴリー
 tag: タグ
 toc: 見出し
@@ -39,8 +39,8 @@ post:
     one: "{{ . -}} 文字"
     other: "{{ . -}} 文字"
   time:
-    one: "%d 分"
-    other: "%d 分"
+    one: "{{ . -}} 分"
+    other: "{{ . -}} 分"
 
 busuanzi:
   pv: 総閲覧数
