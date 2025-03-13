@@ -530,3 +530,11 @@ player:
       server: netease
       type: playlist
       auto:
+
+########################################
+# pangu.js
+########################################
+
+pangu:
+  # more information: https://github.com/vinta/pangu.js 
+  enable: false  # enable pangu.js to add space between Chinese and English
