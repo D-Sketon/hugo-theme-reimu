@@ -430,9 +430,13 @@
 
 {{ if .Site.Params.pangu.enable }}
   {{ partial "helpers/js.html" (dict "src" (index (partial "helpers/vendorCdn.html" (dict "item" $js.pangu "ctx" $site)) 0) "integrity" (index (partial "helpers/vendorCdnIntegrity.html" (dict "item" $js.pangu)) 0)) }}
-  <script>
-    document.addEventListener('DOMContentLoaded', function () {
-      pangu.spacingPage();
-    });
+  <script data-pjax>
+    if (document.readyState === "loading") {
+      document.addEventListener('DOMContentLoaded', () => {
+        pangu?.spacingPage();
+      });
+    } else {
+      pangu?.spacingPage();
+    }
   </script>
 {{ end }}
