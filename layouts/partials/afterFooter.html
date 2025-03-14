@@ -427,3 +427,12 @@
     </script>
   {{ end }}
 {{ end }}
+
+{{ if .Site.Params.pangu.enable }}
+  {{ partial "helpers/js.html" (dict "src" (index (partial "helpers/vendorCdn.html" (dict "item" $js.quicklink "ctx" $site)) 0) "integrity" (index (partial "helpers/vendorCdnIntegrity.html" (dict "item" $js.pangu)) 0)) }}
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      pangu.spacingPage();
+    });
+  </script>
+{{ end }}

@@ -4,14 +4,6 @@
   itemscope
   itemtype="https://schema.org/BlogPosting"
 >
-  {{ if .Site.Params.pangu.enable }}
-  <script src="/js/pangu.min.js"></script>
-  <script>
-    document.addEventListener('DOMContentLoaded', function () {
-      pangu.spacingPage();
-    });
-  </script>
-  {{ end }}
   <div
     class="article-inner"
     data-aos="{{ .Site.Params.animation.options.article.whole }}"

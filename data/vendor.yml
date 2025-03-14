@@ -76,6 +76,9 @@ js:
   aplayer:
     src: webcache|aplayer@1.10.1/dist/APlayer.min.js
     integrity: sha384-gdGYZwHnfJM54evoZhpO0s6ZF5BQiybkiyW7VXr+h5UfruuRL/aORyw+5+HZoU6e
+  pangu:
+    src: Webcache|pangu@4.0.7/dist/browser/pangu.min.js
+    integrity: sha384-HeUHqi0nVsPUm/E0ss7OfnIV/yD96JWB8ehZvUuoVax9DpNHL17jj9pdfXHzqDxm
   meting:
     src: webcache|meting@2.0.1/dist/Meting.min.js
     integrity: sha384-ASVlpKF80A22OXTK3tfEjZm1EL6uFMKIC4p8+0maanw1S/IyB+Y4JG+ZDU7GpKE8
