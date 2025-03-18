@@ -92,8 +92,8 @@ js:
     src: webcache|dompurify@3.2.4/dist/purify.min.js
     integrity: sha384-eEu5CTj3qGvu9PdJuS+YlkNi7d2XxQROAFYOr59zgObtlcux1ae1Il3u7jvdCSWu
   material_theme:
-    src: fastly_jsdelivr_gh|2061360308/material-theme@master/dist/material-theme.umd.js
-    integrity: sha384-QYwJ9KTCNqrmXAh+xQdUgfRUWzh/OXe9ed3USjETwTVpHf8vbkcs20AwGU0JKk7u
+    src: webcache|material-theme@1.0.0/dist/material-theme.umd.js
+    integrity: sha384-vLev0II0HKFaxkcm+/7kX5IGwVFBASkGchU311wmU/veIj2bB0UcBkQbW6yw2asK
 css:
   photoswipe: webcache|photoswipe@5.4.4/dist/photoswipe.css
   katex: webcache|katex@0.16.9/dist/katex.min.css
