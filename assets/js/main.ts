@@ -141,10 +141,13 @@ window.throttle = (func: (...args: any[]) => void, limit: number) => {
     const extractor = new materialTheme.ColorThemeExtractor({ needTransition: false });
     async function generateScheme(imageFile: HTMLImageElement) {
       const scheme = await extractor.generateThemeSchemeFromImage(imageFile);
-      extractor.applyTheme(scheme, {
-        target: document.documentElement,
-        brightnessSuffix: true
-      });
+      // extractor.applyTheme(scheme, {
+      //   target: document.documentElement,
+      //   brightnessSuffix: true
+      // });
+
+      document.documentElement.style.setProperty('--md-sys-color-primary-light', extractor.hexFromArgb(scheme.schemes.light.props.primary));
+      document.documentElement.style.setProperty('--md-sys-color-primary-dark', extractor.hexFromArgb(scheme.schemes.dark.props.primary));
 
       const existingStyle = _$("#reimu-generated-theme-style");
       if (existingStyle) {
