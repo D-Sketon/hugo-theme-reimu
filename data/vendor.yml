@@ -4,6 +4,7 @@ fastly_jsdelivr_gh: https://fastly.jsdelivr.net/gh/
 fastly_jsdelivr_npm: https://fastly.jsdelivr.net/npm/
 unpkg: https://unpkg.com/
 webcache: https://npm.webcache.cn/
+local: /resources/
 
 
 js:
