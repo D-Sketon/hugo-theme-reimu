@@ -2,20 +2,224 @@
 {{ $params := .Site.Params }}
 {{ $js := .Site.Data.vendor.js }}
 
-{{ if and $params.valine.enable $params.valine.appId $params.valine.appKey }}
-  {{ partial "helpers/js.html" (dict "raw" $js.valine "src" (index (partial "helpers/vendorCdn.html" (dict "item" $js.valine "ctx" $site)) 0) "pjax" true "integrity" (index (partial "helpers/vendorCdnIntegrity.html" (dict "item" $js.valine)) 0)) }}
-  <script data-pjax>
-    var GUEST_INFO = ['nick', 'mail', 'link'];
-    var guest_info = '{{ $params.valine.guest_info }}'.split(',').filter((item) => {
-      return GUEST_INFO.indexOf(item) > -1
-    });
-    var recordIP = JSON.parse('{{ $params.valine.recordIP }}');
-    var highlight = JSON.parse('{{ $params.valine.highlight }}');
-    var visitor = JSON.parse('{{ $params.valine.visitor }}');
+{{ if and (not (eq .Params.comments false)) $params.comment.enable }}
+<script>
+  var commentEnable = {{ if and $params.comment.enable }}true{{ else }}false{{ end }};
+  var valineEnable = {{ if and $params.valine.enable $params.valine.appId $params.valine.appKey }}true{{ else }}false{{ end }};
+  var walineEnable = {{ if and $params.waline.enable $params.waline.serverURL }}true{{ else }}false{{ end }};
+  var twikooEnable = {{ if and $params.twikoo.enable $params.twikoo.envId }}true{{ else }}false{{ end }};
+  var gitalkEnable = {{ if and $params.gitalk.enable $params.gitalk.clientID $params.gitalk.clientSecret }}true{{ else }}false{{ end }};
+  var giscusEnable = {{ if and $params.giscus.enable }}true{{ else }}false{{ end }};
 
-    if (window.Valine) {
+  if (valineEnable) {
+    var walineSource = '{{ $js.waline.src }}';
+  }
+
+  if (walineEnable) {
+    var walineSource = '{{ $js.waline.src }}';
+
+    var walinePath = '{{ $params.waline.serverURL }}';
+    var walineLocale = JSON.parse({{ $params.waline.locale | jsonify }});
+    var walineEmoji = JSON.parse({{ $params.waline.emoji | jsonify }});
+    var walineMeta = JSON.parse({{ $params.waline.meta | jsonify }});
+    var walineRequiredMeta = JSON.parse({{ $params.waline.requiredMeta | jsonify }});
+    var walineWordLimit = {{ $params.waline.wordLimit }};
+    var walinePageSize = {{ $params.waline.pageSize }};
+    var walinePageview = {{ $params.waline.pageview }};
+  }
+
+  if (twikooEnable) {
+    var twikooSource = '{{ $js.twikoo.src }}';
+  }
+
+  if (gitalkEnable) {
+    var gitalkSource = '{{ $js.gitalk.src }}';
+
+    var gitalkMd5 = {{ $params.gitalk.md5 }};
+    if (gitalkMd5) {
+      var gitalkMd5 = window.md5 ? window.md5(location.pathname) : location.pathname
+    } else {
+      location.pathname;
+    }
+    var gitalkAdmin = JSON.parse({{ $params.gitalk.admin | jsonify }});
+  }
+
+  /* 获取默认评论系统 */
+
+  var defaultComment = '';
+  if (commentEnable) {
+    // 1. 首先检查localStorage中是否有保存的评论类型
+    var savedCommentType = localStorage.getItem('commentType');
+    
+    // 2. 如果localStorage中有值且对应的评论系统可用，就使用它
+    if (savedCommentType) {
+      var isValid = (
+        (savedCommentType === 'valine' && valineEnable) ||
+        (savedCommentType === 'waline' && walineEnable) ||
+        (savedCommentType === 'twikoo' && twikooEnable) ||
+        (savedCommentType === 'gitalk' && gitalkEnable) ||
+        (savedCommentType === 'giscus' && giscusEnable)
+      );
+      
+      if (isValid) {
+        defaultComment = savedCommentType;
+      }
+    }
+    
+    // 3. 如果localStorage无效，检查配置的默认评论系统
+    if (!defaultComment) {
+      var configDefault = '{{ $params.comment.default }}';
+      var isConfigValid = (
+        (configDefault === 'valine' && valineEnable) ||
+        (configDefault === 'waline' && walineEnable) ||
+        (configDefault === 'twikoo' && twikooEnable) ||
+        (configDefault === 'gitalk' && gitalkEnable) ||
+        (configDefault === 'giscus' && giscusEnable)
+      );
+      
+      if (isConfigValid) {
+        defaultComment = configDefault;
+      }
+    }
+    
+    // 4. 如果前两项都无效，按指定顺序找到第一个可用的评论系统
+    if (!defaultComment) {
+      if (valineEnable) {
+        defaultComment = 'valine';
+      } else if (walineEnable) {
+        defaultComment = 'waline';
+      } else if (twikooEnable) {
+        defaultComment = 'twikoo';
+      } else if (gitalkEnable) {
+        defaultComment = 'gitalk';
+      } else if (giscusEnable) {
+        defaultComment = 'giscus';
+      }
+    }
+  }
+</script>
+{{ end }}
+
+{{ if and (not (eq .Params.comments false)) $params.comment.enable }}
+<script data-pjax>
+  const loadComments = () => {
+    if (!commentEnable) return;
+    // 评论组件加载状态跟踪
+    const loadedComments = {
+      valine: false,
+      waline: false,
+      twikoo: false,
+      gitalk: false,
+      giscus: false
+    };
+
+    // 隐藏所有评论容器
+    const hideAllComments = () => {
+      const commentContainers = document.querySelectorAll('.comment');
+      commentContainers.forEach(container => {
+        container.style.display = 'none';
+      });
+    };
+
+    // 按需加载评论系统
+    const loadCommentSystem = (type) => {
+      if (loadedComments[type]) {
+        // 如果已加载，只需显示对应容器
+        document.querySelector(`.${type}-comment`).style.display = 'block';
+        return;
+      }
+
+      // 根据类型加载对应的脚本
+      switch (type) {
+        case 'valine':
+          if (valineEnable) loadValine();
+          break;
+        case 'waline':
+          if (walineEnable) loadWaline();
+          break;
+        case 'twikoo':
+          if (twikooEnable) loadTwikoo();
+          break;
+        case 'gitalk':
+          if (gitalkEnable) loadGitalk();
+          break;
+        case 'giscus':
+          if (giscusEnable) loadGiscus();
+          break;
+      }
+
+      loadedComments[type] = true;
+    };
+
+    // 评论组件选择器
+    const changeActiveCommentItems = (item) => {
+      const commentItems = document.querySelectorAll('.selector-item');
+      for (let i = 0; i < commentItems.length; i++) {
+        commentItems[i].classList.remove('active');
+      }
+      item.classList.add('active');
+
+      // 获取要加载的评论系统类型
+      const commentType = item.getAttribute('data-selector');
+
+      // 隐藏所有评论系统
+      hideAllComments();
+
+      // 加载选中的评论系统
+      loadCommentSystem(commentType);
+    };
+
+    document.addEventListener('DOMContentLoaded', function () {
+      // 评论组件选择器点击事件
+      const commentItems = document.querySelectorAll('.selector-item');
+
+      for (let item of commentItems) {
+        item.addEventListener('click', function () {
+          // 保存选择器状态
+          const commentType = item.getAttribute('data-selector');
+          window.localStorage.setItem('commentType', commentType);
+          // 切换选中状态
+          changeActiveCommentItems(item);
+        });
+      }
+
+      // 检查是否需要加载默认评论系统
+      if (defaultComment) {
+        const defaultSelectorItem = document.querySelector(`[data-selector="${defaultComment}"]`);
+        if (!defaultSelectorItem) return;
+        defaultSelectorItem.style.display = 'block';
+        defaultSelectorItem.classList.add('active');
+        loadCommentSystem(defaultComment);
+      }
+    });
+  };
+
+  /* 各评论系统的加载函数 */
+
+  function loadValine() {
+    const container = document.querySelector('.valine-comment');
+    if (!container) return;
+    container.style.display = 'block';
+
+    // 加载 Valine 脚本
+    const script = document.createElement('script');
+    script.src = '{{ index (partial "helpers/vendorCdn.html" (dict "item" $js.valine "ctx" $site)) 0 }}';
+    
+    if (!valineSource.startsWith('local')){
+      script.integrity = '{{ index (partial "helpers/vendorCdnIntegrity.html" (dict "item" $js.valine)) 0 }}';
+    }
+    script.crossOrigin = 'anonymous';
+    script.onload = function () {
+      const GUEST_INFO = ['nick', 'mail', 'link'];
+      const guest_info = '{{ $params.valine.guest_info }}'.split(',').filter((item) => {
+        return GUEST_INFO.indexOf(item) > -1
+      });
+      const recordIP = JSON.parse('{{ $params.valine.recordIP }}');
+      const highlight = JSON.parse('{{ $params.valine.highlight }}');
+      const visitor = JSON.parse('{{ $params.valine.visitor }}');
+
       new Valine({
-        el: '.vcomment',
+        el: '.valine-comment',
         appId: "{{ $params.valine.appId }}",
         appKey: "{{ $params.valine.appKey }}",
         placeholder: "{{ $params.valine.placeholder }}",
@@ -28,77 +232,124 @@
         requiredFields: guest_info,
         path: window.location.pathname
       });
-    }
-  </script>
-{{ end }}
+    };
+    document.head.appendChild(script);
+  }
 
-{{ if and $params.waline.enable $params.waline.serverURL }}
-<script data-pjax type="module">
-  {{ if (partial "helpers/vendorLocalCheck.html" $js.waline) }}
-  import { init } from '{{ index (partial "helpers/vendorCdn.html" (dict "item" $js.waline "ctx" $site)) 0 }}';
-  {{ else }}
-  const { init } = await safeImport('{{ index (partial "helpers/vendorCdn.html" (dict "item" $js.waline "ctx" $site)) 0 }}', '{{ index (partial "helpers/vendorCdnIntegrity.html" (dict "item" $js.waline "ctx" $site)) 0 }}');
-  {{ end }}
-  if(_$('.wcomment')) {
-    window.walineInstance = init({
-      el: '.wcomment',
+  async function loadWaline() {
+    const container = document.querySelector('.waline-comment');
+    if (!container) return;
+    container.style.display = 'block';
+
+    let walineInit;
+    const walineCdn = '{{ index (partial "helpers/vendorCdn.html" (dict "item" $js.waline "ctx" $site)) 0 }}';
+    
+    if (walineSource.startsWith('local')) {
+      // 本地资源不使用 integrity
+      const module = await safeImport(walineCdn);
+      walineInit = module.init;
+    } else {
+      // 远程资源使用 integrity
+      const module = await safeImport(
+        walineCdn, 
+        '{{ index (partial "helpers/vendorCdnIntegrity.html" (dict "item" $js.waline "ctx" $site)) 0 }}'
+      );
+      walineInit = module.init;
+    }
+    
+    window.walineInstance = walineInit({
+      el: '.waline-comment',
       serverURL: '{{ $params.waline.serverURL }}',
       lang: '{{ $params.waline.lang }}',
-      locale: JSON.parse({{ $params.waline.locale | jsonify }}),
-      emoji: JSON.parse({{ $params.waline.emoji | jsonify}}),
-      meta: JSON.parse({{ $params.waline.meta | jsonify }}),
-      requiredMeta: JSON.parse({{ $params.waline.requiredMeta | jsonify }}),
-      wordLimit: {{ $params.waline.wordLimit }},
+      locale: walineLocale,
+      emoji: walineEmoji,
+      meta: walineMeta,
+      requiredMeta: walineRequiredMeta,
+      wordLimit: walineWordLimit,
       comment: true,
-      pageSize: {{ $params.waline.pageSize }},
+      pageSize: walinePageSize,
       dark: 'html[data-theme="dark"]',
-      pageview: {{ $params.waline.pageview }},
+      pageview: walinePageview,
     });
   }
-</script>
-{{ end }}
 
-{{ if and $params.gitalk.enable $params.gitalk.clientID $params.gitalk.clientSecret }}
-  {{ partial "helpers/js.html" (dict "raw" $js.gitalk "src" (index (partial "helpers/vendorCdn.html" (dict "item" $js.gitalk "ctx" $site)) 0) "pjax" true "integrity" (index (partial "helpers/vendorCdnIntegrity.html" (dict "item" $js.gitalk)) 0)) }}
-  {{ if $params.gitalk.md5 }}
-    {{ partial "helpers/js.html" (dict "raw" $js.md5 "src" (index (partial "helpers/vendorCdn.html" (dict "item" $js.md5 "ctx" $site)) 0) "pjax" true "integrity" (index (partial "helpers/vendorCdnIntegrity.html" (dict "item" $js.md5)) 0)) }}
-  {{ end }}
-  <script data-pjax>
-    if (window.Gitalk) {
-      var gitalkId = {{ if $params.gitalk.md5 }}'window.md5 ? window.md5(location.pathname) : location.pathname'{{ else }}'location.pathname'{{ end }};
-      var gitalk = new Gitalk({
+  function loadTwikoo() {
+    const container = document.querySelector('.twikoo-comment');
+    if (!container) return;
+    container.style.display = 'block';
+
+    // 加载 Twikoo 脚本
+    const script = document.createElement('script');
+    script.src = '{{ index (partial "helpers/vendorCdn.html" (dict "item" $js.twikoo "ctx" $site)) 0 }}';
+    if(!twikooSource.startsWith('local')){
+      script.integrity = '{{ index (partial "helpers/vendorCdnIntegrity.html" (dict "item" $js.twikoo)) 0 }}';
+    }
+    script.crossOrigin = 'anonymous';
+    script.onload = function () {
+      twikoo.init({
+        envId: '{{ $params.twikoo.envId }}',
+        el: '.twikoo-comment',
+        region: '{{ $params.twikoo.region }}',
+      });
+    };
+    document.head.appendChild(script);
+  }
+
+  function loadGitalk() {
+    const container = document.querySelector('.gitalk-comment');
+    if (!container) return;
+    container.style.display = 'block';
+
+    // 加载 Gitalk 脚本
+    const script = document.createElement('script');
+    script.src = '{{ index (partial "helpers/vendorCdn.html" (dict "item" $js.gitalk "ctx" $site)) 0 }}';
+    if (!gitalkSource.startsWith('local')){
+      script.integrity = '{{ index (partial "helpers/vendorCdnIntegrity.html" (dict "item" $js.gitalk)) 0 }}';
+    }
+    script.crossOrigin = 'anonymous';
+    script.onload = function () {
+
+      if (gitalkMd5) {
+        // 如果需要 md5，加载 md5 脚本
+        const md5Script = document.createElement('script');
+        md5Script.src = '{{ index (partial "helpers/vendorCdn.html" (dict "item" $js.md5 "ctx" $site)) 0 }}';
+        md5Script.integrity = '{{ index (partial "helpers/vendorCdnIntegrity.html" (dict "item" $js.md5)) 0 }}';
+        md5Script.crossOrigin = 'anonymous';
+        md5Script.onload = initGitalk;
+        document.head.appendChild(md5Script);
+      } else {
+        // 否则直接初始化 Gitalk
+        initGitalk();
+      }
+    };
+    document.head.appendChild(script);
+
+    function initGitalk() {
+      let gitalk = new Gitalk({
         clientID: '{{ $params.gitalk.clientID }}',
         clientSecret: '{{ $params.gitalk.clientSecret}}',
         repo: '{{ $params.gitalk.repo }}',
         owner: '{{ $params.gitalk.owner }}',
-        admin: JSON.parse({{ $params.gitalk.admin | jsonify }}),
-        id: gitalkId, // Ensure uniqueness and length less than 50
-        distractionFreeMode: false // Facebook-like distraction free mode
-      })
-      if (document.getElementById('comments')) {
-        gitalk.render('comments')
-      }
+        admin: gitalkAdmin,
+        id: gitalkId,
+        distractionFreeMode: false
+      });
+      gitalk.render('comments');
     }
-  </script>
-{{ end }}
+  }
 
-{{ if and $params.twikoo.enable $params.twikoo.envId }}
-  {{ partial "helpers/js.html" (dict "raw" $js.twikoo "src" (index (partial "helpers/vendorCdn.html" (dict "item" $js.twikoo "ctx" $site)) 0) "pjax" true "integrity" (index (partial "helpers/vendorCdnIntegrity.html" (dict "item" $js.twikoo)) 0)) }}
-  <script data-pjax>
-    if (window.twikoo) {
-      twikoo.init({
-        envId: '{{ $params.twikoo.envId }}',
-        el: '.tcomment',
-        region: '{{ $params.twikoo.region }}',
-      })
-    }
-  </script>
-{{ end }}
+  function loadGiscus() {
+    const container = document.querySelector('.giscus-comment');
+    if (!container) return;
+    container.style.display = 'block';
 
-{{ if and $params.giscus.enable (not (eq .Params.comments false)) }}
-<script data-pjax>
-  var giscusContainer = document.querySelector('.giscus');
-  if (giscusContainer) {
+    // 删除可能已存在的 giscus 脚本和 iframe
+    const existingScript = container.querySelector('script[src*="giscus.app/client.js"]');
+    if (existingScript) existingScript.remove();
+    const existingFrame = document.querySelector('iframe.giscus-frame');
+    if (existingFrame) existingFrame.remove();
+
+    // 加载 Giscus 脚本
     const giscusScript = document.createElement('script');
     const domMode = document.documentElement.getAttribute("data-theme");
     giscusScript.src = 'https://giscus.app/client.js';
@@ -115,7 +366,7 @@
     giscusScript.setAttribute('data-lang', '{{ $params.giscus.lang }}');
     giscusScript.setAttribute('crossorigin', 'anonymous');
     giscusScript.async = true;
-    giscusContainer.appendChild(giscusScript);
+    container.appendChild(giscusScript);
     document.body.addEventListener('light-theme-set', () => {
       const iframe = document.querySelector('iframe.giscus-frame');
       if (!iframe) return;
@@ -126,6 +377,8 @@
       if (!iframe) return;
       iframe.contentWindow.postMessage({ giscus: { setConfig: { theme: 'dark' } } }, 'https://giscus.app');
     });
-}
+  }
+
+  loadComments();
 </script>
 {{ end }}

@@ -9,7 +9,69 @@
   }
 }
 
-.gscomment {
+#comments .comment-header {
+  display: flex;
+  flex-direction: column; // 改为纵向排列
+  width: 100%;
+  
+  .comment-title {
+    margin: 0 0 10px 0; // 添加底部间距
+    width: 100%;
+    text-align: center; // 文字居中
+    color: var(--color-default);
+  }
+
+  .comment-selector {
+    width: 100%;
+    display: flex;
+    justify-content: flex-end; // 内容靠右
+    margin-bottom: 15px; // 添加底部间距
+
+    .selector-item {
+      font-size: 0.8rem;
+      color: #555;
+      background-color: #c9ccd0;
+      padding: 0.31rem 0.32rem;
+
+      font-weight: bold;
+
+      [data-theme="dark"] & {
+        color: #ccc;
+        background-color: #555;
+
+        &:hover {
+          background-color: var(--red-6);
+        }
+
+        &.active {
+          color: var(--red-1);
+          background-color: var(--red-4);
+        }
+      }
+
+      &:first-child {
+        border-radius: 0.4rem 0 0 0.4rem;
+      }
+  
+      &:last-child {
+        border-radius: 0 0.4rem 0.4rem 0;
+      }
+
+      &:hover {
+        background-color: var(--red-4);
+      }
+
+      &.active {
+        color: var(--red-4);
+        background-color: var(--red-1);
+      }
+    }
+
+    
+  }
+}
+
+.giscus-comment {
   width: auto;
 }
 
@@ -21,7 +83,7 @@
   color: var(--color-default);
 }
 
-.gtcomment {
+.gitalk-comment {
   color: var(--color-default);
 }
 

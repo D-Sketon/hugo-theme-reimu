@@ -1,39 +1,72 @@
-{{ if and (not (eq .Params.comments false)) (.Site.Params.valine.enable) (.Site.Params.valine.appId) (.Site.Params.valine.appKey) }}
-  <section
-    id="comments"
-    class="vcomment"
-    data-aos="{{ .Site.Params.animation.options.article.whole }}"
-  ></section>
-{{ end }}
+{{ $site := .Site }}
+{{ $params := .Site.Params }}
 
-{{ if and (not (eq .Params.comments false)) (.Site.Params.waline.enable) (.Site.Params.waline.serverURL) }}
-  <div
-    id="comments"
-    class="wcomment"
-    data-aos="{{ .Site.Params.animation.options.article.whole }}"
-  ></div>
-{{ end }}
+{{ if and (not (eq .Params.comments false)) $params.comment.enable }}
+<section id="comments" data-aos="{{ .Site.Params.animation.options.article.whole }}">
+  <div class="comment-header">
+    <h2 class="comment-title">{{ $params.comment.title }}</h2>
+    <!-- 评论组件选择器 -->
+    <div class="comment-selector">
+      {{/* if and (.Site.Params.valine.enable) (.Site.Params.valine.appId) (.Site.Params.valine.appKey) */}}
+      {{ if and (.Site.Params.valine.enable) }}
+      <div class="selector-item" data-selector="valine">
+        <i class="iconfont icon-valine"></i>
+        <span>valine</span>
+      </div>
+      {{ end }}
 
-{{ if and (not (eq .Params.comments false)) (.Site.Params.twikoo.enable) (.Site.Params.twikoo.envId) }}
-  <div
-    id="comments"
-    class="tcomment"
-    data-aos="{{ .Site.Params.animation.options.article.whole }}"
-  ></div>
-{{ end }}
+      {{ if and (.Site.Params.waline.enable) (.Site.Params.waline.serverURL) }}
+      <div class="selector-item" data-selector="waline">
+        <i class="iconfont icon-waline"></i>
+        <span>waline</span>
+      </div>
+      {{ end }}
 
-{{ if and (not (eq .Params.comments false)) (.Site.Params.gitalk.enable) (.Site.Params.gitalk.clientID) (.Site.Params.gitalk.clientSecret) }}
-  <div
-    id="comments"
-    class="gtcomment"
-    data-aos="{{ .Site.Params.animation.options.article.whole }}"
-  ></div>
-{{ end }}
+      {{ if and (.Site.Params.twikoo.enable) (.Site.Params.twikoo.envId) }}
+      <div class="selector-item" data-selector="twikoo">
+        <i class="iconfont icon-twikoo"></i>
+        <span>twikoo</span>
+      </div>
+      {{ end }}
 
-{{ if and (not (eq .Params.comments false)) (.Site.Params.giscus.enable) }}
-  <div
-    id="comments"
-    class="gscomment giscus"
-    data-aos="{{ .Site.Params.animation.options.article.whole }}"
-  ></div>
+      {{ if and (.Site.Params.gitalk.enable) (.Site.Params.gitalk.clientID) (.Site.Params.gitalk.clientSecret) }}
+      <div class="selector-item" data-selector="gitalk">
+        <i class="iconfont icon-gitalk"></i>
+        <span>gitalk</span>
+      </div>
+      {{ end }}
+
+      {{ if and (.Site.Params.giscus.enable) }}
+      <div class="selector-item" data-selector="giscus">
+        <i class="iconfont icon-giscus"></i>
+        <span>giscus</span>
+      </div>
+      {{ end }}
+    </div>
+  </div>
+
+  <div class="comment-content">
+    {{ if and (.Site.Params.valine.enable) (.Site.Params.valine.appId)
+    (.Site.Params.valine.appKey) }}
+    <section class="comment valine-comment" data-aos="{{ .Site.Params.animation.options.article.whole }}"></section>
+    {{ end }}
+
+    {{ if and (.Site.Params.waline.enable) (.Site.Params.waline.serverURL) }}
+    <div class="comment waline-comment" data-aos="{{ .Site.Params.animation.options.article.whole }}"></div>
+    {{ end }}
+
+    {{ if and (.Site.Params.twikoo.enable) (.Site.Params.twikoo.envId) }}
+    <div class="comment twikoo-comment" data-aos="{{ .Site.Params.animation.options.article.whole }}"></div>
+    {{ end }}
+
+    {{ if and (.Site.Params.gitalk.enable) (.Site.Params.gitalk.clientID)
+    (.Site.Params.gitalk.clientSecret) }}
+    <div class="comment gitalk-tcomment" data-aos="{{ .Site.Params.animation.options.article.whole }}"></div>
+    {{ end }}
+
+    {{ if and (.Site.Params.giscus.enable) }}
+    <div class="comment giscus-comment giscus" data-aos="{{ .Site.Params.animation.options.article.whole }}"></div>
+    {{ end }}
+  </div>
+</section>
 {{ end }}

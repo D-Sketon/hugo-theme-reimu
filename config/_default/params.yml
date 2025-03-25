@@ -246,6 +246,17 @@ math:
 # Comment system
 ########################################
 
+# global control of the comment system
+# if you want to use the comment system, please set this value is true
+# you can use multiple comment systems at the same time
+# load order: localStorage(user manually selects) -> default
+# -> valine -> waline -> twikoo -> gitalk -> giscus
+comment:
+  enable: true
+  # comment system title
+  title: 说些什么吧！
+  default: waline # default comment system, when you enable multiple comment systems
+
 # valine comment system. https://valine.js.org
 # version 1.5.1
 # notify and verify have been deprecated
