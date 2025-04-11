@@ -4,9 +4,9 @@
     data-aos="{{ .Site.Params.animation.options.archive.whole }}"
   >
     {{ if not .Site.Params.only_show_capsule_in_index }}
-      {{ partialCached "partials/archives.html" . }}
+      {{ partialCached "archives.html" . }}
     {{ end }}
     {{ .Render "list" }}
   </div>
-  {{ partial "partials/pagination.html" . }}
+  {{ partial "pagination.html" . }}
 {{ end }}

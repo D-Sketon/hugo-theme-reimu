@@ -42,7 +42,7 @@
     </div>
   {{ end }}
   {{ range $k, $v := $paginator.Pages }}
-    {{ partial "partials/post.html"  (dict "index" $k "ctx" . "page" $v ) }}
+    {{ partial "post.html"  (dict "index" $k "ctx" . "page" $v ) }}
   {{ end }}
-  {{ partial "partials/pagination.html" . }}
+  {{ partial "pagination.html" . }}
 {{ end }}

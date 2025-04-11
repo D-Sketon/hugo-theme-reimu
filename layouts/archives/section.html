@@ -3,8 +3,8 @@
     class="archives-outer-wrap"
     data-aos="{{ .Site.Params.animation.options.archive.whole }}"
   >
-    {{ partialCached "partials/archives.html" . }}
+    {{ partialCached "archives.html" . }}
     {{ .Render "list" }}
   </div>
-  {{ partial "partials/pagination.html" . }}
+  {{ partial "pagination.html" . }}
 {{ end }}
