@@ -151,8 +151,8 @@ only_show_capsule_in_index: false # If you have hugo amounts of tags and categor
 # RSS output
 rss:
   limit: 10             # The number of recent articles to be output, write -1 to output all
-  showFullContent: true # output full content or description
-  showCopyright: true   # If true, add copyright to the end of article.
+  showFullContent: false # output full content or description
+  showCopyright: false   # If true, add copyright to the end of article.
   copyright: "All website licensed under CC BY 4.0" # Only plain text is allowed.
 
 ########################################
