@@ -27,6 +27,7 @@ dateFormat: "2006-01-02"
 timeFormat: "2006-01-02 15:04:05"
 
 author: D-Sketon
+email: xxx@example.com
 description: "少女祈祷中..."
 subtitle: "少女祈祷中..."
 
@@ -146,6 +147,13 @@ tagcloud_limits: 20
 
 # Archive behavior
 only_show_capsule_in_index: false # If you have hugo amounts of tags and categories, you can set this to true to only show the capsule in the index page for better performance
+
+# RSS output
+rss:
+  limit: 10             # The number of recent articles to be output, write -1 to output all
+  showFullContent: true # output full content or description
+  showCopyright: true   # If true, add copyright to the end of article.
+  copyright: "All website licensed under CC BY 4.0" # Only plain text is allowed.
 
 ########################################
 # CSS
