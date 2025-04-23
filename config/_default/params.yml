@@ -151,9 +151,13 @@ only_show_capsule_in_index: false # If you have hugo amounts of tags and categor
 # RSS output
 rss:
   limit: 10             # The number of recent articles to be output, write -1 to output all
-  showFullContent: false # output full content or description
-  showCopyright: false   # If true, add copyright to the end of article.
-  copyright: "All website licensed under CC BY 4.0" # Only plain text is allowed.
+  showFullContent: true # output full content or description
+  showCopyright: true   # If true, add copyright to the end of article.
+  copyright:            # Only plain text is allowed.
+    en: "Unless otherwise stated, all posts on this blog are licensed under the BY-NC-SA license. Please credit the source when reposting!"
+    zh_cn: "本博客所有文章除特别声明外，均采用 BY-NC-SA 许可协议。转载请注明出处！"
+    zh_tw: "本部落格所有文章除特別聲明外，皆採用 BY-NC-SA 授權條款。轉載請註明出處！"
+    ja: "特別な記載がない限り、このブログのすべての記事は BY-NC-SA ライセンスの下で提供されています。転載の際は出典を明記してください！"
 
 ########################################
 # CSS
