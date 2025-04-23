@@ -4,104 +4,124 @@
 {{- $authorName := "" }}
 {{- /* 从站点参数中获取作者信息 */ -}}
 {{- with site.Params }}
-  {{- /* 检查作者信息是否是键值对形式 */ -}}
   {{- if reflect.IsMap . }}
-    {{- /* 获取作者邮箱 */ -}}
     {{- with .email }}{{ $authorEmail = . }}{{ end }}
-    {{- /* 获取作者姓名 */ -}}
     {{- with .author }}{{ $authorName = . }}{{ end }}
   {{- else }}
-    {{- /* 如果作者信息是字符串，直接作为作者姓名 */ -}}
     {{- $authorName = . }}
   {{- end }}
 {{- end }}
 
-{{- /* 获取是否显示全文的设置，默认为false */ -}}
 {{- $showFullContent := .Site.Params.rss.showFullContent | default false }}
-{{- /* 获取是否显示版权的设置，默认为false */ -}}
 {{- $showCopyright := .Site.Params.rss.showCopyright | default false }}
-{{- /* 获取当前语言（兼容单语言/多语言站点） */ -}}
 {{- $currentLanguage := .Language.Lang | default "en" }}
 
-{{- /* 确定页面上下文：如果是首页使用站点对象，否则使用当前页面对象 */ -}}
+{{- /* 修正语言标识符处理 */ -}}
+{{- $lang := replace $currentLanguage "-" "_" | lower }}
+
+{{- /* 获取多语言版权信息 */ -}}
+{{- $copyright := "" }}
+{{- with .Site.Params.rss.copyright }}
+  {{- if eq $lang "en" }}
+    {{- $copyright = .en }}
+  {{- else if eq $lang "zh_cn" }}
+    {{- $copyright = .zh_cn }}
+  {{- else if eq $lang "zh_tw" }}
+    {{- $copyright = .zh_tw }}
+  {{- else if eq $lang "ja" }}
+    {{- $copyright = .ja }}
+  {{- else }}
+    {{- $copyright = .en }}
+  {{- end }}
+{{- else }}
+  {{- $copyright = "All website licensed under CC BY 4.0" }}
+{{- end }}
+
+{{- /* 确定页面上下文 */ -}}
 {{- $pctx := . }}
 {{- if .IsHome }}{{ $pctx = .Site }}{{ end }}
-{{- /* 动态获取多语言状态（兼容 Hugo v0.124.0+） */ -}}
 {{- $pages := $pctx.RegularPages }}
+{{- $mainSections := .Site.MainSections }}
+{{- $pages = where $pages "Section" "in" $mainSections }}
 {{- if hugo.IsMultilingual }}
   {{- $pages = where $pages "Language.Lang" $currentLanguage }}
 {{- end }}
-{{- /* 按最后修改时间排序 */ -}}
-{{- $pages = $pages.ByLastmod.Reverse }}
 
-{{- /* 获取RSS条目数量限制，默认10条（-1 表示不限制） */ -}}
+{{- $pages = $pages.ByLastmod.Reverse }}
 {{- $limit := .Site.Params.rss.limit | default 10 }}
-{{- /* 如果限制数大于等于1，则只取前N条 */ -}}
 {{- if ge $limit 1 }}
   {{- $pages = $pages | first $limit }}
 {{- end }}
 
-{{- /* 输出XML声明 */ -}}
 {{- printf "<?xml version=\"1.0\" encoding=\"utf-8\" standalone=\"yes\"?>" | safeHTML }}
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    {{- /* 频道标题：如果是首页显示站点标题，否则显示"页面标题 on 站点标题" */ -}}
     <title>{{ if eq .Title .Site.Title }}{{ .Site.Title }}{{ else }}{{ with .Title }}{{ . }} on {{ end }}{{ .Site.Title }}{{ end }}</title>
     <link>{{ .Permalink }}</link>
     <description>Recent content from {{ .Site.Title }}</description>
     <generator>Hugo</generator>
     <language>{{ site.Language.LanguageCode }}</language>
-    {{- /* 输出管理员和站长信息（带邮箱和姓名） */ -}}
     {{ with $authorEmail }}
     <managingEditor>{{ . }}{{ with $authorName }} ({{ . }}){{ end }}</managingEditor>
     <webMaster>{{ . }}{{ with $authorName }} ({{ . }}){{ end }}</webMaster>
     {{ end }}
-    {{- /* 输出版权信息 */ -}}
-    {{ with .Site.Params.Rss.Copyright }}
-    <copyright>{{ . | default "All website licensed under CC BY 4.0" }}</copyright>
-    {{ end }}
-    {{- /* 输出最后构建日期（使用最新修改的文章日期） */ -}}
+    <copyright>{{ $copyright }}</copyright>
     {{ if not .Date.IsZero }}
     <lastBuildDate>{{ (index $pages 0).Lastmod.Format "Mon, 02 Jan 2006 15:04:05 -0700" | safeHTML }}</lastBuildDate>
     {{ end }}
-    {{- /* 输出RSS源的自我链接 */ -}}
     {{ with .OutputFormats.Get "RSS" }}
     <atom:link href="{{ .Permalink }}" rel="self" type="{{ .MediaType }}" />
     {{ end }}
 
-    {{- /* 遍历所有筛选后的文章 */ -}}
     {{ range $pages }}
-    {{- /* 构建文章头部 */ -}}
-    {{ $articleHeader := printf "<![CDATA[<h1>%s</h1><p>作者: %s (%s)</p>" .Title $authorName $authorEmail }}
-    
-    {{- /* 构建文章尾部 */ -}}
-    {{ $articleFooter := printf "<hr><p>本文 %s 首发于 <a href='%s'>%s</a>，最后修改于 %s</p>" (.Date.Format "2006-01-02") .Site.BaseURL .Site.Title (.Lastmod.Format "2006-01-02") }}
-    {{ if $showCopyright }}
-      {{ $articleFooter = printf "%s<p>%s</p>" $articleFooter .Site.Params.Rss.Copyright }}
-    {{ end }}
+    {{- /* 构建多语言文章头部 */ -}}
+    {{ $articleHeader := "" }}
+    {{- if eq $lang "en" }}
+      {{ $articleHeader = printf "<![CDATA[<h1>%s</h1><p>Author: %s (%s)</p>" .Title $authorName $authorEmail }}
+    {{- else if eq $lang "zh_cn" }}
+      {{ $articleHeader = printf "<![CDATA[<h1>%s</h1><p>作者：%s（%s）</p>" .Title $authorName $authorEmail }}
+    {{- else if eq $lang "zh_tw" }}
+      {{ $articleHeader = printf "<![CDATA[<h1>%s</h1><p>作者：%s（%s）</p>" .Title $authorName $authorEmail }}
+    {{- else if eq $lang "ja" }}
+      {{ $articleHeader = printf "<![CDATA[<h1>%s</h1><p>著者：%s（%s）</p>" .Title $authorName $authorEmail }}
+    {{- end }}
+
+    {{- /* 构建多语言文章尾部 */ -}}
+    {{ $articleFooter := "" }}
+    {{- if eq $lang "en" }}
+      {{ $articleFooter = printf "<hr><p>Published on %s at <a href='%s'>%s</a>, last modified on %s</p>"
+        (.Date.Format "2006-01-02") .Site.BaseURL .Site.Title (.Lastmod.Format "2006-01-02") }}
+    {{- else if eq $lang "zh_cn" }}
+      {{ $articleFooter = printf "<hr><p>本文 %s 首发于 <a href='%s'>%s</a>，最后修改于 %s</p>"
+        (.Date.Format "2006-01-02") .Site.BaseURL .Site.Title (.Lastmod.Format "2006-01-02") }}
+    {{- else if eq $lang "zh_tw" }}
+      {{ $articleFooter = printf "<hr><p>本文 %s 首發於 <a href='%s'>%s</a>，最後修改於 %s</p>"
+        (.Date.Format "2006-01-02") .Site.BaseURL .Site.Title (.Lastmod.Format "2006-01-02") }}
+    {{- else if eq $lang "ja" }}
+      {{ $articleFooter = printf "<hr><p>この記事は%sに<a href='%s'>%s</a>で公開され、最終更新日は%sです</p>"
+        (.Date.Format "2006-01-02") .Site.BaseURL .Site.Title (.Lastmod.Format "2006-01-02") }}
+    {{- end }}
+
+    {{- if $showCopyright }}
+      {{ $articleFooter = printf "%s<p>%s</p>" $articleFooter $copyright }}
+    {{- end }}
     {{ $articleFooter = printf "%s]]>" $articleFooter }}
-    
+
     <item>
       <title>{{ .Title }}</title>
       <link>{{ .Permalink }}</link>
       <pubDate>{{ .PublishDate.Format "Mon, 02 Jan 2006 15:04:05 -0700" }}</pubDate>
-      {{- /* 输出作者信息 */ -}}
       {{ with $authorEmail }}<author>{{ . }}{{ with $authorName }} ({{ . }}){{ end }}</author>{{ end }}
       <guid>{{ .Permalink }}</guid>
       <description>
-        {{- /* 输出文章头部 */ -}}
         {{ $articleHeader | safeHTML }}
-        {{- /* 根据设置输出全文或摘要 */ -}}
         {{ if $showFullContent }}
           {{ .Content | safeHTML }}
         {{ else }}
           {{ .Summary | safeHTML }}
         {{ end }}
-        {{- /* 输出文章尾部 */ -}}
         {{ $articleFooter | safeHTML }}
       </description>
-
-      {{- /* 输出文章分类 */ -}}
       {{ with .Params.categories }}
         {{ range . }}<category>{{ . }}</category>{{ end }}
       {{ end }}
