@@ -49,7 +49,11 @@
       ></a>
       <div class='sidebar-menu-icon icon {{ if or (and (eq .icon "e62b") ($params.icon_font)) (and (eq .icon "f6ad") (not $params.icon_font)) (not .icon) }}rotate{{ end }}'>
         {{- if .icon -}}
-          &#x{{- .icon -}};
+          {{- if and (strings.Contains .icon ".") (strings.Contains .icon "/") -}}
+            <img src="{{ .icon | relURL }}" alt="{{ .name }} icon" class="" style="height: 1em;">
+          {{- else -}}
+            &#x{{- .icon -}};
+          {{- end -}}
         {{- else -}}
           {{- if $params.icon_font -}}
             &#xe62b;
