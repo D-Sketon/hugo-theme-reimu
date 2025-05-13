@@ -1,3 +1,31 @@
+## v0.10.2
+
+**2025-05-11**
+
+### 特性
+
+- `menu.icon` 支持图片路径，如 `/avatar/avatar.webp`
+  ```yaml
+  menu:
+    - name: home
+      url: /
+      icon: /avatar/avatar.webp
+  ```
+- vendor 中的 css 支持 SRI
+
+---
+
+### Features
+
+- Added `menu.icon` configuration to support image paths, such as `/avatar/avatar.webp`
+  ```yaml
+  menu:
+    - name: home
+      url: /
+      icon: /avatar/avatar.webp
+  ```
+- Vendor CSS now supports SRI
+
 ## v0.10.1
 
 **2025-05-02**
