@@ -1,5 +1,18 @@
 // Colors
 :root {
+  // 主色
+  --primary-color: var(--red-1);
+  --primary-light: var(--red-2); 
+  --primary-dark: var(--red-0);
+
+  // 文本色
+  --text-primary: var(--color-default);
+  --text-secondary: var(--grey-9);
+  
+  // 背景色
+  --bg-primary: var(--color-background);
+  --bg-secondary: var(--color-wrap);
+
   --red-0: #{$light-red-0};
   --red-1: #{$light-red-1};
   --red-2: #{$light-red-2};

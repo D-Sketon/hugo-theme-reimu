@@ -82,3 +82,15 @@ algolia:
   input_placeholder: "搜索....."
   hits_empty: "未发现与 「${query}」相关内容"
   hits_stats: "找到${hits}条结果（用时 ${time} ms）"
+
+live2d:
+  loading: "模型加载中..."
+  load_failed: "模型加载失败"
+  switch_textures: "更换衣装"
+  switch_model: "更换模型"
+  take_photo: "看镜头！"
+  
+errors:
+  network: "网络错误,请重试"
+  storage: "本地存储访问失败" 
+  unknown: "发生未知错误"
