@@ -6,10 +6,13 @@ const preCache = [
   '{{ "css/main.css" | relURL }}',
   '{{ "js/main.js" | relURL }}',
   '{{ .Site.Params.banner | relURL }}',
+  // 添加关键字体文件到预缓存
+  'https://fonts.googleapis.com/css2?family=Noto+Serif+SC&display=swap',
 ];
 
 const cacheDomain = [
   "fonts.googleapis.com",
+  "fonts.gstatic.com", // 添加字体域名
   "npm.webcache.cn",
   "unpkg.com",
   "fastly.jsdelivr.net",
@@ -50,6 +53,16 @@ async function respondRequest(request, options?) {
 
 self.addEventListener("fetch", (event) => {
   const url = new URL(event.request.url);
+
+  // 对字体文件使用 cache-first 策略
+  if (url.pathname.endsWith('.woff2') || url.pathname.endsWith('.woff')) {
+    event.respondWith(
+      caches.match(event.request)
+        .then(response => response || fetch(event.request))
+    );
+    return;
+  }
+
   // 检查请求的域名是否在 CacheDomain 中
   if (cacheDomain.includes(url.hostname)) {
     event.respondWith(respondRequest(event.request));

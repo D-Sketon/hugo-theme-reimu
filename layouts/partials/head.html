@@ -1,8 +1,18 @@
 <meta charset="utf-8" />
-<meta
-  name="viewport"
-  content="width=device-width, initial-scale=1, shrink-to-fit=no"
-/>
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+
+<!-- 添加关键资源预加载 -->
+<link rel="preload" href="{{ "css/main.css" | relURL }}" as="style">
+<link rel="preload" href="{{ "js/main.js" | relURL }}" as="script">
+{{ if .Site.Params.banner }}
+<link rel="preload" href="{{ .Site.Params.banner | relURL }}" as="image">
+{{ end }}
+
+<!-- 预连接常用的域名 -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preconnect" href="https://fastly.jsdelivr.net">
+
 {{- partial "head/init.html" . -}}
 {{- $title := .Title -}}
 {{- if .IsHome -}}

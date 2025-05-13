@@ -38,6 +38,10 @@ if (screen.width >= 768) {
 			cdnPath: "https://fastly.jsdelivr.net/gh/fghrsh/live2d_api/",
 			tools: ["hitokoto", "asteroids", "switch-model", "switch-texture", "photo", "info", "quit"]
 		});
+	}).catch(err => {
+		console.error('[Live2D]:', err);
+		const live2dContainer = document.getElementById('live2d-plugin');
+		if (live2dContainer) live2dContainer.remove();
 	});
 }
 
@@ -50,7 +54,7 @@ console.log(`
         ﾚ ﾍ 7ｲ｀ﾄ   ﾚ'ｧ-ﾄ､!ハ|   |
           !,/7 '0'     ´0iソ|    |
           |.从"    _     ,,,, / |./    |
-          ﾚ'| i＞.､,,__  _,.イ /   .i   |
+           ﾚ'| i＞.､,,__  _,.イ /   .i   |
             ﾚ'| | / k_７_/ﾚ'ヽ,  ﾊ.  |
               | |/i 〈|/   i  ,.ﾍ |  i  |
              .|/ /  ｉ：    ﾍ!    ＼  |
