@@ -1,9 +1,13 @@
 {{- $params := .Site.Params -}}
 <div id="header-nav">
-  <nav id="main-nav">
+  <nav id="main-nav" role="navigation" aria-label="Main navigation">
     {{- range .Site.Params.menu -}}
       <span class="main-nav-link-wrap">
-        <div class='main-nav-icon icon {{ if or (and (eq .icon "e62b") ($params.icon_font)) (and (eq .icon "f6ad") (not $params.icon_font)) (not .icon) }}rotate{{ end }}'>
+        <div class='main-nav-icon icon {{ if or (and (eq .icon "e62b") ($params.icon_font)) (and (eq .icon "f6ad") (not $params.icon_font)) (not .icon) }}rotate{{ end }}'
+             role="img" 
+             aria-label="Menu icon"
+             tabindex="0"
+             onkeypress="handleKeyPress(event)">
           {{- if .icon -}}
             &#x{{- .icon -}};
           {{- else -}}
@@ -14,7 +18,11 @@
             {{- end -}}
           {{- end -}}
         </div>
-        <a class="main-nav-link" href="{{ .url | relLangURL }}">{{ i18n .name }}</a>
+        <a class="main-nav-link" 
+           href="{{ .url | relLangURL }}"
+           role="menuitem">
+          {{ i18n .name }}
+        </a>
       </span>
     {{- end -}}
     <a id="main-nav-toggle" class="nav-icon"></a>

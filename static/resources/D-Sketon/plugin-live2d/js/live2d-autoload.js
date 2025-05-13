@@ -81,16 +81,15 @@ function Live2d() {
     }
 
     #loadWidget() {
-      localStorage.removeItem("live2d-display");
-      sessionStorage.removeItem("live2d-text");
-      document.body.insertAdjacentHTML(
-        "beforeend",
-        `<div id="live2d-plugin">
-            <div id="live2d-tips"></div>
-            <canvas id="live2d" width="800" height="800"></canvas>
-            <div id="live2d-tool"></div>
-        </div>`
-      );
+      const template = `
+        <div id="live2d-plugin">
+          <div id="live2d-tips"></div>
+          <canvas id="live2d" width="800" height="800"></canvas>
+          <div id="live2d-tool"></div>
+        </div>
+      `;
+      
+      document.body.insertAdjacentHTML('beforeend', template);
       let live2dDom = document.getElementById("live2d-plugin");
       setTimeout(() => {
         live2dDom.style.bottom = 0;
@@ -120,7 +119,14 @@ function Live2d() {
      * @param result 从 tips 文件中读取的空闲消息数据
      */
     #registerEventListener(result) {
-      // 检测用户活动状态，并在空闲时显示消息
+      let debounceTimer;
+      window.addEventListener('mousemove', () => {
+        clearTimeout(debounceTimer);
+        debounceTimer = setTimeout(() => {
+          // 处理事件
+        }, 100);
+      });
+
       let userAction = false,
         userActionTimer,
         messageArray = result.message.default;
@@ -199,8 +205,15 @@ function Live2d() {
     }
 
     #initModel(model) {
-      let modelId = localStorage.getItem("modelId");
-      let modelTexturesId = localStorage.getItem("modelTexturesId");
+      let modelId = this._safeStorageGet("modelId");
+      let modelTexturesId = this._safeStorageGet("modelTexturesId"); 
+      
+      // 验证输入值
+      if(!Number.isInteger(Number(modelId)) || !Number.isInteger(Number(modelTexturesId))) {
+        console.error('Invalid model parameters');
+        return;
+      }
+
       if (modelId === null || !!this.#config["isForceUseDefaultConfig"]) {
         // 加载指定模型的指定材质
         modelId = this.#config["modelId"] || 1; // 模型 ID
@@ -230,7 +243,7 @@ function Live2d() {
             while (c--) if (k[c]) p = p.replace(new RegExp("\\b" + e(c) + "\\b", "g"), k[c]);
             return p;
           })(
-            "8.d(\" \");8.d(\"\\U,.\\y\\5.\\1\\1\\1\\1/\\1,\\u\\2 \\H\\n\\1\\1\\1\\1\\1\\b ', !-\\r\\j-i\\1/\\1/\\g\\n\\1\\1\\1 \\1 \\a\\4\\f'\\1\\1\\1 L/\\a\\4\\5\\2\\n\\1\\1 \\1 /\\1 \\a,\\1 /|\\1 ,\\1 ,\\1\\1\\1 ',\\n\\1\\1\\1\\q \\1/ /-\\j/\\1\\h\\E \\9 \\5!\\1 i\\n\\1\\1\\1 \\3 \\6 7\\q\\4\\c\\1 \\3'\\s-\\c\\2!\\t|\\1 |\\n\\1\\1\\1\\1 !,/7 '0'\\1\\1 \\X\\w| \\1 |\\1\\1\\1\\n\\1\\1\\1\\1 |.\\x\\\"\\1\\l\\1\\1 ,,,, / |./ \\1 |\\n\\1\\1\\1\\1 \\3'| i\\z.\\2,,A\\l,.\\B / \\1.i \\1|\\n\\1\\1\\1\\1\\1 \\3'| | / C\\D/\\3'\\5,\\1\\9.\\1|\\n\\1\\1\\1\\1\\1\\1 | |/i \\m|/\\1 i\\1,.\\6 |\\F\\1|\\n\\1\\1\\1\\1\\1\\1.|/ /\\1\\h\\G \\1 \\6!\\1\\1\\b\\1|\\n\\1\\1\\1 \\1 \\1 k\\5>\\2\\9 \\1 o,.\\6\\2 \\1 /\\2!\\n\\1\\1\\1\\1\\1\\1 !'\\m//\\4\\I\\g', \\b \\4'7'\\J'\\n\\1\\1\\1\\1\\1\\1 \\3'\\K|M,p,\\O\\3|\\P\\n\\1\\1\\1\\1\\1 \\1\\1\\1\\c-,/\\1|p./\\n\\1\\1\\1\\1\\1 \\1\\1\\1'\\f'\\1\\1!o,.:\\Q \\R\\S\\T v\"+e.V+\" / W \"+e.N);8.d(\" \");",
+            "8.d(\" \");8.d(\"\\U,.\\y\\5.\\1\\1\\1\\1/\\1,\\u\\2 \\H\\n\\1\\1\\1\\1\\1\\b ', !-\\r\\j-i\\1/\\1/\\g\\n\\1\\1\\1 \\1 \\a\\4\\f'\\1\\1\\1 L/\\a\\4\\5\\2\\n\\1\\1 \\1 /\\1 \\a,\\1 /|\\1 ,\\1 ,\\1\\1\\1 ',\\n\\1\\1\\1\\q \\1/ /-\\j/\\1\\h\\E \\9 \\5!\\1 i\\n\\1\\1\\1 \\3 \\6 7\\q\\4\\c\\1 \\3'\\s-\\c\\2!\\t|\\1 |\\n\\1\\1\\1\\1 !,/7 '0'\\1\\1 \\X\\w| \\1 |\\1\\1\\1\\n\\1\\1\\1\\1 |.\\x\\\"\\1\\l\\1\\1 ,,,, / |./ \\1 |\\n\\1\\1\\1\\1 \\3'| i\\z.\\2,,A\\l,.\\B / \\1.i \\1|\\n\\1\\1\\1\\1\\1 \\3'| | / C\\D/\\3|\\5,\\1\\9.\\1|\\n\\1\\1\\1\\1\\1\\1 | |/i \\m|/\\1 i\\1,.\\6 |\\F\\1|\\n\\1\\1\\1\\1\\1\\1.|/ /\\1\\h\\G \\1 \\6!\\1\\1\\b\\1|\\n\\1\\1\\1 \\1 \\1 k\\5>\\2\\9 \\1 o,.\\6\\2 \\1 /\\2!\\n\\1\\1\\1\\1\\1\\1 !'\\m//\\4\\I\\g', \\b \\4'7'\\J'\\n\\1\\1\\1\\1\\1\\1 \\3'\\K|M,p,\\O\\3|\\P\\n\\1\\1\\1\\1\\1 \\1\\1\\1\\c-,/\\1|p./\\n\\1\\1\\1\\1\\1 \\1\\1\\1'\\f'\\1\\1!o,.:\\Q \\R\\S\\T v\"+e.V+\" / W \"+e.N);8.d(\" \");",
             60,
             60,
             "|u3000|uff64|uff9a|uff40|u30fd|uff8d||console|uff8a|uff0f|uff3c|uff84|log|this.#config|uff70|u00b4|uff49||u2010||u3000_|u3008||_|___|uff72|u2500|uff67|u30cf|u30fc||u30bd|u4ece|u30d8|uff1e|__|u30a4|k_|uff17_|u3000L_|u3000i|uff1a|u3009|uff34|uff70r|u30fdL__||___i|updateTime|u30f3|u30ce|nLive2D|u770b|u677f|u5a18|u304f__|version|LIlGG|u00b40i".split(
@@ -277,6 +290,16 @@ function Live2d() {
         );
       });
     }
+
+    // 安全的本地存储访问
+    _safeStorageGet(key) {
+      try {
+        return localStorage.getItem(key);
+      } catch(e) {
+        console.error('Storage access failed:', e);
+        return null; 
+      }
+    }
   }
 
   class Model {
@@ -295,16 +318,26 @@ function Live2d() {
     }
 
     async loadModel(modelId, modelTexturesId, text) {
-      localStorage.setItem("modelId", modelId);
-      localStorage.setItem("modelTexturesId", modelTexturesId);
-      message.showMessage(text, 4000, 3);
-      loadlive2d(
-        "live2d",
-        `${this.#apiPath}get/?id=${modelId}-${modelTexturesId}`,
-        this.#config["consoleShowStatu"] === true
-          ? console.log(`[Status] Live2D 模型 ${modelId}-${modelTexturesId} 加载完成`)
-          : null
-      );
+      try {
+        await this.validateModel(modelId, modelTexturesId);
+        localStorage.setItem('modelId', modelId);
+        localStorage.setItem('modelTexturesId', modelTexturesId);
+        message.showMessage(text, 4000, 3);
+        
+        // 加载模型
+        const result = await loadlive2d(
+          'live2d',
+          `${this.#apiPath}get/?id=${modelId}-${modelTexturesId}`
+        );
+        
+        if(!result) {
+          throw new Error('Model loading failed');
+        }
+        
+      } catch(e) {
+        console.error('Failed to load model:', e);
+        message.showMessage('模型加载失败,请重试', 4000, 3);
+      }
     }
 
     async loadRandModel() {
@@ -537,7 +570,7 @@ function Live2d() {
    * 显示一言
    *
    * @param api 需要获取的一言接口
-   * @param callback 获取到的一言返回结果特殊化处理（用于不同接口的差异性）。
+   * @param callback 获取到的一言返回结果特殊化处理（用于不同接口的差异性）。 
    *                 其处理返回值为数组或字符串，数组第一位为一言（不可为空），数组第二位为作者，网站等信息（可为空）
    */
   message.showHitokoto = function (api, callback) {
