@@ -57,8 +57,12 @@
     crossorigin="anonymous"
   />
 {{- else -}}
-  {{- partial "helpers/css.html" (partial "helpers/vendorCdn.html" (dict "item" $css.fontawesome.high_priority "ctx" $site)) -}}
-  {{- partial "helpers/asyncCss.html" (partial "helpers/vendorCdn.html" (dict "item" $css.fontawesome.low_priority "ctx" $site)) -}}
+  {{- range $css.fontawesome.high_priority -}}
+    {{- partial "helpers/css.html" (dict "raw" . "src" (index (partial "helpers/vendorCdn.html" (dict "item" . "ctx" $site)) 0) "integrity" (index (partial "helpers/vendorCdnIntegrity.html" (dict "item" .)) 0)) -}}
+  {{- end -}}
+  {{- range $css.fontawesome.low_priority -}}
+    {{- partial "helpers/asyncCss.html" (dict "raw" . "src" (index (partial "helpers/vendorCdn.html" (dict "item" . "ctx" $site)) 0) "integrity" (index (partial "helpers/vendorCdnIntegrity.html" (dict "item" .)) 0)) -}}
+  {{- end -}}
 {{- end -}}
 <!-- loader -->
 {{- if .Site.Params.preloader.enable -}}
@@ -114,16 +118,16 @@
 <link rel="shortcut icon" href="{{ "favicon.ico" | relURL }}">
 {{- partial "helpers/scss.html" (dict "source" "css/main.scss" "temp" "main.scss" "target" "css/main.css" "ctx" .) -}}
 <!-- photo-swipe -->
-{{- partial "helpers/asyncCss.html" (partial "helpers/vendorCdn.html" (dict "item" $css.photoswipe "ctx" $site)) -}}
+{{- partial "helpers/asyncCss.html" (dict "raw" $css.photoswipe "src" (index (partial "helpers/vendorCdn.html" (dict "item" $css.photoswipe "ctx" $site)) 0) "integrity" (index (partial "helpers/vendorCdnIntegrity.html" (dict "item" $css.photoswipe)) 0)) -}}
 <!-- katex -->
-{{- partial "helpers/asyncCss.html" (partial "helpers/vendorCdn.html" (dict "item" $css.katex "ctx" $site)) -}}
+{{- partial "helpers/asyncCss.html" (dict "raw" $css.katex "src" (index (partial "helpers/vendorCdn.html" (dict "item" $css.katex "ctx" $site)) 0) "integrity" (index (partial "helpers/vendorCdnIntegrity.html" (dict "item" $css.katex)) 0)) -}}
 <!-- waline -->
 {{- if and .Site.Params.waline.enable .Site.Params.waline.serverURL -}}
-  {{- partial "helpers/css.html" (partial "helpers/vendorCdn.html" (dict "item" $css.waline "ctx" $site)) -}}
+  {{- partial "helpers/css.html" (dict "raw" $css.waline "src" (index (partial "helpers/vendorCdn.html" (dict "item" $css.waline "ctx" $site)) 0) "integrity" (index (partial "helpers/vendorCdnIntegrity.html" (dict "item" $css.waline)) 0)) -}}
 {{- end -}}
 <!-- gitalk -->
 {{- if and .Site.Params.gitalk.enable .Site.Params.gitalk.clientID .Site.Params.gitalk.clientSecret -}}
-  {{- partial "helpers/css.html" (partial "helpers/vendorCdn.html" (dict "item" $css.gitalk "ctx" $site)) -}}
+  {{- partial "helpers/css.html" (dict "raw" $css.gitalk "src" (index (partial "helpers/vendorCdn.html" (dict "item" $css.gitalk "ctx" $site)) 0) "integrity" (index (partial "helpers/vendorCdnIntegrity.html" (dict "item" $css.gitalk)) 0)) -}}
 {{- end -}}
 <!-- pace -->
 {{- if .Site.Params.pace.enable -}}
@@ -131,9 +135,9 @@
 {{- end -}}
 <!-- aos -->
 {{- if .Site.Params.animation.enable -}}
-  {{- partial "helpers/css.html" (partial "helpers/vendorCdn.html" (dict "item" $css.aos "ctx" $site)) -}}
+  {{- partial "helpers/css.html" (dict "raw" $css.aos "src" (index (partial "helpers/vendorCdn.html" (dict "item" $css.aos "ctx" $site)) 0) "integrity" (index (partial "helpers/vendorCdnIntegrity.html" (dict "item" $css.aos)) 0)) -}}
 {{- end -}}
 
 {{- if .Site.Params.player.aplayer.enable -}}
-{{- partial "helpers/css.html" (partial "helpers/vendorCdn.html" (dict "item" $css.aplayer "ctx" $site)) -}}
+  {{- partial "helpers/css.html" (dict "raw" $css.aplayer "src" (index (partial "helpers/vendorCdn.html" (dict "item" $css.aplayer "ctx" $site)) 0) "integrity" (index (partial "helpers/vendorCdnIntegrity.html" (dict "item" $css.aplayer)) 0)) -}}
 {{- end -}}

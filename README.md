@@ -521,12 +521,17 @@ icon_font: 4552607_0khxww3tj3q9
 ```yml
 fontawesome:
   high_priority:
-    - webcache|@fortawesome/fontawesome-free@6.5.1/css/regular.min.css
-    - webcache|@fortawesome/fontawesome-free@6.5.1/css/solid.min.css
+    - src: webcache|@fortawesome/fontawesome-free@6.5.1/css/regular.min.css
+      integrity: sha384-k5640LgghgAohDLPwSqVWa96yQwWouT6wsAL+J1g0CFJVITNKYkIh1XpPLYKQe7Y
+    - src: webcache|@fortawesome/fontawesome-free@6.5.1/css/solid.min.css
+      integrity: sha384-8yO/A/BtltnG0hDxdwmmkza8UAleyDoAD1FhXiH6rsOQQsCho1P6WZP9TpBBH3YP
   low_priority:
-    - webcache|@fortawesome/fontawesome-free@6.5.1/css/brands.min.css
-    - webcache|@fortawesome/fontawesome-free@6.5.1/css/v5-font-face.min.css
-    - webcache|@fortawesome/fontawesome-free@6.5.1/css/v4-font-face.min.css
+    - src: webcache|@fortawesome/fontawesome-free@6.5.1/css/brands.min.css
+      integrity: sha384-/BRyRRN0wxxRgh/DAXU621go9pdoMHl6LFPiX5Pp8PZYZlKBQCDXj9X9DHx6LOud
+    - src: webcache|@fortawesome/fontawesome-free@6.5.1/css/v5-font-face.min.css
+      integrity: sha384-/mBKnLlGtog8q2qQrgugURRDV+iHWHAPvM5KulYXT1C2ErKOKkBI0vbff8ZPq7rL
+    - src: webcache|@fortawesome/fontawesome-free@6.5.1/css/v4-font-face.min.css
+      integrity: sha384-d2Yn1/9Iw78r3oqwk5B+EcpRcmepXR5LyhmRF2a+WoSe9mpRGvVk0ZviFwDGDOTO
 ```
 
 </details>
@@ -972,6 +977,8 @@ custom_font:
 
 v0.1.0 的 `menu` 配置的结构发生了变化，允许用户自定义 icon。icon 为空时默认使用太极图标，你可以填写一个十六进制的数字来自定义 icon，同时支持 fontawesome 和 icon font。
 
+v0.10.2 icon 支持图片路径，如 `/avatar/avatar.webp`。
+
 ```yaml
 menu:
   - name: home
@@ -1097,6 +1104,10 @@ js:
 ## 贡献者
 
 [![](https://contributors-img.web.app/image?repo=D-Sketon/hugo-theme-reimu)](https://github.com/D-Sketon/hugo-theme-reimu/graphs/contributors)
+
+## 赞助 💘
+
+[爱发电-afdian](https://afdian.tv/a/dsketon)
 
 ## 许可
 

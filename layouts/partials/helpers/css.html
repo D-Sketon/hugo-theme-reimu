@@ -1,7 +1,17 @@
 {{- $items := . -}}
 {{- if not (reflect.IsSlice $items) -}}
-  {{- $items = slice $items -}}
-{{- end -}}
-{{- range $items -}}
-  <link rel="stylesheet" href="{{ . }}" />
+  {{- $raw := index $items "raw" -}}
+  {{- if reflect.IsMap $raw -}}
+    {{- $raw = $raw.src -}}
+  {{- end -}}
+  {{- $src := index $items "src" -}}
+  {{- $integrity := index $items "integrity" -}}
+  <link
+    rel="stylesheet"
+    href="{{ $src }}"
+    {{ if and $integrity (not (hasPrefix $raw "local|")) }}integrity="{{ $integrity }}" crossorigin="anonymous"{{ end -}} />
+{{- else -}}
+  {{- range $items -}}
+    <link rel="stylesheet" href="{{ . }}" />
+  {{- end -}}
 {{- end -}}

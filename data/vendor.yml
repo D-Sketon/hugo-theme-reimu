@@ -96,17 +96,34 @@ js:
     src: webcache|material-theme@1.0.0/dist/material-theme.umd.js
     integrity: sha384-vLev0II0HKFaxkcm+/7kX5IGwVFBASkGchU311wmU/veIj2bB0UcBkQbW6yw2asK
 css:
-  photoswipe: webcache|photoswipe@5.4.4/dist/photoswipe.css
-  katex: webcache|katex@0.16.9/dist/katex.min.css
-  waline: webcache|@waline/client@2.15.8/dist/waline.css
-  gitalk: webcache|gitalk@1.8.0/dist/gitalk.css
+  photoswipe:
+    src: webcache|photoswipe@5.4.4/dist/photoswipe.css
+    integrity: sha384-IfxC36XL/toUyJ939C73PcgMuRzAZuIzZxE38drsmO5p6jD7ei+Zx/1oA/0l8ysE
+  katex:
+    src: webcache|katex@0.16.11/dist/katex.min.css
+    integrity: sha384-nB0miv6/jRmo5UMMR1wu3Gz6NLsoTkbqJghGIsx//Rlm+ZU03BU6SQNC66uf4l5+
+  waline:
+    src: webcache|@waline/client@2.15.8/dist/waline.css
+    integrity: sha384-vltfZtesCdl6NYVcFVcjEaIi5RpNvZe9t7fXvq8twVtcoy+Ub9QgnxUYJmwOhYCK
+  gitalk:
+    src: webcache|gitalk@1.8.0/dist/gitalk.css
+    integrity: sha384-X7z7PUv2B67D8sPJyzDyGZSco1ADwmdI7ed4eCGtTKkClfyDFpPL9WgAn9XVr/Io
   fontawesome:
     high_priority:
-      - webcache|@fortawesome/fontawesome-free@6.5.1/css/regular.min.css
-      - webcache|@fortawesome/fontawesome-free@6.5.1/css/solid.min.css
+      - src: webcache|@fortawesome/fontawesome-free@6.5.1/css/regular.min.css
+        integrity: sha384-k5640LgghgAohDLPwSqVWa96yQwWouT6wsAL+J1g0CFJVITNKYkIh1XpPLYKQe7Y
+      - src: webcache|@fortawesome/fontawesome-free@6.5.1/css/solid.min.css
+        integrity: sha384-8yO/A/BtltnG0hDxdwmmkza8UAleyDoAD1FhXiH6rsOQQsCho1P6WZP9TpBBH3YP
     low_priority:
-      - webcache|@fortawesome/fontawesome-free@6.5.1/css/brands.min.css
-      - webcache|@fortawesome/fontawesome-free@6.5.1/css/v5-font-face.min.css
-      - webcache|@fortawesome/fontawesome-free@6.5.1/css/v4-font-face.min.css
-  aos: webcache|@reimujs/aos@0.1.0/dist/aos.css
-  aplayer: webcache|aplayer@1.10.1/dist/APlayer.min.css
+      - src: webcache|@fortawesome/fontawesome-free@6.5.1/css/brands.min.css
+        integrity: sha384-/BRyRRN0wxxRgh/DAXU621go9pdoMHl6LFPiX5Pp8PZYZlKBQCDXj9X9DHx6LOud
+      - src: webcache|@fortawesome/fontawesome-free@6.5.1/css/v5-font-face.min.css
+        integrity: sha384-/mBKnLlGtog8q2qQrgugURRDV+iHWHAPvM5KulYXT1C2ErKOKkBI0vbff8ZPq7rL
+      - src: webcache|@fortawesome/fontawesome-free@6.5.1/css/v4-font-face.min.css
+        integrity: sha384-d2Yn1/9Iw78r3oqwk5B+EcpRcmepXR5LyhmRF2a+WoSe9mpRGvVk0ZviFwDGDOTO
+  aos:
+    src: webcache|@reimujs/aos@0.1.0/dist/aos.css
+    integrity: sha384-4NN3fZ5AokFyHuoihl7A9qWaCt+HsAtOaUsXwJGRb4/SMBtFr2vcNSHR5E8dg0Wk
+  aplayer:
+    src: webcache|aplayer@1.10.1/dist/APlayer.min.css
+    integrity: sha384-tLMkTWh2pfXNWGFlUS0w1TFtRG5xZ9lPWFOooj+vDDLIL+xBGQU/voDBY5XE2lVh
