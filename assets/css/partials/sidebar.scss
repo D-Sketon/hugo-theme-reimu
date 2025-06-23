@@ -132,6 +132,11 @@
   }
 }
 
+.sidebar-state a {
+  text-decoration: none;
+  color: inherit;
+}
+
 .sidebar-state-article {
   @include sidebar-state-content;
   border-right: 1px solid var(--red-1);
