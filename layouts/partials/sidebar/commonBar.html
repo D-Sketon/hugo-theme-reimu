@@ -15,13 +15,13 @@
     {{- $posts := (where .Page.Site.RegularPages "Section" "in" .Site.Params.mainSections) -}}
     <div class="sidebar-state-number">{{ len $posts }}</div>
   </div>
-  <a class="sidebar-state-category" href="{{ "categories/" | relLangURL }}" aria-label="">
+  <a class="sidebar-state-category" href="{{ "categories/" | relLangURL }}" aria-label="sidebar-state-category-link">
     <div>{{ i18n "sidebar.category" }}</div>
     <div class="sidebar-state-number">
       {{ len .Site.Taxonomies.categories }}
     </div>
   </a>
-  <a class="sidebar-state-tag" href="{{ "tags/" | relLangURL }}" aria-label="">
+  <a class="sidebar-state-tag" href="{{ "tags/" | relLangURL }}" aria-label="sidebar-state-tag-link">
     <div>{{ i18n "sidebar.tag" }}</div>
     <div class="sidebar-state-number">{{ len .Site.Taxonomies.tags }}</div>
   </a>
