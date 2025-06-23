@@ -16,12 +16,14 @@
     <div class="sidebar-state-number">{{ len $posts }}</div>
   </div>
   <div class="sidebar-state-category">
+    <a class="sidebar-state-link" href="{{ "categories/" | relLangURL }}" aria-label=""></a>
     <div>{{ i18n "sidebar.category" }}</div>
     <div class="sidebar-state-number">
       {{ len .Site.Taxonomies.categories }}
     </div>
   </div>
   <div class="sidebar-state-tag">
+    <a class="sidebar-state-link" href="{{ "tags/" | relLangURL }}" aria-label=""></a>
     <div>{{ i18n "sidebar.tag" }}</div>
     <div class="sidebar-state-number">{{ len .Site.Taxonomies.tags }}</div>
   </div>
