@@ -5,6 +5,8 @@
     {{- $paginator = (.Paginate (where .Page.Site.RegularPages "Section" "in" .Site.Params.mainSections)).Pages.ByWeight -}}
   {{- else if eq $sort_config "weight-reverse" -}}
     {{- $paginator = (.Paginate (where .Page.Site.RegularPages "Section" "in" .Site.Params.mainSections)).Pages.ByWeight.Reverse -}}
+  {{- else if eq $sort_config "time-reverse" -}}
+    {{- $paginator = (.Paginate (where .Page.Site.RegularPages "Section" "in" .Site.Params.mainSections)).Pages.GroupByDate .Site.Params.yearFormat "asc" -}}
   {{- end -}}
   <div
     class="archives-outer-wrap"

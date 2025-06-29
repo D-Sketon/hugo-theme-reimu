@@ -155,10 +155,11 @@ rss:
   showCopyright: false   # If true, add copyright to the end of article.
 
 # Sort order configuration
-# Available values: time, weight, weight-reverse
-# time: default
+# Available values: time, time-reverse, weight, weight-reverse
+# time: sorted by time in descending order (newest first, default)
+# time-reverse: sorted by time in ascending order (oldest first)
 # weight: sorted by weight in ascending order
-# weight_reverse: sorted by weight in descending order
+# weight-reverse: sorted by weight in descending order
 sort_order:
   taxonomy:
     category: time # controlled by categories_weight

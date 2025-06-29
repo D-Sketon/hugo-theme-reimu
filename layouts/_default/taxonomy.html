@@ -13,6 +13,8 @@
     {{- $paginator = .Paginator.Pages.ByWeight -}}
   {{- else if eq $sort_config "weight-reverse" -}}
     {{- $paginator = .Paginator.Pages.ByWeight.Reverse -}}
+  {{- else if eq $sort_config "time-reverse" -}}
+    {{- $paginator = .Paginator.Pages.GroupByDate .Site.Params.yearFormat "asc" -}}
   {{- end -}}
   <div
     class="archives-outer-wrap"
