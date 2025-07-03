@@ -15,13 +15,14 @@
     "date" ( .Date | time.Format $dateFormat )
     "lastmod" ( .Lastmod | time.Format $dateFormat )
     "wordcount" ($cleanContent | $.Page.RenderString | string | countwords)
+    "url" .RelPermalink
     )
   -}}
 {{- end -}}
 
 {{- partial "helpers/scss.html" (dict "source" "css/heat-map.scss" "temp" "heat-map.scss" "target" "css/heat-map.css" "ctx" .) -}}
 <div id="heatmap"></div>
-
+<div id="heatmap-tooltip"></div>
 <script>
 var MONTH_NAMES = [
   "Jan",
@@ -56,6 +57,93 @@ function getTooltip(contributionDay, contributionDate) {
   const wordText = pluralize(contributionDay.count, "word");
 
   return `${postText} ${wordText} on ${formattedDate}`;
+}
+
+// 全局tooltip元素
+const heatmapTooltip = document.getElementById("heatmap-tooltip");
+
+function hideTooltip() {
+  heatmapTooltip.style.display = 'none';
+}
+
+function tileClickHandler(event) {
+  console.log("Tile clicked:", event);
+  const tile = event.target;
+  if (!tile.classList.contains("tile")) return;
+  
+  const date = new Date(Number(tile.dataset.date));
+  const dateStr = date.toISOString().split('T')[0];
+  
+  // 获取当天的文章列表
+  const articles = articleStats.filter(article => {
+    return article.date === dateStr;
+  });
+  
+  const level = tile.dataset.level;
+  const formattedDate = date.toLocaleDateString();
+  let totalWords = 0;
+  
+  let html = `
+    <div class="tooltip-header">
+      <div class="tooltip-header-content">${formattedDate} (Level ${level})</div>
+      <div class="tooltip-close">×</div>
+    </div>
+    <div class="tooltip-content">
+      <ul>
+  `;
+
+  if (articles.length === 0) {
+    html += `<li>没有文章</li>`;
+  } else {
+    articles.forEach(article => {
+      totalWords += article.wordcount;
+      html += `<li><a href="${article.url}">${article.title}</a> (${article.wordcount} 词)</li>`;
+    });
+  }
+  
+  html += `
+      </ul>
+      <div class="tooltip-footer">
+        共 ${articles.length} 篇文章，${totalWords} 字
+      </div>
+    </div>
+  `;
+  
+  // 设置内容并显示tooltip
+  heatmapTooltip.innerHTML = html;
+  
+  // 计算位置 - 默认显示在tile右侧
+  const rect = tile.getBoundingClientRect();
+  const tooltipWidth = 250; // 设定一个合适的宽度
+  
+  // 检查右侧空间是否足够，否则显示在左侧
+  let left = rect.right + 10;
+  if (left + tooltipWidth > window.innerWidth) {
+    left = rect.left - tooltipWidth - 10;
+  }
+  
+  // heatmapTooltip.style.position = 'fixed';
+  heatmapTooltip.style.left = `${left}px`;
+  heatmapTooltip.style.top = `${rect.top}px`;
+  heatmapTooltip.style.display = 'block';
+  
+  // 添加关闭按钮事件监听
+
+  const closeBtn = heatmapTooltip.querySelector('.tooltip-close');
+  if (closeBtn) {
+    closeBtn.addEventListener('click', hideTooltip);
+  }
+  
+  // 点击其他地方关闭tooltip
+  document.addEventListener('click', function closeTooltipOnClickOutside(e) {
+    if (e.target.classList.contains('tile')) {
+        return;
+    }
+    if (!heatmapTooltip.contains(e.target) && e.target !== tile) {
+      hideTooltip();
+      document.removeEventListener('click', closeTooltipOnClickOutside);
+    }
+  });
 }
 
 function createCalendar(element, contributionData) {
@@ -136,6 +224,14 @@ function createCalendar(element, contributionData) {
         tile.className = "tile";
         tile.dataset.level = c.level;
         tile.title = getTooltip(c, date);
+        tile.dataset.level = c.level;
+        tile.dataset.date = c.date; // 添加日期数据
+        tile.addEventListener('click', tileClickHandler);
+        
+        /** 不方便点击内部文章链接
+          tile.addEventListener('mouseenter', tileClickHandler);
+          tile.addEventListener('mouseleave', hideTooltip);
+        */
         tiles.push(tile);
         return [tiles, stats];
       },
