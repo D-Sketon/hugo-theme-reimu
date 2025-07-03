@@ -1,0 +1,99 @@
+<!--
+    标签轮盘: 点击游戏手柄emoji（🕹️）触发滚动效果,从预定义的标签数组中随机选择标签显示
+    卡片抄自：5ime作者的博客 https://5ime.cn/hello-2024.html#%E5%85%B3%E4%BA%8E%E6%88%91
+        致谢！！！
+-->
+
+{{- $inputTags := .Get "tags" | default "点击按钮抽取标签,标签轮盘,带有模糊效果,好想睡觉" -}}
+{{- $icon := .Get "icon" | default "🕹️" -}}
+
+<div class="roll">
+    <div class="roll-button" onclick="roll()">{{ $icon }}</div>
+    <div class="roll-tags"><span class="ready removing"></span></div>
+</div>
+
+<script>
+const roll = () => {
+    // 当你看到这行字，你知道我要说什么吧。
+    var tags = {{ $inputTags }}.split(",");
+    var tag = document.querySelector('.roll-tags');
+    tag.innerHTML = '';
+
+    var interval = setInterval(function () {
+        var span = document.createElement('span');
+        span.classList.add('ready');
+        span.classList.add('blur');
+        span.innerText = tags[Math.floor(Math.random() * tags.length)];
+        tag.appendChild(span);
+        spans = tag.querySelectorAll('span');
+        for (var i = 0; i < spans.length; i++) {
+            spans[i].classList.add('removing');
+        }
+    }, 200);
+    
+    setTimeout(function () {
+        clearInterval(interval);
+        for (var i = 0; i < spans.length-1; i++) {
+            tag.removeChild(spans[i]);
+        }
+        setTimeout(function () {
+            spans[spans.length-1].classList.remove('blur');
+        }, 100);
+    }, 1000);
+}
+
+roll(); // 页面加载时自动触发一次滚动
+</script>
+
+<style>
+.roll .roll-button {
+    text-align: center;
+    font-size: 30px;
+    user-select: none;
+    width: 40px;
+    margin: 10px auto;
+    transition: transform 0.2s ease;
+}
+
+.roll .roll-button:hover {
+    transform: scale(1.1);
+}
+
+.roll-tags {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    height: 60px;
+    position: relative;
+}
+
+.roll-tags span {
+    position: absolute;
+    color: var(--red-1);
+    padding: 10px 20px;
+    border-radius: 10px;
+    background-color: var(--red-5);
+    transition: filter 0.3s ease, opacity 0.3s ease;
+}
+
+.roll-tags span.blur {
+    filter: blur(2px);
+    opacity: 0.7;
+}
+
+.roll-tags span.removing {
+    animation: tag-removing 0.1s ease-in-out;
+}
+
+@keyframes tag-removing {
+    0% {
+        transform: translateY(0px);
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
+        transform: translateY(6px);
+    }
+}
+</style>
