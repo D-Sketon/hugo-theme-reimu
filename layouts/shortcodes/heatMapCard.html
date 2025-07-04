@@ -67,7 +67,6 @@ function hideTooltip() {
 }
 
 function tileClickHandler(event) {
-  console.log("Tile clicked:", event);
   const tile = event.target;
   if (!tile.classList.contains("tile")) return;
   
@@ -75,9 +74,7 @@ function tileClickHandler(event) {
   const dateStr = date.toISOString().split('T')[0];
   
   // 获取当天的文章列表
-  const articles = articleStats.filter(article => {
-    return article.date === dateStr;
-  });
+  const articles = articleStats.filter(article => article.date === dateStr);
   
   const level = tile.dataset.level;
   const formattedDate = date.toLocaleDateString();
@@ -86,7 +83,7 @@ function tileClickHandler(event) {
   let html = `
     <div class="tooltip-header">
       <div class="tooltip-header-content">${formattedDate} (Level ${level})</div>
-      <div class="tooltip-close">×</div>
+      <div class="popup-btn-close tooltip-close"></div>
     </div>
     <div class="tooltip-content">
       <ul>
@@ -114,7 +111,13 @@ function tileClickHandler(event) {
   
   // 计算位置 - 默认显示在tile右侧
   const rect = tile.getBoundingClientRect();
-  const tooltipWidth = 250; // 设定一个合适的宽度
+  heatmapTooltip.style.display = 'block';
+  heatmapTooltip.style.visibility = 'hidden';
+  heatmapTooltip.style.left = '0px';
+
+  // 获取实际的tooltip宽度
+  const tooltipRect = heatmapTooltip.getBoundingClientRect();
+  const tooltipWidth = tooltipRect.width;
   
   // 检查右侧空间是否足够，否则显示在左侧
   let left = rect.right + 10;
@@ -122,10 +125,10 @@ function tileClickHandler(event) {
     left = rect.left - tooltipWidth - 10;
   }
   
-  // heatmapTooltip.style.position = 'fixed';
   heatmapTooltip.style.left = `${left}px`;
   heatmapTooltip.style.top = `${rect.top}px`;
   heatmapTooltip.style.display = 'block';
+  heatmapTooltip.style.visibility = 'visible';
   
   // 添加关闭按钮事件监听
 
@@ -137,7 +140,7 @@ function tileClickHandler(event) {
   // 点击其他地方关闭tooltip
   document.addEventListener('click', function closeTooltipOnClickOutside(e) {
     if (e.target.classList.contains('tile')) {
-        return;
+      return;
     }
     if (!heatmapTooltip.contains(e.target) && e.target !== tile) {
       hideTooltip();
