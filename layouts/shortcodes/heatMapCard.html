@@ -90,18 +90,20 @@ function tileClickHandler(event) {
   `;
 
   if (articles.length === 0) {
-    html += `<li>没有文章</li>`;
+    html += `<li>{{- i18n "heat_map_card.no_articles" -}}</li>`;
   } else {
     articles.forEach(article => {
       totalWords += article.wordcount;
-      html += `<li><a href="${article.url}">${article.title}</a> (${article.wordcount} 词)</li>`;
+      html += `<li><a href="${article.url}">${article.title}</a> (${article.wordcount} {{ i18n "heat_map_card.words" -}})</li>`;
     });
   }
+
+  const footerTemplate = {{- i18n "heat_map_card.total_articles" -}}.replace("$1", articles.length).replace("$2", totalWords);
   
   html += `
       </ul>
       <div class="tooltip-footer">
-        共 ${articles.length} 篇文章，${totalWords} 字
+        ${footerTemplate}
       </div>
     </div>
   `;

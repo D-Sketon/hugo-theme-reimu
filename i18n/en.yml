@@ -82,3 +82,8 @@ algolia:
   input_placeholder: "Search....."
   hits_empty: "No results found for 「${query}」"
   hits_stats: "Found ${hits} results (in ${time} ms)"
+
+heat_map_card:
+  no_articles: No articles
+  words: word(s)
+  total_articles: "$1 article(s), $2 word(s)"

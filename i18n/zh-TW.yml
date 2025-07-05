@@ -82,3 +82,8 @@ algolia:
   input_placeholder: "搜尋....."
   hits_empty: "未發現與 「${query}」相關內容"
   hits_stats: "找到${hits}條結果（用時 ${time} ms）"
+
+heat_map_card:
+  no_articles: 沒有文章
+  words: 字
+  total_articles: 共 $1 篇文章，$2 字

@@ -82,3 +82,8 @@ algolia:
   input_placeholder: "検索....."
   hits_empty: "「${query}」に関連するコンテンツは見つかりませんでした"
   hits_stats: "${hits} 件の結果が見つかりました（${time} ミリ秒）"
+
+heat_map_card:
+  no_articles: 記事がありません
+  words: 文字
+  total_articles: "$1 記事, $2 文字"
