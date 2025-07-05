@@ -8,12 +8,12 @@
 {{- $icon := .Get "icon" | default "🕹️" -}}
 
 <div class="roll">
-    <div class="roll-button" onclick="roll()">{{ $icon }}</div>
+    <div class="roll-button" onclick="rollTagRoulette()">{{ $icon }}</div>
     <div class="roll-tags"><span class="ready removing"></span></div>
 </div>
 
 <script>
-const roll = () => {
+var rollTagRoulette = () => {
     // 当你看到这行字，你知道我要说什么吧。
     var tags = {{ $inputTags }}.split(",");
     var tag = document.querySelector('.roll-tags');
@@ -42,7 +42,7 @@ const roll = () => {
     }, 1000);
 }
 
-roll(); // 页面加载时自动触发一次滚动
+rollTagRoulette(); // 页面加载时自动触发一次滚动
 </script>
 
 <style>
@@ -53,6 +53,7 @@ roll(); // 页面加载时自动触发一次滚动
     width: 40px;
     margin: 10px auto;
     transition: transform 0.2s ease;
+    cursor: var(--cursor-pointer);
 }
 
 .roll .roll-button:hover {
