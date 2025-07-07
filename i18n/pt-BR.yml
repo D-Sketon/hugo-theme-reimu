@@ -1,0 +1,89 @@
+categories: Categorias
+search: Buscar
+tags: Tags
+tagcloud: Nuvem de Tags
+tweets: Tweets
+prev: Anterior
+next: Próximo
+comment: Comentários
+reading: Leituras
+archive_a: Arquivos
+archive_b: "Arquivos: {{ . -}}"
+page: "Página {{ . -}}"
+recent_posts: Posts Recentes
+newer: Mais Recente
+older: Mais Antigo
+share: Compartilhar
+powered_by: Desenvolvido com
+rss_feed: Feed RSS
+category: Categoria
+tag: Tag
+toc: Sumário
+more: Mais
+
+home: INÍCIO
+about: SOBRE MIM
+friend: AMIGOS
+archives: ARQUIVOS
+
+sidebar:
+  post: Posts
+  category: Categorias
+  tag: Tags
+
+not_found:
+  title: 4 0 4 (;-;)
+  subtitle: PÁGINA NÃO ENCONTRADA
+
+post:
+  count:
+    one: "{{- . }} palavra"
+    other: "{{- . }} palavras"
+  time:
+    one: "{{- . }} min"
+    other: "{{- . }} mins"
+
+busuanzi:
+  pv: Número de visualizações
+  uv: Número de visitantes
+
+sticky: Fixado
+
+service_worker:
+  title: Nova versão encontrada
+  content: O site parece ter novo conteúdo, deseja atualizar?
+  confirm: Atualizar
+  cancel: Cancelar
+
+sponsor: Apoiar
+
+home_categories:
+  count: 
+    one: "{{- . }} post"
+    other: "{{- . }} posts"
+
+article_copyright:
+  author: "Autor: "
+  permalink: "Link permanente: "
+  title: "Título: "
+  date: "Publicado em: "
+  updated: "Atualizado em: "
+  license: "Licença: "
+  license_content: "Todos os artigos deste blog estão licenciados sob {{ . }} salvo indicação em contrário. Por favor, indique a fonte ao reproduzir!"
+
+multi_language:
+  not_found: Este artigo não possui uma versão neste idioma
+
+rss:
+  author: "Autor: {{ .name }}({{ .email }})"
+  date: Publicado em {{ .pubDate }} em {{ .content }}, última modificação em {{ .lastmod }}
+
+algolia:
+  input_placeholder: "Buscar....."
+  hits_empty: "Nenhum resultado encontrado para 「${query}」"
+  hits_stats: "Encontrados ${hits} resultados (em ${time} ms)"
+
+heat_map_card:
+  no_articles: Sem artigos
+  words: palavra(s)
+  total_articles: "$1 artigo(s), $2 palavra(s)"
