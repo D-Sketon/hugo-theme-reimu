@@ -1,0 +1,155 @@
+{{- if and .Site.Params.encrypt.enable (isset .Params "encrypt") .Params.encrypt.enable -}}
+{{- if .Params.encrypt.all -}}
+<style>
+    .encrypted-content {
+        background: var(--color-wrap);
+        border-radius: 10px;
+        display: flow-root;
+        transition: 0.3s;
+        padding: 20px;
+    }
+
+    .encrypted-header {
+        background: var(--red-5-5);
+        border-left: 6px var(--red-4) solid;
+        margin: 1.2em 0;
+        border-radius: 10px;
+        transition: 0.3s;
+        padding: 1px 10px;
+        box-shadow: var(--shadow-meta);
+        padding: 15px 5px;
+        text-align: center;
+    }
+
+    #encrypt-password {
+        padding: 10px 16px;
+        border: 2px solid var(--color-border);
+        border-radius: 6px;
+        font-size: 1em;
+        outline: none;
+        transition: border 0.2s;
+        background-color: var(--color-background);
+        color: var(--color-default);
+    }
+
+    #encrypt-password:focus {
+        border-color: var(--red-1);
+    }
+
+    #encrypt-button {
+        padding: 2px 18px;
+        border: 10px var(--color-red-3-shadow) double;
+        color: var(--red-2);
+        font-size: 14px;
+        background-color: var(--color-background);
+        margin-bottom: 30px;
+    }
+
+    #encrypt-button:hover {
+        border-color: var(--red-1);
+        color: var(--red-1);
+        font-weight: bolder;
+    }
+
+    .sliderbar-encrypt-mask {
+        width: 100%;
+        height: 220px;
+        background: var(--red-5-5);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 24px;
+        border-radius: 10px;
+        backdrop-filter: blur(8px);
+        /* 磨砂模糊效果 */
+        -webkit-backdrop-filter: blur(8px);
+        /* 兼容Safari */
+        box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
+    }
+</style>
+<script>
+    let mainElement;
+    let sidebarElement;
+    async function encryptPassword() {
+        const password = document.getElementById("encrypt-password").value;
+        if (!password) {
+            alert("请输入密码");
+            return;
+        }
+
+        let article = __ENCRYPT_DATA__.article;
+        let sidebar = __ENCRYPT_DATA__.sidebar;
+
+        console.log(article)
+        console.log(sidebar)
+        console.log(password)
+
+        // 解密article内容
+        if (!article || !password) {
+            throw new Error('请填写加密数据和密码');
+        }
+
+        let decryptedArticle = await encrypt(article, password);
+
+        console.log(decryptedArticle)
+
+        // 显示解密结果
+        mainElement.insertAdjacentHTML("afterbegin", decryptedArticle);
+        document.querySelector('.encrypted-content').remove();
+
+        // 解密sidebar内容
+        if (!sidebar || !password) {
+            throw new Error('请填写加密数据和密码');
+        }
+
+        let decryptedSidebar = await encrypt(sidebar, password);
+
+        console.log(decryptedSidebar)
+
+        // 显示解密结果
+        document.querySelector(".toc-div-class").insertAdjacentHTML("afterbegin", decryptedSidebar);
+        document.querySelector('.sliderbar-encrypt-mask').remove();
+
+        // Todo 错误密码提示
+        // Todo 保存密码到浏览器缓存
+    }
+    document.addEventListener("DOMContentLoaded", function () {
+        // Todo 处理缓存密码
+        
+        // 添加显示加密部分占位元素
+        let enctyptedArcitleElement = `
+        <div class="encrypted-content aos-init aos-animate">
+            <div class="encrypted-header">
+                🔐 内容已隐藏，输入密码后查看
+            </div>
+            <div style="text-align:center; margin-top:18px;">
+                <input type="password" id="encrypt-password" placeholder="请输入密码" />
+                <button type="button" id="encrypt-button" onclick="encryptPassword()">解锁</button>
+            </div>
+        </div>
+        `;
+        let enctyptedSidebarElement = `
+        <div class="sliderbar-encrypt-mask">
+            🔐
+        </div>
+        `;
+        mainElement = document.querySelector("#main");
+        if (mainElement) {
+            mainElement.insertAdjacentHTML("afterbegin", enctyptedArcitleElement);
+        }
+        let sidebarElements = document.querySelectorAll(".toc-div-class");
+        sldebarElement = sidebarElements[0];
+        let sidebarElementMobie = sidebarElements[1];
+
+        if (sldebarElement) {
+            sldebarElement.insertAdjacentHTML("afterbegin", enctyptedSidebarElement);
+        }
+    });
+</script>
+{{- else -}}
+<script>
+    // Todo 文章局部内容加密
+    console.log("Hello, Partial");
+</script>
+{{- end -}}
+{{- end -}}

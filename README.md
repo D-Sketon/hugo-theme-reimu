@@ -815,6 +815,48 @@ home_categories:
       cover:
 ```
 
+#### 文章加密
+
+默认关闭，打开后可以将不想展示的文章进行加密，需要输入密码后才能查看
+
+依赖于第三方工具，此处下载 [reimuEncrypt-releases](https://github.com/2061360308/reimuEncrypt/releases)
+
+```yml
+########################################
+# Encrypted Articles
+########################################
+encrypt:
+  enable: true # 是否启用
+  defaultPassword: "123456" # 默认密码
+```
+
+为了能够正确生成配置文件`encrypt.json` 请在 `hugo.toml` 中添加如下配置
+
+```toml
+# 需要RSS以及Algolia，则添加"Algolia", "RSS"字段否则使用第二种
+[outputs]
+home = ["Algolia", "HTML", "RSS", "Encrypt"]
+
+[outputs]
+home = ["HTML", "Encrypt"]
+
+[outputFormats.Encrypt]
+mediaType = "application/json"
+baseName = "encrypt"
+isPlainText = true
+notAlternative = true
+```
+
+写作过程中front Matter配置
+```yaml
+encrypt:
+  enable: true                  # 文章开启加密
+  password: "secretpassword123" # 密码
+  all: true                     # true直接加密整篇文章
+```
+
+> 注意：加密只针对生成静态页面进行保护，原始Markdown等文件仍然包含明文密码需要自行妥善保管，如在使用Github时启用私有仓库
+
 </details>
 
 <details>

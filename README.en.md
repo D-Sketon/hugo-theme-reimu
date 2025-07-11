@@ -792,6 +792,49 @@ home_categories:
       cover:
 ```
 
+#### Article Encryption
+
+Disabled by default. When enabled, you can encrypt articles you don't want to display publicly—users must enter a password to view the content.
+
+This feature relies on a third-party tool. Download it here: [reimuEncrypt-releases](https://github.com/2061360308/reimuEncrypt/releases)
+
+```yml
+########################################
+# Encrypted Articles
+########################################
+encrypt:
+  enable: true # Enable encryption
+  defaultPassword: "123456" # Default password
+```
+
+To correctly generate the `encrypt.json` configuration file, add the following to your `hugo.toml`:
+
+```toml
+# If you need RSS and Algolia, add "Algolia" and "RSS" to the list; otherwise, use the second option.
+[outputs]
+home = ["Algolia", "HTML", "RSS", "Encrypt"]
+
+[outputs]
+home = ["HTML", "Encrypt"]
+
+[outputFormats.Encrypt]
+mediaType = "application/json"
+baseName = "encrypt"
+isPlainText = true
+notAlternative = true
+```
+
+When writing articles, add the following to the front matter:
+
+```yaml
+encrypt:
+  enable: true                  # Enable encryption for this article
+  password: "secretpassword123" # Password
+  all: true                     # true to encrypt the entire article
+```
+
+> Note: Encryption only protects the generated static pages. The original Markdown files still contain the plaintext content and password. Please keep them safe—if using GitHub, consider making your repository private.
+
 </details>
 
 <details>

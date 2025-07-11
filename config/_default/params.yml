@@ -672,3 +672,10 @@ internal_theme:
     --highlight-aqua: '#66cccc'
     --highlight-blue: '#54b6ff'
     --highlight-purple: '#dcbdfb'
+
+########################################
+# Encrypted Articles
+########################################
+encrypt:
+  enable: true # enable encrypted articles
+  defaultPassword: "123456" # default password for encrypted articles
