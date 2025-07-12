@@ -41,7 +41,7 @@
     {
       "name": "sidebar",
       "selector": "#TableOfContents",
-      "selectAll": false,
+      "selectAll": true,
       "replace": {
         "innerHTML": false,
         "content": ""

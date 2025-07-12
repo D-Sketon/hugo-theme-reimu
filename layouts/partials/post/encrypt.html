@@ -188,7 +188,7 @@
 {{- end -}}
 <script>
     let mainElement;
-    let sidebarElement;
+    let sidebarElements;
     async function encryptPassword(password) {
         console.log("encryptPassword called");
         if (!password) {
@@ -208,7 +208,7 @@
             // 解密article内容
             decryptedArticle = await encrypt(article, password);
             // 解密sidebar内容
-            decryptedSidebar = await encrypt(sidebar, password);
+            decryptedSidebar = await encrypt(sidebar[0], password);  // 两个内容一样
         } catch (error) {
             console.error("解密失败:", error);
             alert("解密失败，请检查密码是否正确");
@@ -220,8 +220,12 @@
         document.querySelector('.encrypted-content').remove();
 
         // 显示解密结果
-        document.querySelector(".toc-div-class").insertAdjacentHTML("afterbegin", decryptedSidebar);
-        document.querySelector('.sliderbar-encrypt-mask').remove();
+        document.querySelectorAll(".toc-div-class").forEach(function (element){
+            element.insertAdjacentHTML("afterbegin", decryptedSidebar);
+        })
+        document.querySelectorAll('.sliderbar-encrypt-mask').forEach(function (element) {
+            element.remove();
+        });
 
         // Todo 保存密码到浏览器缓存
         setEncryptPassword(password);
@@ -247,13 +251,10 @@
         if (mainElement) {
             mainElement.insertAdjacentHTML("afterbegin", enctyptedArcitleElement);
         }
-        let sidebarElements = document.querySelectorAll(".toc-div-class");
-        sldebarElement = sidebarElements[0];
-        let sidebarElementMobie = sidebarElements[1];
-
-        if (sldebarElement) {
-            sldebarElement.insertAdjacentHTML("afterbegin", enctyptedSidebarElement);
-        }
+        sidebarElements = document.querySelectorAll(".toc-div-class");
+        sidebarElements.forEach(function (element) {
+            element.insertAdjacentHTML("afterbegin", enctyptedSidebarElement);
+        });
 
         // 监听输入框的回车事件
         var input = document.querySelector(".hbe-input-field");
