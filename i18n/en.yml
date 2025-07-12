@@ -87,3 +87,6 @@ heat_map_card:
   no_articles: No articles
   words: word(s)
   total_articles: "$1 article(s), $2 word(s)"
+
+encrypt:
+  tipMessage: "🔐 Content is hidden, enter the password to view"

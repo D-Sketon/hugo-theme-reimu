@@ -679,3 +679,5 @@ internal_theme:
 encrypt:
   enable: true # enable encrypted articles
   defaultPassword: "123456" # default password for encrypted articles
+  theme: "xray" # theme for encrypted input box, can be "blink" "shrink" "flip" "up" "surge" "wave" "xray" "default"
+  message: "૮₍ ˃ ⤙ ˂ ₎ა 这里不想被人看到呢~" # message when the article is encrypted

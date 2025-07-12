@@ -87,3 +87,6 @@ heat_map_card:
   no_articles: 没有文章
   words: 字
   total_articles: 共 $1 篇文章，$2 字
+
+encrypt:
+  tipMessage: "🔐 内容已隐藏，输入密码后查看"
