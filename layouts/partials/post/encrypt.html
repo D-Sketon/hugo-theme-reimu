@@ -162,6 +162,30 @@
         color: var(--red-1);
     }
 </style>
+{{- $localStorage := .Site.Params.encrypt.theme | default false -}}
+{{- if $localStorage -}}
+<script>
+    function getEncryptPassword() {
+        // 从localStorage中获取密码
+        return localStorage.getItem("encryptPassword") || "";
+    }
+    function setEncryptPassword(password) {
+        // 将密码存储到localStorage中
+        localStorage.setItem("encryptPassword", password);
+    }
+</script>
+{{- else -}}
+<script>
+    function getEncryptPassword() {
+        // 从sessionStorage中获取密码
+        return sessionStorage.getItem("encryptPassword") || "";
+    }
+    function setEncryptPassword(password) {
+        // 将密码存储到sessionStorage中
+        sessionStorage.setItem("encryptPassword", password);
+    }
+</script>
+{{- end -}}
 <script>
     let mainElement;
     let sidebarElement;
@@ -200,10 +224,9 @@
         document.querySelector('.sliderbar-encrypt-mask').remove();
 
         // Todo 保存密码到浏览器缓存
+        setEncryptPassword(password);
     }
     document.addEventListener("DOMContentLoaded", function () {
-        // Todo 处理缓存密码
-
         // 添加显示加密部分占位元素
         let enctyptedArcitleElement = `
         <div class="encrypted-content aos-init aos-animate">
@@ -240,6 +263,12 @@
                     encryptPassword(input.value);
                 }
             });
+        }
+
+        // Todo 处理缓存密码
+        let savedPassword = getEncryptPassword();
+        if (savedPassword) {
+            encryptPassword(savedPassword);
         }
     });
 </script>
