@@ -115,10 +115,9 @@
 </div>` $tipMessage -}}
 {{- end -}}
 
-{{- if and .Site.Params.encrypt.enable (isset .Params "encrypt") .Params.encrypt.enable -}}
-{{- if .Params.encrypt.all -}}
 {{- partial "helpers/scss.html" (dict "source" "css/hbe.style.scss" "temp" "hbe.style.scss" "target" "css/hbe.style.css"
 "ctx" .) -}}
+
 <style>
     .encrypted-content {
         background: var(--color-wrap);
@@ -139,7 +138,11 @@
         padding: 15px 5px;
         text-align: center;
     }
+</style>
 
+{{- if and .Site.Params.encrypt.enable (isset .Params "encrypt") .Params.encrypt.enable -}}
+{{- if .Params.encrypt.all -}}
+<style>
     .sliderbar-encrypt-mask {
         width: 100%;
         height: 220px;
@@ -220,7 +223,7 @@
         document.querySelector('.encrypted-content').remove();
 
         // 显示解密结果
-        document.querySelectorAll(".toc-div-class").forEach(function (element){
+        document.querySelectorAll(".toc-div-class").forEach(function (element) {
             element.insertAdjacentHTML("afterbegin", decryptedSidebar);
         })
         document.querySelectorAll('.sliderbar-encrypt-mask').forEach(function (element) {
@@ -275,8 +278,71 @@
 </script>
 {{- else -}}
 <script>
-    // Todo 文章局部内容加密
-    console.log("Hello, Partial");
+    let encryptElements;
+    async function encryptPassword(uuid, index, password) {
+        console.log("encryptPassword called for uuid:", uuid, "index:", index, "password:", password);
+        console.log("encryptPassword called");
+        if (!password) {
+            alert("请输入密码");
+            return;
+        }
+        let decryptedPartialItem;
+
+        try {
+
+            let partialItem = __ENCRYPT_DATA__.partialItems[index];
+            if (!partialItem) {
+                throw new Error('源数据不能为空');
+            }
+
+            // 解密partialItem内容
+            decryptedPartialItem = await encrypt(partialItem, password);
+        } catch (error) {
+            console.error("解密失败:", error);
+            alert("解密失败，请检查密码是否正确");
+            return;
+        }
+
+        encryptElements[index].outerHTML = decryptedPartialItem;
+        // 查找所有包含密码的元素，进行删除
+        document.querySelectorAll(".hugo-encrypt-password").forEach(function (element) {
+            element.remove();
+        });
+
+        // Todo 保存密码到浏览器缓存
+        setEncryptPassword(password);
+    }
+    document.addEventListener("DOMContentLoaded", function () {
+        // 读取所有hugo-encrypt元素
+        encryptElements = document.querySelectorAll('.hugo-encrypt');
+        // 将这些元素替换为新的元素
+        encryptElements.forEach(function (element, index) {
+            const uuid = element.getAttribute('uuid');
+            const message = element.querySelector('.hugo-encrypt-info').textContent.trim();
+            const defaultMessage = `{{- .Params.encrypt.message | default .Site.Params.encrypt.message | default "🔐 内容已隐藏，输入密码后查看" -}}`;
+
+            // 创建新的元素
+            let enctyptedElement = `
+            <div>
+                <div class="encrypted-header">
+                    ${message || defaultMessage}
+                </div>
+                {{ $enctyptedArcitleElement | safeHTML }}
+            </div>
+            `;
+            element.insertAdjacentHTML("afterbegin", enctyptedElement);
+
+            // 监听输入框的回车事件
+            var input = document.querySelector(".hbe-input-field");
+            if (input) {
+                input.addEventListener("keydown", function (event) {
+                    if (event.key === "Enter" || event.keyCode === 13) {
+                        encryptPassword(uuid, index, input.value);
+                    }
+                });
+            }
+        });
+    });
 </script>
 {{- end -}}
 {{- end -}}

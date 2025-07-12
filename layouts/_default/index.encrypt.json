@@ -49,7 +49,18 @@
     }
   ],
   {{- /* 文章局部加密配置  */ -}}
-  "encrypted-partial": [],
+  "encrypted-partial": [
+    {
+      "name": "partialItems",
+      "selector": ".hugo-encrypt-content",
+      "selectAll": true,
+      "replace": {
+        "innerHTML": false,
+        "content": ""
+      },
+      "password": ".hugo-encrypt-password"  {{- /* 密码选择器 */ -}}
+    }
+  ],
   {{- /* 加密文章列表  */ -}}
   "articles": [
     {{- range $index, $article := $encryptedArticles -}}
