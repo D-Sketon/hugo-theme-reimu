@@ -1,0 +1,81 @@
+{{- $encryptedArticles := slice -}}
+
+{{- range .Site.RegularPages -}}
+  {{- if and .Site.Params.encrypt.enable .Params.encrypt (eq .Params.encrypt.enable true) -}}
+    {{- $article := dict 
+      "title" .Title
+      "relPermalink" .RelPermalink
+      "uniqueID" .File.UniqueID
+    -}}
+    
+    {{- if and .Params.encrypt.password (ne .Params.encrypt.password "") -}}
+      {{- $article = merge $article (dict "password" .Params.encrypt.password) -}}
+    {{- end -}}
+
+    {{- if isset .Params.encrypt "all" -}}
+      {{- $article = merge $article (dict "all" .Params.encrypt.all) -}}
+    {{- else -}}
+      {{- $article = merge $article (dict "all" false) -}}
+    {{- end -}}
+    
+    {{- $encryptedArticles = $encryptedArticles | append $article -}}
+  {{- end -}}
+{{- end -}}
+
+{
+  "generatedAt": "{{ now.Format "2006-01-02T15:04:05Z07:00" }}",
+  "totalCount": {{ len $encryptedArticles }},
+  "defaultPassword": {{ .Site.Params.encrypt.defaultPassword | jsonify }},
+  {{- /* 全篇文章加密配置  */ -}}
+  "encrypted-all": [
+    {
+      "name": "article",        {{- /* 名称 */ -}}
+      "selector": "article",    {{- /* 元素CSS选择器 */ -}}
+      "selectAll": false,       {{- /* 是否查询并操作所有匹配的子节点 */ -}}
+      "replace": {
+        "innerHTML": false,     {{- /* true保留标签替换内部内容，false替换整个标签元素 */ -}}
+        "content": ""           {{- /* 替换内容 */ -}}
+      },
+      "password": ""            {{- /* 如果需要从元素获取密码，提供CSS选择器（会从上级selector选中元素中查找） */ -}}
+    },
+    {
+      "name": "sidebar",
+      "selector": "#TableOfContents",
+      "selectAll": true,
+      "replace": {
+        "innerHTML": false,
+        "content": ""
+      }
+    }
+  ],
+  {{- /* 文章局部加密配置  */ -}}
+  "encrypted-partial": [
+    {
+      "name": "partialItems",
+      "selector": ".hugo-encrypt-content",
+      "selectAll": true,
+      "replace": {
+        "innerHTML": false,
+        "content": ""
+      },
+      "password": ".hugo-encrypt-password"  {{- /* 密码选择器 */ -}}
+    }
+  ],
+  {{- /* 加密文章列表  */ -}}
+  "articles": [
+    {{- range $index, $article := $encryptedArticles -}}
+      {{- if gt $index 0 -}},{{- end -}}
+      {
+        "title": {{ $article.title | jsonify }},
+        "filePath": {{ (print (replace $article.relPermalink "/" "" 1) "index.html") | jsonify }},
+        "uniqueID": {{ $article.uniqueID | jsonify }}
+        {{- if isset $article "password" -}}
+        , "password": {{ $article.password | jsonify }}
+        {{- end -}}
+        {{- if isset $article "password" -}}
+        , "all": {{ $article.all | jsonify }}
+        {{- end -}}
+      }
+    {{- end -}}
+  ]
+}

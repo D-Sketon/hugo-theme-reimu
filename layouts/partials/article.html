@@ -122,3 +122,6 @@
   {{- end -}}
 </article>
 {{- partial "comment.html" . -}}
+{{- if in .Site.Params.mainSections .Type -}}
+  {{- partial "post/encrypt.html" . -}}
+{{- end -}}

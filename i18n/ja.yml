@@ -87,3 +87,6 @@ heat_map_card:
   no_articles: 記事がありません
   words: 文字
   total_articles: "$1 記事, $2 文字"
+
+encrypt:
+  tipMessage: "🔐 内容は非表示です。パスワードを入力して表示します"
