@@ -9,6 +9,6 @@
     <span class="hugo-encrypt-password" style="display: none;">
         {{ $password }}
     </span>
-    {{ .Inner }}
+    {{ .Inner | markdownify }}
   </div>
 </div>
