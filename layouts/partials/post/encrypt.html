@@ -140,8 +140,34 @@
     }
 </style>
 
+{{- $localStorage := .Site.Params.encrypt.theme | default false -}}
+{{- if $localStorage -}}
+<script>
+    function getEncryptPassword(uuid) {
+        // 从localStorage中获取密码
+        return localStorage.getItem(uuid) || "";
+    }
+    function setEncryptPassword(uuid, password) {
+        // 将密码存储到localStorage中
+        localStorage.setItem(uuid, password);
+    }
+</script>
+{{- else -}}
+<script>
+    function getEncryptPassword(uuid) {
+        // 从sessionStorage中获取密码
+        return sessionStorage.getItem(uuid) || "";
+    }
+    function setEncryptPassword(uuid, password) {
+        // 将密码存储到sessionStorage中
+        sessionStorage.setItem(uuid, password);
+    }
+</script>
+{{- end -}}
+
 {{- if and .Site.Params.encrypt.enable (isset .Params "encrypt") .Params.encrypt.enable -}}
 {{- if .Params.encrypt.all -}}
+{{- $uuid:= .File.UniqueID -}}
 <style>
     .sliderbar-encrypt-mask {
         width: 100%;
@@ -165,31 +191,8 @@
         color: var(--red-1);
     }
 </style>
-{{- $localStorage := .Site.Params.encrypt.theme | default false -}}
-{{- if $localStorage -}}
 <script>
-    function getEncryptPassword() {
-        // 从localStorage中获取密码
-        return localStorage.getItem("encryptPassword") || "";
-    }
-    function setEncryptPassword(password) {
-        // 将密码存储到localStorage中
-        localStorage.setItem("encryptPassword", password);
-    }
-</script>
-{{- else -}}
-<script>
-    function getEncryptPassword() {
-        // 从sessionStorage中获取密码
-        return sessionStorage.getItem("encryptPassword") || "";
-    }
-    function setEncryptPassword(password) {
-        // 将密码存储到sessionStorage中
-        sessionStorage.setItem("encryptPassword", password);
-    }
-</script>
-{{- end -}}
-<script>
+    const uuid = "{{ $uuid }}";
     let mainElement;
     let sidebarElements;
     async function encryptPassword(password) {
@@ -231,7 +234,7 @@
         });
 
         // Todo 保存密码到浏览器缓存
-        setEncryptPassword(password);
+        setEncryptPassword(uuid, password);
     }
     document.addEventListener("DOMContentLoaded", function () {
         // 添加显示加密部分占位元素
@@ -270,7 +273,7 @@
         }
 
         // Todo 处理缓存密码
-        let savedPassword = getEncryptPassword();
+        let savedPassword = getEncryptPassword(uuid);
         if (savedPassword) {
             encryptPassword(savedPassword);
         }
@@ -280,8 +283,6 @@
 <script>
     let encryptElements;
     async function encryptPassword(uuid, index, password) {
-        console.log("encryptPassword called for uuid:", uuid, "index:", index, "password:", password);
-        console.log("encryptPassword called");
         if (!password) {
             alert("请输入密码");
             return;
@@ -310,7 +311,7 @@
         });
 
         // Todo 保存密码到浏览器缓存
-        setEncryptPassword(password);
+        setEncryptPassword(uuid, password);
     }
     document.addEventListener("DOMContentLoaded", function () {
         // 读取所有hugo-encrypt元素
@@ -340,6 +341,12 @@
                         encryptPassword(uuid, index, input.value);
                     }
                 });
+            }
+
+            // Todo 处理缓存密码
+            let savedPassword = getEncryptPassword(uuid);
+            if (savedPassword) {
+                encryptPassword(uuid, index, savedPassword);
             }
         });
     });
