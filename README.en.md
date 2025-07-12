@@ -792,6 +792,10 @@ home_categories:
       cover:
 ```
 
+Certainly！下面是你的“文章加密”说明的英文翻译，适合添加到英文版文档中：
+
+---
+
 #### Article Encryption
 
 Disabled by default. When enabled, you can encrypt articles you don't want to display publicly—users must enter a password to view the content.
@@ -799,18 +803,18 @@ Disabled by default. When enabled, you can encrypt articles you don't want to di
 This feature relies on a third-party tool. Download it here: [reimuEncrypt-releases](https://github.com/2061360308/reimuEncrypt/releases)
 
 ```yml
-########################################
-# Encrypted Articles
-########################################
 encrypt:
   enable: true # Enable encryption
   defaultPassword: "123456" # Default password
+  theme: "xray" # Input box theme, options: "blink", "shrink", "flip", "up", "surge", "wave", "xray", "default"
+  message: "૮₍ ˃ ⤙ ˂ ₎ა I don't want this to be seen~" # Default message shown above the password input, can be customized
+  localStorage: false # Password cache strategy: false means the password is forgotten after closing the browser, true means it is stored persistently
 ```
 
 To correctly generate the `encrypt.json` configuration file, add the following to your `hugo.toml`:
 
 ```toml
-# If you need RSS and Algolia, add "Algolia" and "RSS" to the list; otherwise, use the second option.
+# If you need RSS and Algolia, add "Algolia" and "RSS" fields; otherwise, use the second option
 [outputs]
 home = ["Algolia", "HTML", "RSS", "Encrypt"]
 
@@ -824,16 +828,34 @@ isPlainText = true
 notAlternative = true
 ```
 
-When writing articles, add the following to the front matter:
-
+Front Matter configuration example:
 ```yaml
 encrypt:
   enable: true                  # Enable encryption for this article
   password: "secretpassword123" # Password
   all: true                     # true to encrypt the entire article
+  message: "This is an article-level message"  # Custom message for this article, overrides the site-level message in params.yml
 ```
 
-> Note: Encryption only protects the generated static pages. The original Markdown files still contain the plaintext content and password. Please keep them safe—if using GitHub, consider making your repository private.
+If the `all` parameter is set to false, you can encrypt only part of the content using the `encrypt` shortcode where needed:
+
+```markdown
+Encrypt raw content
+
+{{< encrypt >}}
+Hello World!
+{{< /encrypt >}}
+
+You can also encrypt markdown content, which will be rendered correctly:
+
+{{< encrypt >}}
+**Hello World!**
+{{< /encrypt >}}
+```
+
+> The `encrypt` shortcode supports **password** and **message** parameters. See the shortcode section below for details.
+
+> Note: Encryption only protects the generated static pages. The original Markdown files still contain the plain text content and passwords, so please keep them safe (e.g., use a private repository on GitHub).
 
 </details>
 
@@ -884,6 +906,23 @@ tagRoulette is an interactive element that provides a random tag display feature
 
 - tags: Optional parameter specifying the tag pool. Multiple tags should be separated by English commas (,). If not provided, a few example tags will be used by default. Example: `tags="memory decline, loss of expression, increased laziness, numbness, so sleepy"`
 - icon: Optional parameter to customize the trigger button's icon. Default: 🕹️ (game controller emoji), can be replaced with any emoji or text, such as 🎲, 🎯, 🔄, etc.
+
+Here is the English version for your documentation:
+
+---
+
+#### encrypt Content Encryption
+
+```yaml
+{{< encrypt password="?" message="?" >}}
+This is the content you want to **encrypt**
+{{< /encrypt >}}
+```
+
+The encrypted content requires a password to view. You must enable the **Article Encryption** feature in the **Extended Features** section as described in the documentation for this to work.
+
+- password: Optional parameter. Sets the password for the content. If not provided, it will be searched in the following order: the article's front matter `password`, then the site-wide `defaultPassword` in `params.yml`.
+- message: Optional parameter. The message displayed above the password input box. If not provided, it will be searched in the following order: the article's front matter `message`, then the site-wide `message` in `params.yml`.
 </details>
 
 <details>
