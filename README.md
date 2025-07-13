@@ -815,6 +815,68 @@ home_categories:
       cover:
 ```
 
+#### 文章加密
+
+默认关闭，打开后可以将不想展示的文章进行加密，需要输入密码后才能查看
+
+依赖于第三方工具，此处下载 [reimuEncrypt-releases](https://github.com/2061360308/reimuEncrypt/releases)
+
+```yml
+encrypt:
+  enable: true # 是否启用
+  defaultPassword: "123456" # 默认的密码
+  theme: "xray" # 密码输入框的主题，可选值为："blink" "shrink" "flip" "up" "surge" "wave" "xray" "default"
+  message: "૮₍ ˃ ⤙ ˂ ₎ა 这里不想被人看到呢~" # 默认消息，显示在密码输入框上方，可用作个性提示
+  localStorage: false # 密码缓存策略，用于记忆输入过的密码，选择false重启浏览器后丢失记忆，true长期存储
+```
+
+为了能够正确生成配置文件`encrypt.json` 请在 `hugo.toml` 中添加如下配置
+
+```toml
+# 需要RSS以及Algolia，则添加"Algolia", "RSS"字段否则使用第二种
+[outputs]
+home = ["Algolia", "HTML", "RSS", "Encrypt"]
+
+[outputs]
+home = ["HTML", "Encrypt"]
+
+[outputFormats.Encrypt]
+mediaType = "application/json"
+baseName = "encrypt"
+isPlainText = true
+notAlternative = true
+```
+
+写作过程中front Matter配置
+```yaml
+encrypt:
+  enable: true                  # 文章开启加密
+  password: "secretpassword123" # 密码
+  all: true                     # true直接加密整篇文章
+  message: "这是文章级别的消息"  # 单独为文章设置的message覆盖params.yml中设置的站点级
+```
+
+当参数`all`为false时，进行局部内容加密，在需要加密的地方使用短代码`encrypt`
+
+```markdown
+
+加密原始内容
+
+{{< encrypt >}}
+Hello World!
+{{< /encrypt >}}
+
+也可以加密markdown，内容会被正确解析
+
+{{< encrypt >}}
+**Hello World!**
+{{< /encrypt >}}
+```
+
+> encrypt 短代码支持**password**和**message**两个参数, 具体用法见下方短代码介绍
+
+> 注意：加密只针对生成静态页面进行保护，原始Markdown等文件仍然包含明文密码需要自行妥善保管，如在使用Github时启用私有仓库
+
 </details>
 
 <details>
@@ -864,6 +926,20 @@ tagRoulette 是一个互动元素，提供随机标签展示功能，点击按�
 
 - tags：可选参数，指定标签池，多个标签用英文逗号(,)分隔；未提供时默认使用几个示例标签，例如：tags="记忆衰退,表达欲丧失,更加怠惰,无感,好想睡觉"  
 - icon：可选参数，自定义触发按钮的图标，默认使用：🕹️（游戏手柄emoji），可替换为任何emoji或文字，如 🎲、🎯、🔄 等
+
+#### encrypt 内容加密
+
+```yaml
+{{< encrypt password="?" message="?" >}}
+这里是需要**加密**的内容
+{{< /encrypt >}}
+```
+
+加密内部信息，需要输入密码才能查看，需要按照教程启用**拓展功能**中的**文章加密功能**才能生效。
+
+- password：可选参数，为内容设置密码，不提供按照：文章front mantter的password，params.yml中站点设置defaultPassword的顺序依次查找
+- message：可选参数，显示在密码输入框上方的消息，不提供按照：文章front mantter的message，params.yml中站点设置message的顺序依次查找
+
 </details>
 
 <details>

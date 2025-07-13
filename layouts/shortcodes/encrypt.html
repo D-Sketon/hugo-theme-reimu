@@ -1,0 +1,14 @@
+{{- $password := .Get "password" | default .Page.Params.encrypt.password | default site.Params.encrypt.defaultPassword -}}
+{{- $message := .Get "message" | default .Page.Params.encrypt.message | default site.Params.encrypt.message | default "૮₍ ˃ ⤙ ˂ ₎ა 这里不想被人看到呢~" -}}
+{{- $encryptID := (now.UnixNano | printf "%d" | md5) -}}
+<div class="hugo-encrypt" uuid="hugo-encrypt-{{ $encryptID }}">
+  <span class="hugo-encrypt-info" style="display: none;">
+    {{ $message }}
+  </span>
+  <div class="hugo-encrypt-content">
+    <span class="hugo-encrypt-password" style="display: none;">
+        {{ $password }}
+    </span>
+    {{ .Inner | markdownify }}
+  </div>
+</div>
