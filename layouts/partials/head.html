@@ -29,10 +29,15 @@
 <title>
   {{ $title | safeHTML }}
 </title>
-<meta
-  name="description"
-  content="{{ .Params.description | default .Site.Params.description | safeHTML }}"
-/>
+<meta name="description" content="{{ .Params.description | default .Site.Params.description | safeHTML }}"/>
+{{- $keywords := default .Site.Params.keywords .Params.keywords -}}
+{{- with $keywords }}
+  {{- if reflect.IsSlice . }}
+    <meta name="keywords" content="{{ delimit . ", " }}" />
+  {{- else }}
+    <meta name="keywords" content="{{ . }}" />
+  {{- end }}
+{{- end }}
 {{- $site := .Site -}}
 {{- partialCached "head/analytics.html" . -}}
 {{- partialCached "head/config.html" . -}}
