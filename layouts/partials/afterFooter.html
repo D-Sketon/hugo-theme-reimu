@@ -58,17 +58,19 @@
 {{- end -}}
 
 {{- if $params.firework.enable -}}
-  {{- partial "helpers/js.html" (dict "raw" $js.firework "src" (index (partial "helpers/vendorCdn.html" (dict "item" $js.firework "ctx" $site)) 0) "integrity" (index (partial "helpers/vendorCdnIntegrity.html" (dict "item" $js.firework)) 0)) -}}
 <script>
-  if (!{{ $params.firework.disable_on_mobile | default false }} || !window.matchMedia('(max-width: 768px)').matches) {
-    if (window.firework) {
-      const options = JSON.parse({{ $params.firework.options | jsonify }});
-      options.excludeElements = options.excludeelements;
-      delete options.excludeelements;
-      window.firework(options);
+  var setupFirework = () => {
+    if (!{{ $params.firework.disable_on_mobile | default false }} || !window.matchMedia('(max-width: 768px)').matches) {
+      if (window.firework) {
+        const options = JSON.parse({{ $params.firework.options | jsonify }});
+        options.excludeElements = options.excludeelements;
+        delete options.excludeelements;
+        window.firework(options);
+      }
     }
   }
 </script>
+  {{- partial "helpers/js.html" (dict "raw" $js.firework "src" (index (partial "helpers/vendorCdn.html" (dict "item" $js.firework "ctx" $site)) 0) "integrity" (index (partial "helpers/vendorCdnIntegrity.html" (dict "item" $js.firework)) 0) "onload" "setupFirework()" "defer" true) -}}
 {{- end -}}
 
 {{- if $params.pjax.enable -}}
@@ -78,10 +80,10 @@
 
 {{- if $params.live2d.enable -}}
 <script>
-  function initLive2d() {
+  var setupLive2d = () => {
     live2d.init('{{ index (partial "helpers/vendorCdn.html" (dict "item" $js.live2d.base "ctx" $site)) 0 }}', {themeTipsPath: ""});
   }
-</script> {{- partial "helpers/js.html" (dict "raw" $js.live2d.js "src" (index (partial "helpers/vendorCdn.html" (dict "item" $js.live2d.js "ctx" $site)) 0) "async" true "onload" "initLive2d()") -}}
+</script> {{- partial "helpers/js.html" (dict "raw" $js.live2d.js "src" (index (partial "helpers/vendorCdn.html" (dict "item" $js.live2d.js "ctx" $site)) 0) "async" true "onload" "setupLive2d()") -}}
 {{- else if $params.live2d_widgets.enable -}}
   {{- partial "helpers/js.html" (dict "raw" $js.live2d_widgets "src" (index (partial "helpers/vendorCdn.html" (dict "item" $js.live2d_widgets "ctx" $site)) 0) "defer" true "integrity" (index (partial "helpers/vendorCdnIntegrity.html" (dict "item" $js.live2d_widgets)) 0)) -}}
 {{- end -}}
@@ -213,7 +215,7 @@
     {{- end -}}
     {{- if not .IsHome -}}
       {{- partial "helpers/ts.html" (dict "source" "js/insert_highlight.ts" "pjax" true "ctx" .) -}}
-      {{- partial "helpers/ts.html" (dict "source" "js/tabs.ts" "pjax" true "ctx" .) -}}
+      {{- partial "helpers/ts.html" (dict "source" "js/tabs.ts" "pjax" true "ctx" . "defer" true) -}}
       {{- $photoswipe_lightbox := index (partial "helpers/vendorCdn.html" (dict "item" $js.photoswipe_lightbox "ctx" $site)) 0 -}}
       {{- $photoswipe_lightbox_integrity := index (partial "helpers/vendorCdnIntegrity.html" (dict "item" $js.photoswipe_lightbox)) 0 -}}
       {{- $photoswipe := index (partial "helpers/vendorCdn.html" (dict "item" $js.photoswipe "ctx" $site)) 0 -}}
@@ -356,9 +358,9 @@
 </script>
 
 {{- if $params.player.aplayer.enable -}}
-  {{- partial "helpers/js.html" (dict "raw" $js.aplayer "src" (index (partial "helpers/vendorCdn.html" (dict "item" $js.aplayer "ctx" $site)) 0) "integrity" (index (partial "helpers/vendorCdnIntegrity.html" (dict "item" $js.aplayer)) 0)) -}}
   {{- if not $params.player.meting.enable -}}
     <script>
+    var setupAPlayer = () => {
       if (!{{ $params.player.disable_on_mobile | default false }} || !window.matchMedia('(max-width: 768px)').matches) {
         if (window.matchMedia('(max-width: 959px)').matches) {
         const aplayer = _$('#aplayer');
@@ -371,7 +373,7 @@
             }
           }
         }
-        const ap = new APlayer({
+        new APlayer({
             theme: "var(--color-link)",
             container: document.getElementById('aplayer'),
             audio: JSON.parse({{ $params.player.aplayer.options.audio | jsonify }}) || [],
@@ -386,36 +388,34 @@
             lrcType: {{ $params.player.aplayer.options.lrcType }} || 0,
         });
       }
+    }
     </script>
-  {{- end -}}
-{{- end -}}
-
-{{- if $params.player.meting.enable -}}
-  {{- if $params.player.meting.meting_api -}}
+  {{- else -}}
     <script>
-      var meting_api = '{{ $params.player.meting.meting_api }}';
-    </script>
-  {{- end -}}
-  <script>
-    if (!{{ $params.player.disable_on_mobile | default false }} || !window.matchMedia('(max-width: 768px)').matches) {
-      if (window.matchMedia('(max-width: 959px)').matches) {
-        const meting = _$('meting-js');
-        if (meting) {
-          meting.setAttribute('fixed', 'true');
-          const aside = meting.parentNode?.parentNode;
-          if (aside?.tagName === 'ASIDE') {
-            meting.parentNode.removeChild(meting);
-            document.body.appendChild(meting);
+    var setupAPlayer = () => {
+      if (!{{ $params.player.disable_on_mobile | default false }} || !window.matchMedia('(max-width: 768px)').matches) {
+        if (window.matchMedia('(max-width: 959px)').matches) {
+          const meting = _$('meting-js');
+          if (meting) {
+            meting.setAttribute('fixed', 'true');
+            const aside = meting.parentNode?.parentNode;
+            if (aside?.tagName === 'ASIDE') {
+              meting.parentNode.removeChild(meting);
+              document.body.appendChild(meting);
+            }
           }
         }
       }
-      const script = document.createElement('script');
-      script.src = "{{ index (partial "helpers/vendorCdn.html" (dict "item" $js.meting "ctx" $site)) 0 }}";
-      script.integrity = "{{ index (partial "helpers/vendorCdnIntegrity.html" (dict "item" $js.meting)) 0 }}";
-      script.crossOrigin = "anonymous";
-      document.body.appendChild(script);
-    }
-  </script>
+    };
+    {{- if $params.player.meting.meting_api -}}
+      var meting_api = '{{ $params.player.meting.meting_api }}';
+    {{- end -}}
+    </script>
+  {{- end -}}
+  {{- partial "helpers/js.html" (dict "raw" $js.aplayer "src" (index (partial "helpers/vendorCdn.html" (dict "item" $js.aplayer "ctx" $site)) 0) "integrity" (index (partial "helpers/vendorCdnIntegrity.html" (dict "item" $js.aplayer)) 0) "defer" true "onload" "setupAPlayer()") -}}
+    {{- if $params.player.meting.enable -}}
+    {{- partial "helpers/js.html" (dict "raw" $js.meting "src" (index (partial "helpers/vendorCdn.html" (dict "item" $js.meting "ctx" $site)) 0) "integrity" (index (partial "helpers/vendorCdnIntegrity.html" (dict "item" $js.meting)) 0) "defer" true ) -}}
+  {{- end -}}
 {{- end -}}
 
 {{- if .Site.Params.pangu.enable -}}

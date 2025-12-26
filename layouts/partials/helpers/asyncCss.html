@@ -10,7 +10,7 @@
     rel="preload"
     as="style"
     href="{{ $src }}"
-    {{ if and $integrity (not (hasPrefix $raw "local|")) }}integrity="{{ $integrity }}" crossorigin="anonymous"{{ end -}}
+    {{ if and $integrity (not (hasPrefix $raw "local|")) }}integrity="{{ $integrity }}" crossorigin="anonymous"{{ end }}
     onload="this.onload=null;this.rel='stylesheet'"
   />
 {{- else -}}
