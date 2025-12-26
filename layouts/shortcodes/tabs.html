@@ -70,6 +70,6 @@
 		<ul class="nav-tabs{{ $align }}">{{ safeHTML (delimit $nav "") }}<div class="tab-indicator"></div></ul>
 		<div class="tab-content">{{ safeHTML (delimit $panes "") }}</div>
 	</div>
-  {{- partial "helpers/scss.html" (dict "source" "css/tabs.scss" "temp" "tabs.scss" "target" "css/tabs.css" "ctx" .) -}}
+  {{- partial "helpers/scss.html" (dict "source" "css/tabs.scss" "temp" "tabs.scss" "target" "css/tabs.css" "ctx" . "async" true) -}}
 {{- end -}}
 

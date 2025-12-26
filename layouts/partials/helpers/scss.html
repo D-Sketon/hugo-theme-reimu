@@ -2,9 +2,15 @@
 {{- $temp := .temp -}}
 {{- $target := .target -}}
 {{- $ctx := .ctx -}}
+{{- $async := .async | default false -}}
 {{- $scss := resources.Get $source -}}
 {{- $scss = $scss | resources.ExecuteAsTemplate $temp $ctx -}}
 {{- $css := $scss | toCSS (dict "targetPath" $target "outputStyle" "expanded") -}}
 {{- if hugo.IsProduction -}}
   {{- $css = $css | minify | fingerprint -}}
-{{- end -}} <link rel="stylesheet" href="{{ $css.RelPermalink }}" />
+{{- end -}}
+{{- if $async -}}
+<link rel="preload" as="style" href="{{ $css.RelPermalink }}" onload="this.onload=null;this.rel='stylesheet'" />
+{{- else -}}
+<link rel="stylesheet" href="{{ $css.RelPermalink }}" />
+{{- end -}}

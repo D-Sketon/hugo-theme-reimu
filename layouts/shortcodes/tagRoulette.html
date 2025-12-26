@@ -45,4 +45,4 @@ var rollTagRoulette = () => {
 rollTagRoulette(); // 页面加载时自动触发一次滚动
 </script>
 
-{{- partial "helpers/scss.html" (dict "source" "css/tag-roulette.scss" "temp" "tag-roulette.scss" "target" "css/tag-roulette.css" "ctx" .) -}}
+{{- partial "helpers/scss.html" (dict "source" "css/tag-roulette.scss" "temp" "tag-roulette.scss" "target" "css/tag-roulette.css" "ctx" . "async" true) -}}

@@ -22,7 +22,7 @@
   -}}
 {{- end -}}
 
-{{- partial "helpers/scss.html" (dict "source" "css/heat-map.scss" "temp" "heat-map.scss" "target" "css/heat-map.css" "ctx" .) -}}
+{{- partial "helpers/scss.html" (dict "source" "css/heat-map.scss" "temp" "heat-map.scss" "target" "css/heat-map.css" "ctx" . "async" true) -}}
 <div id="heatmap"></div>
 <script>
 var MONTH_NAMES = [
