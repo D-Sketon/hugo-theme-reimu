@@ -128,7 +128,14 @@
         <picture>
           {{- if .Site.Params.banner_srcset.enable -}}
             {{- range .Site.Params.banner_srcset.srcset -}}
-              <source media="{{ .media }}" srcset="{{ .src | relURL }}">
+              {{- $media := .media -}}
+              {{- if reflect.IsSlice .src -}}
+                {{- range .src -}}
+                  <source media="{{ $media }}" srcset="{{ . | relURL }}">
+                {{- end -}}
+              {{- else -}}
+                <source media="{{ .media }}" srcset="{{ .src | relURL }}">
+              {{- end -}}
             {{- end -}}
             <img {{ if .Site.Params.material_theme.enable }}crossorigin="anonymous"{{ end }} fetchpriority="high" src="{{ .Site.Params.banner | relURL }}" alt="{{ .Title }}">
           {{- end -}}
@@ -143,7 +150,14 @@
       <picture>
         {{- if .Site.Params.banner_srcset.enable -}}
           {{- range .Site.Params.banner_srcset.srcset -}}
-            <source media="{{ .media }}" srcset="{{ .src | relURL }}">
+            {{- $media := .media -}}
+            {{- if reflect.IsSlice .src -}}
+              {{- range .src -}}
+                <source media="{{ $media }}" srcset="{{ . | relURL }}">
+              {{- end -}}
+            {{- else -}}
+              <source media="{{ .media }}" srcset="{{ .src | relURL }}">
+            {{- end -}}
           {{- end -}}
           <img {{ if .Site.Params.material_theme.enable }}crossorigin="anonymous"{{ end }} fetchpriority="high" src="{{ .Site.Params.banner | relURL }}" alt="{{ .Title }}">
         {{- end -}}
