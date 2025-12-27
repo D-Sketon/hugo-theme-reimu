@@ -22,7 +22,11 @@
         {{- .Site.Params.footer.since -}} -
         {{- now.Format .Site.Params.yearFormat -}}
       {{- end -}}
-      <span class="footer-info-sep {{ if .Site.Params.footer.icon.rotate }}rotate{{ end }}"></span>
+      {{- if eq .Site.Params.footer.icon.url false -}}
+        &nbsp;
+      {{- else -}}
+        <span class="footer-info-sep {{ if .Site.Params.footer.icon.rotate }}rotate{{ end }}"></span>
+      {{- end -}}
       {{ .Site.Params.author | default .Site.Title }}
     </div>
     {{- if .Site.Params.footer.powered -}}
@@ -32,7 +36,7 @@
           target="_blank"
           rel="noopener nofollow noreferrer"
           >Hugo</a
-        >&nbsp; Theme.<a
+        >&nbsp;Theme.<a
           href="https://github.com/D-Sketon/hugo-theme-reimu"
           target="_blank"
           rel="noopener nofollow noreferrer"

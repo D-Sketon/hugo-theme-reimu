@@ -3,21 +3,23 @@
   <nav id="main-nav" aria-label="Primary navigation">
     {{- range .Site.Params.menu -}}
       <a class="main-nav-link-wrap" href="{{ .url | relLangURL }}">
-        <div class='main-nav-icon icon {{ if or (and (eq .icon "e62b") ($params.icon_font)) (and (eq .icon "f6ad") (not $params.icon_font)) (not .icon) }}rotate{{ end }}'>
-          {{- if .icon -}}
-            {{- if and (strings.Contains .icon ".") (strings.Contains .icon "/") -}}
-              <img src="{{ .icon | relURL }}" alt="{{ .name }} icon" class="" style="height: 1em;">
+        {{- if ne .icon false -}}
+          <div class='main-nav-icon icon {{ if or (and (eq .icon "e62b") ($params.icon_font)) (and (eq .icon "f6ad") (not $params.icon_font)) (not .icon) }}rotate{{ end }}'>
+            {{- if .icon -}}
+              {{- if and (strings.Contains .icon ".") (strings.Contains .icon "/") -}}
+                <img src="{{ .icon | relURL }}" alt="{{ .name }} icon" class="" style="height: 1em;">
+              {{- else -}}
+                &#x{{- .icon -}};
+              {{- end -}}
             {{- else -}}
-              &#x{{- .icon -}};
+              {{- if $params.icon_font -}}
+                &#xe62b;
+              {{- else -}}
+                &#xf6ad;
+              {{- end -}}
             {{- end -}}
-          {{- else -}}
-            {{- if $params.icon_font -}}
-              &#xe62b;
-            {{- else -}}
-              &#xf6ad;
-            {{- end -}}
-          {{- end -}}
-        </div>
+          </div>
+        {{- end -}}
         <span class="main-nav-link">{{ i18n .name }}</span>
       </a>
     {{- end -}}

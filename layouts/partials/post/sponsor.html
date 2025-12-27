@@ -1,8 +1,16 @@
 <div class="sponsor-wrapper">
   <div class="sponsor-button">
-    <div class="sponsor-icon {{ if .Site.Params.sponsor.icon.rotate }}rotate{{ end }}"></div>
+    {{- if eq .Site.Params.sponsor.icon.url false -}}
+      <div style="width: 30px;"></div>
+    {{- else -}}
+      <div class="sponsor-icon {{ if .Site.Params.sponsor.icon.rotate }}rotate{{ end }}"></div>
+    {{- end -}}
     <div class="sponsor-title">{{ i18n "sponsor" }}</div>
-    <div class="sponsor-icon {{ if .Site.Params.sponsor.icon.rotate }}rotate{{ end }}"></div>
+    {{- if eq .Site.Params.sponsor.icon.url false -}}
+      <div style="width: 30px;"></div>
+    {{- else -}}
+      <div class="sponsor-icon {{ if .Site.Params.sponsor.icon.rotate }}rotate{{ end }}"></div>
+    {{- end -}}
   </div>
   {{- $languageCode := .Site.Language.LanguageCode -}}
   {{- $tip := .Site.Params.sponsor.tip -}}
