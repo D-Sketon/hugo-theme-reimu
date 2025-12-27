@@ -9,7 +9,6 @@
   >
     <div class="article-meta">
       {{- partial "post/date.html" . -}}
-      {{- partial "post/category.html" . -}}
     </div>
     {{- partial "post/summary.html" . -}}
     <div class="hr-line"></div>
@@ -140,6 +139,7 @@
           <em class="post-meta-item-text">{{ i18n "reading" }}</em>
         </span>
       {{- end -}}
+      {{- partial "post/category.html" . -}}
       {{- partial "post/tag.html" . -}}
     </footer>
   </div>

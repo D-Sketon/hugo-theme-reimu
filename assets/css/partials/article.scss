@@ -65,20 +65,6 @@
   }
 }
 
-.article-category {
-  display: flex;
-  flex-wrap: wrap;
-}
-
-.article-category-link {
-  @include article-meta-tag;
-
-  &:before {
-    font-weight: 700;
-    margin-right: 8px;
-  }
-}
-
 .article-entry {
   @include base-style;
   @include clearfix;
@@ -391,6 +377,7 @@
   }
 }
 
+.article-category-link,
 .article-tag-list-link,
 .article-comment-link,
 .article-visitor-link {
@@ -410,6 +397,7 @@
   box-shadow: var(--shadow-meta);
 }
 
+.article-category-link,
 .article-tag-list-link {
   &:before {
     margin-right: 8px;
