@@ -55,6 +55,8 @@ $share-keys: {{ delimit (apply $share_keys "printf" "'%s'" "." ) "," }};
 
 $content_max_width: {{ default "1350px" $params.layout.max_width }};
 
+$uppercase_capsule: {{ $params.uppercase_capsule }};
+
 :root {
   --footer-icon: url({{ $params.footer.icon.url }});
   --top-icon: url({{ $params.top.icon.url }});
