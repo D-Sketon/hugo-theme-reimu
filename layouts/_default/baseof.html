@@ -26,10 +26,19 @@
     <div id="container">
       <div id="wrap">
         {{- partial "header.html" . -}}
+        {{- /* Backward compatibility */ -}}
+        {{- $globalSidebar := .Site.Params.sidebar -}}
+        {{- if reflect.IsMap $globalSidebar -}}
+          {{- $globalSidebar = $globalSidebar.position -}}
+        {{- end -}}
+        {{- $pageSidebar := .Params.sidebar -}}
+        {{- if reflect.IsMap $pageSidebar -}}
+          {{- $pageSidebar = $pageSidebar.position -}}
+        {{- end -}}
         <div id="content"
           aria-label="Page content"
-          {{ if or (and (eq .Site.Params.sidebar "left") (eq .Params.sidebar nil)) (eq .Params.sidebar "left") }}class="sidebar-left"{{ end }}
-          {{ if or (and (eq .Site.Params.sidebar "right") (eq .Params.sidebar nil)) (eq .Params.sidebar "right") }}class="sidebar-right"{{ end }}  >
+          {{ if or (and (eq $globalSidebar "left") (eq $pageSidebar nil)) (eq $pageSidebar "left") }}class="sidebar-left"{{ end }}
+          {{ if or (and (eq $globalSidebar "right") (eq $pageSidebar nil)) (eq $pageSidebar "right") }}class="sidebar-right"{{ end }}  >
           {{- partial "sidebar.html" . -}}
           <section id="main" aria-label="Main content">{{ block "main" . }}{{ end }}</section>
         </div>

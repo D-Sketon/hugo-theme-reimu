@@ -27,6 +27,11 @@
       </meting-js>
     {{- end -}}
   {{- end -}}
+  {{- /* Backward compatibility */ -}}
+  {{- $showCommonSidebar := true -}}
+  {{- if and (reflect.IsMap .Site.Params.sidebar) (isset .Site.Params.sidebar.article "show_common") -}}
+    {{- $showCommonSidebar = .Site.Params.sidebar.article.show_common -}}
+  {{- end -}}
   <div class="sidebar-wrapper">
     <div
       class="sidebar-wrap"
@@ -34,24 +39,29 @@
     >
       {{- if in .Site.Params.mainSections .Type -}}
         {{- if eq .Params.toc false -}}
-          {{- partialCached "sidebar/commonBar.html" . -}}
+          {{- partial "sidebar/commonBar.html" (dict "ctx" . "mobile" false) -}}
         {{- else if and (ne .Params.toc true) (eq .Site.Params.toc false) -}}
-          {{- partialCached "sidebar/commonBar.html" . -}}
+          {{- partial "sidebar/commonBar.html" (dict "ctx" . "mobile" false) -}}
+        {{- else if not $showCommonSidebar -}}
+          <div class="sidebar-toc-sidebar" style="margin-bottom: 10px;">
+            {{- partial "sidebar/tocBar.html" . -}}
+          </div>
         {{- else -}}
           <div class="sidebar-toc-sidebar">
             {{- partial "sidebar/tocBar.html" . -}}
           </div>
           <div class="sidebar-common-sidebar hidden">
-            {{- partialCached "sidebar/commonBar.html" . -}}
+            {{- partial "sidebar/commonBar.html" (dict "ctx" . "mobile" false) -}}
           </div>
         {{- end -}}
       {{- else -}}
-        {{- partialCached "sidebar/commonBar.html" . -}}
+        {{- partial "sidebar/commonBar.html" (dict "ctx" . "mobile" false) -}}
       {{- end -}}
 
       {{- if in .Site.Params.mainSections .Type -}}
         {{- if eq .Params.toc false -}}
         {{- else if and (ne .Params.toc true) (eq .Site.Params.toc false) -}}
+        {{- else if not $showCommonSidebar -}}
         {{- else -}}
           <div class="sidebar-btn-wrapper" style="position:static">
             <div class="sidebar-toc-btn current"></div>
