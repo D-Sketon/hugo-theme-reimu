@@ -1,3 +1,155 @@
+## 0.14.2
+
+未发布
+
+### 特性
+
+- 新增归档页和分类标签页的分页支持，可通过 `paginate` 配置控制
+  ```yaml
+  paginate:
+    archive: # 归档页和分类标签页每页文章数量
+    post: # 首页和其他列表页每页文章数量
+  ```
+- 新增 `uppercase_capsule` 配置用于控制分类和标签胶囊是否转换为大写，默认开启
+  ```yaml
+  uppercase_capsule: true # true | false
+  ```
+- `banner_srcset` 的 `src` 字段现在支持数组，可以按顺序尝试加载多个图片格式（如优先加载 AVIF，失败后回退到 WebP）
+  ```yaml
+  banner_srcset:
+    enable: true
+    srcset:
+      - src: 
+        - "images/banner.avif"  # 优先尝试加载 AVIF
+        - "images/banner.webp"  # 失败后加载 WebP
+        media: "(min-width: 800px)"
+  ```
+- `footer`、`sponsor` 的 `icon.url` 配置现在支持传递 `false` 来隐藏图标
+  ```yaml
+  footer:
+    icon:
+      url: false  # 不显示图标
+  ```
+- `menu` 中每个菜单项的 `icon` 配置现在支持传递 `false` 来隐藏图标
+  ```yaml
+  menu:
+    - name: home
+      url: /
+      icon: false  # 不显示图标
+  ```
+- `sidebar` 新增 `menu` 配置用于控制是否显示侧边栏菜单按钮（移动端上将被忽略）
+  ```yaml
+  sidebar:
+    menu: true  # true | false
+  ```
+- `sidebar.article` 新增 `show_common` 配置用于控制文章页是否显示通用侧边栏（移动端上将被忽略）
+  ```yaml
+  sidebar:
+    article:
+      show_common: true  # true | false
+  ```
+- 文章的分类标签现在显示在文章底部，与标签一起展示
+
+### 重构
+
+- `sidebar` 配置结构发生变化，旧配置仍然兼容，但建议迁移到新配置
+  ```yaml
+  # 旧配置（仍然支持）
+  sidebar: right # left | right | false
+  
+  # 新配置（推荐）
+  sidebar:
+    position: right # left | right | false
+    menu: true  # 是否显示侧边栏菜单按钮，在移动端上被忽略
+    article:
+      show_common: true # 是否在文章页显示通用侧边栏，在移动端上被忽略
+  ```
+
+### 性能
+
+- 优化 shortcode 的 CSS 加载方式，现在使用异步加载减少阻塞，提升页面加载性能
+- `firework`、`aplayer` 和 `meting` 的 JavaScript 现在使用异步加载，减少对页面渲染的阻塞
+
+### 杂项
+
+- 更新 mouse-firework 至 v0.2.0
+
+---
+
+Unreleased
+
+### Features
+
+- Added pagination support for archive pages and category/tag pages, configurable via `paginate`
+  ```yaml
+  paginate:
+    archive: # Number of posts per page for archive and category/tag pages
+    post: # Number of posts per page for homepage and other list pages
+  ```
+- Added `uppercase_capsule` configuration to control whether category and tag capsules are converted to uppercase, enabled by default
+  ```yaml
+  uppercase_capsule: true # true | false
+  ```
+- The `src` field in `banner_srcset` now supports arrays, allowing multiple image formats to be loaded in order (e.g., prioritize AVIF and fall back to WebP on failure)
+  ```yaml
+  banner_srcset:
+    enable: true
+    srcset:
+      - src: 
+        - "images/banner.avif"  # Try loading AVIF first
+        - "images/banner.webp"  # Load WebP on failure
+        media: "(min-width: 800px)"
+  ```
+- The `icon.url` configuration in `footer` and `sponsor` now supports passing `false` to hide the icon
+  ```yaml
+  footer:
+    icon:
+      url: false  # Hide icon
+  ```
+- The `icon` configuration for each menu item in `menu` now supports passing `false` to hide the icon
+  ```yaml
+  menu:
+    - name: home
+      url: /
+      icon: false  # Hide icon
+  ```
+- Added `menu` configuration in `sidebar` to control whether to display the sidebar menu button (ignored on mobile)
+  ```yaml
+  sidebar:
+    menu: true  # true | false
+  ```
+- Added `show_common` configuration in `sidebar.article` to control whether to display the common sidebar on article pages (ignored on mobile)
+  ```yaml
+  sidebar:
+    article:
+      show_common: true  # true | false
+  ```
+- Article categories are now displayed at the bottom of the article, alongside tags
+
+### Refactoring
+
+- The `sidebar` configuration structure has changed. Old configurations are still compatible, but migration to the new configuration is recommended
+  ```yaml
+  # Old configuration (still supported)
+  sidebar: right # left | right | false
+  
+  # New configuration (recommended)
+  sidebar:
+    position: right # left | right | false
+    menu: true  # Whether to display sidebar menu button, ignored on mobile
+    article:
+      show_common: true # Whether to display common sidebar on article pages, ignored on mobile
+  ```
+
+### Performance
+
+- Optimized CSS loading for shortcodes, now using asynchronous loading to reduce blocking and improve page load performance
+- JavaScript for `firework`, `aplayer`, and `meting` now uses asynchronous loading to reduce blocking of page rendering
+
+### Miscellaneous
+
+- Updated mouse-firework to v0.2.0
+
 ## 0.14.1
 
 **2025-11-29**
