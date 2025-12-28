@@ -186,6 +186,11 @@ sort_order:
   archive: date-reverse # controlled by weight
   home: default # controlled by weight
 
+# Pagination
+paginate:
+  archive: # Number of posts per page in archive and taxonomy pages
+  post: # Number of posts per page in home and other list pages
+
 layout:
   max_width: 1350px # the max width of the main content area
 
