@@ -10,7 +10,7 @@
         <ul>
           {{- range $recentPosts -}}
             <li>
-              <a href="{{ .Permalink | relURL }}">{{ .Title }}</a>
+              <a href="{{ .Permalink | relURL }}" title="{{ .Title }}">{{ .Title }}</a>
             </li>
           {{- end -}}
         </ul>

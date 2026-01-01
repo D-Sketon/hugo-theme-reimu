@@ -13,7 +13,7 @@
   --grey-7: var(--color-default);
 
   --color-archive-year: black;
-  --color-default: #555;
+  --color-default: #444;
   --color-border: var(--red-3);
   --color-link: var(--red-1);
   --color-background: #eee;
@@ -34,7 +34,6 @@
   --highlight-nav: #{$light-highlight-nav};
   --highlight-scrollbar: #{$light-highlight-scrollbar};
   --highlight-background: #{$light-highlight-background};
-  --highlight-current-line: #{$light-highlight-current-line};
   --highlight-selection: #{$light-highlight-selection};
   --highlight-foreground: #{$light-highlight-foreground};
   --highlight-comment: #{$light-highlight-comment};
@@ -45,8 +44,11 @@
   --highlight-aqua: #{$light-highlight-aqua};
   --highlight-blue: #{$light-highlight-blue};
   --highlight-purple: #{$light-highlight-purple};
+  --highlight-deletion: #{$light-highlight-deletion};
+  --highlight-deletion-bg: #{$light-highlight-deletion-bg};
+  --highlight-addition: #{$light-highlight-addition};
+  --highlight-addition-bg: #{$light-highlight-addition-bg};
 
-    
   --shadow-meta: 0 0 5px 2px var(--color-meta-shadow);
   --shadow-meta-hover: 0 0 6px 4px var(--color-meta-shadow);
 
@@ -81,7 +83,6 @@
     --highlight-nav: #{$dark-highlight-nav};
     --highlight-scrollbar: #{$dark-highlight-scrollbar};
     --highlight-background: #{$dark-highlight-background};
-    --highlight-current-line: #{$dark-highlight-current-line};
     --highlight-selection: #{$dark-highlight-selection};
     --highlight-foreground: #{$dark-highlight-foreground};
     --highlight-comment: #{$dark-highlight-comment};
@@ -92,6 +93,10 @@
     --highlight-aqua: #{$dark-highlight-aqua};
     --highlight-blue: #{$dark-highlight-blue};
     --highlight-purple: #{$dark-highlight-purple};
+    --highlight-deletion: #{$dark-highlight-deletion};
+    --highlight-deletion-bg: #{$dark-highlight-deletion-bg};
+    --highlight-addition: #{$dark-highlight-addition};
+    --highlight-addition-bg: #{$dark-highlight-addition-bg};
   }
 
   img {
@@ -116,7 +121,7 @@ $font-basic: $custom-basic-families, $basic-families, $local-basic-families;
 $font-code: $custom-code-families, $code-families, $local-code-families;
 
 $font-size: 14px;
-$line-height: 1.8em;
+$line-height: 1.67;
 $line-height-title: 1.2em;
 
 // Header
@@ -125,7 +130,6 @@ $subtitle-size: 18px;
 $banner-height: 35vh;
 
 // Layout
-$block-margin: 50px;
 $article-padding: 20px;
 $mobile-nav-width: 280px;
 
@@ -137,5 +141,7 @@ $mq-normal: "screen and (min-width: 768px)";
 $mg-normal: "screen and (max-width: 767px)";
 $mq-large: "screen and (min-width: 960px)";
 $mg-large: "screen and (max-width: 959px)";
-
+$mq-extra-large: "screen and (min-width: 1242px)";
+$mg-extra-large: "screen and (max-width: 1241px)";
 $post-radius: 10px;
+$tag-radius: 8px;

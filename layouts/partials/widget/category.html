@@ -16,7 +16,8 @@
           {{- range .Site.Taxonomies.categories -}}
             {{- if lt $counter $.Site.Params.category_limits -}}
               <li class="category-list-item">
-                <a class="category-list-link" href="{{ .Page.RelPermalink }}"
+                <a class="category-list-link" href="{{ .Page.RelPermalink }}" 
+                  title="{{ .Page.Title }}"
                   >{{ .Page.Title }}</a
                 >
               </li>

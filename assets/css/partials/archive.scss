@@ -1,15 +1,23 @@
 .archives-outer-wrap {
   background: var(--color-wrap);
   border-radius: $post-radius;
-  padding: 15px 0;
+  padding: 16px 0;
 }
 
 .archives-wrap {
-  padding: 20px $block-margin;
+  padding: 20px $article-padding + 16px;
+
+  &:hover .archive-year-wrap:after {
+    width: 3em;
+  }
+
+  @media #{$mg-normal} {
+    padding: 20px 16px;
+  }
 }
 
 .archive-year-wrap {
-  margin-bottom: 2em;
+  margin-bottom: 32px;
   position: relative;
 
   &:before {
@@ -29,26 +37,21 @@
     height: 7px;
     bottom: -18px;
     left: 0;
-    border-radius: 10px;
+    border-radius: $tag-radius;
     box-shadow: var(--shadow-red-6-shadow);
     transition: 0.3s;
-  }
-
-  &:hover:after {
-    width: 3em;
   }
 }
 
 .archive-year {
   text-decoration: none;
   color: var(--color-archive-year);
-  margin-bottom: 15px;
   font-weight: bold;
-  font-size: 25px;
+  font-size: 24px;
 }
 
 .archive-article {
-  padding: 15px 0 15px 25px;
+  padding: 16px 0 16px 24px;
   display: flex;
   align-items: center;
 
@@ -59,7 +62,7 @@
     width: 6px;
     height: 15px;
     background: var(--color-h2-after);
-    margin: -2px 11px 0 -25px;
+    margin: 1px 12px 0 -24px;
     box-shadow: var(--shadow-red-6-shadow);
     opacity: 0.5;
     transition: 0.2s;
@@ -80,7 +83,7 @@
   }
 }
 
-.archive-article-date-wrap {
+.archive-article-date {
   flex-shrink: 0;
 
   a {
@@ -90,7 +93,7 @@
 
 .dt-published {
   color: var(--grey-9);
-  margin-left: 5px;
+  margin-left: 6px;
 }
 
 .archive-article-title {
@@ -100,28 +103,34 @@
   color: var(--red-0);
   transition: 0.3s;
   opacity: 0.7;
-  margin-left: 15px;
+  margin-left: 16px;
 }
 
 .tag-wrap,
 .category-wrap {
   display: flex;
   flex-wrap: wrap;
-  padding: 10px $block-margin;
+  padding: 10px $article-padding + 16px;
 
   a {
     text-decoration: none;
+  }
+
+  @media #{$mg-normal} {
+    padding: 10px 16px;
   }
 }
 
 .archives-tag-list-item,
 .archives-category-list-item {
   display: flex;
-  text-transform: uppercase;
+  @if $uppercase_capsule {
+    text-transform: uppercase;
+  }
   background: var(--red-5);
-  border-radius: $post-radius;
-  padding: 8px 15px;
-  margin: 5px;
+  border-radius: $tag-radius;
+  padding: 8px 16px;
+  margin: 6px;
   box-shadow: var(--shadow-meta);
 }
 
@@ -131,7 +140,7 @@
   font-size: 12px;
 
   &:before {
-    margin-right: 10px;
+    margin-right: 8px;
   }
 }
 

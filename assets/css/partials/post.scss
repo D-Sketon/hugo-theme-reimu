@@ -6,15 +6,25 @@
   height: 100%;
 }
 
-@mixin post-wrap {
+.post-wrap {
   width: 100%;
-  height: 230px;
-  margin-bottom: 40px;
+  height: 232px;
+  margin-bottom: 32px;
   position: relative;
   border-radius: $post-radius;
   background: var(--color-wrap);
   display: flex;
   transition: 0.3s;
+
+  @media #{$mg-normal} {
+    flex-direction: column !important;
+    height: 400px;
+    margin-bottom: 20px;
+  }
+
+  &.right {
+    flex-direction: row-reverse;
+  }
 }
 
 [data-theme="dark"] .post-wrap-left,
@@ -51,20 +61,6 @@
   }
 }
 
-.post-wrap-right {
-  flex-direction: row-reverse;
-}
-
-.post-wrap-left,
-.post-wrap-right {
-  @include post-wrap;
-
-  @media #{$mg-normal} {
-    flex-direction: column;
-    height: 400px;
-  }
-}
-
 .post-info {
   height: 100%;
   width: 100%;
@@ -76,21 +72,42 @@
 .post-meta {
   display: flex;
   justify-content: flex-end;
-  margin: 5px 0;
+  margin: 4px 0;
 
   span {
     font-size: 14px;
     color: var(--grey-7);
-    margin: 0 8px;
+    margin: 0 12px;
     white-space: nowrap;
     text-overflow: ellipsis;
     overflow: hidden;
 
-    &:before {
-      margin: 0 10px;
+    @media #{$mg-normal} {
+      margin: 0 8px;
+    }
+  }
 
-      @media #{$mg-normal} {
-        margin: 0;
+  @if $show_update_time {
+    > span {
+      @media #{$mg-extra-large} {
+        margin: 0 8px;
+      }
+      @media #{$mg-large} {
+        margin: 0 6px;
+      }
+      @media #{$mq-mobile} {
+        margin: 0 8px;
+      }
+      > span {
+        @media #{$mg-extra-large} {
+          margin: 0 6px;
+        }
+        @media #{$mg-large} {
+          margin: 0 4px;
+        }
+        @media #{$mq-mobile} {
+          margin: 0 3px;
+        }
       }
     }
   }
@@ -102,7 +119,7 @@
   -webkit-line-clamp: 3;
   line-clamp: 3;
   overflow: hidden;
-  line-height: 30px;
+  line-height: 32px;
   font-size: 15px;
   color: var(--grey-7);
 
@@ -111,7 +128,7 @@
   }
 }
 
-@mixin post-cover {
+.post-cover {
   width: 40%;
   position: relative;
   overflow: hidden;
@@ -141,34 +158,30 @@
       animation: blur 0.8s forwards;
     }
   }
-}
 
-.post-cover-left {
-  @media #{$mq-normal} {
-    border-radius: $post-radius 0 0 $post-radius;
-    -webkit-clip-path: polygon(0 0, 92% 0%, 100% 100%, 0% 100%);
-    clip-path: polygon(0 0, 92% 0%, 100% 100%, 0% 100%);
+  &.left {
+    @media #{$mq-normal} {
+      border-radius: $post-radius 0 0 $post-radius;
+      -webkit-clip-path: polygon(0 0, 92% 0%, 100% 100%, 0% 100%);
+      clip-path: polygon(0 0, 92% 0%, 100% 100%, 0% 100%);
+    }
+
+    @media #{$mg-normal} {
+      border-radius: $post-radius $post-radius 0 0;
+    }
   }
 
-  @media #{$mg-normal} {
-    border-radius: $post-radius $post-radius 0 0;
+  &.right {
+    @media #{$mq-normal} {
+      border-radius: 0 $post-radius $post-radius 0;
+      -webkit-clip-path: polygon(0 0, 100% 0%, 100% 100%, 8% 100%);
+      clip-path: polygon(0 0, 100% 0%, 100% 100%, 8% 100%);
+    }
+
+    @media #{$mg-normal} {
+      border-radius: $post-radius $post-radius 0 0;
+    }
   }
-
-  @include post-cover;
-}
-
-.post-cover-right {
-  @media #{$mq-normal} {
-    border-radius: 0 $post-radius $post-radius 0;
-    -webkit-clip-path: polygon(0 0, 100% 0%, 100% 100%, 8% 100%);
-    clip-path: polygon(0 0, 100% 0%, 100% 100%, 8% 100%);
-  }
-
-  @media #{$mg-normal} {
-    border-radius: $post-radius $post-radius 0 0;
-  }
-
-  @include post-cover;
 }
 
 .post-title {
@@ -201,6 +214,6 @@
   border-bottom-right-radius: $post-radius;
 
   &:before {
-    margin-right: 5px;
+    margin-right: 4px;
   }
 }

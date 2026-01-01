@@ -3,8 +3,7 @@
   justify-content: center;
   flex-direction: column;
   align-items: center;
-  margin: 5px 0;
-  margin-top: 10px;
+  margin: 8px 0 4px;
 }
 
 .sponsor-title {
@@ -18,6 +17,7 @@
   padding: 10px 0;
   font-weight: 700;
   user-select: none;
+  word-break: break-word;
 }
 
 .sponsor-icon {
@@ -59,8 +59,8 @@
   }
 }
 
-.sponsor-button-wrapper {
-  margin: 8px 50px;
+.sponsor-button {
+  margin: 8px 48px;
   display: flex;
   position: relative;
   width: fit-content;
@@ -70,7 +70,7 @@
   cursor: var(--cursor-pointer) !important;
 
   &:hover {
-    border: 10px var(--color-h2-after) double;
+    border-color: var(--color-h2-after);
   }
 
   &:hover + .sponsor-tip {
@@ -78,7 +78,7 @@
   }
 
   &.active {
-    border: 10px var(--color-h2-after) double;
+    border-color: var(--color-h2-after);
   }
 }
 
@@ -96,15 +96,23 @@
 }
 
 .sponsor-qr {
-  gap: 5px;
+  display: flex;
+  interpolate-size: allow-keywords;
+  gap: 4px;
   width: 100%;
   flex-wrap: wrap;
   justify-content: center;
-  display: none;
-  margin-top: 5px;
+  margin-top: 8px;
+  height: 0;
+  overflow: hidden;
+  transition: height 0.3s ease, opacity 0.3s ease, transform 0.3s ease;
+  opacity: 0;
+  transform: translateY(-10px);
 
   &.active {
-    display: flex;
+    height: auto;
+    opacity: 1;
+    transform: translateY(0);
   }
 }
 

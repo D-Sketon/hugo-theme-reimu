@@ -1,5 +1,5 @@
 #page-nav {
-  margin: $block-margin auto;
+  margin: $article-padding + 16px auto;
   background: var(--color-wrap);
   border-radius: $post-radius;
   text-align: center;
@@ -13,7 +13,7 @@
 
   a,
   span {
-    padding: 10px 15px;
+    padding: 10px 16px;
   }
 
   a {
@@ -30,18 +30,18 @@
 
   .prev {
     float: left;
-    padding: 15px;
+    padding: 16px;
   }
 
   .next {
     float: right;
-    padding: 15px;
+    padding: 16px;
   }
 
   .page-number {
     display: inline-block;
-    border-radius: $post-radius;
-    margin: 5px;
+    border-radius: $tag-radius;
+    margin: 6px;
 
     @media #{$mq-mobile} {
       display: none;

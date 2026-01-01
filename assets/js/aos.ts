@@ -14,6 +14,7 @@ var debounce = (func: (...args: any[]) => void, delay: number) => {
 var __aosScrollHandler: (...args: any[]) => void;
 var __aosResizeHandler: (...args: any[]) => void;
 var __observer: MutationObserver;
+var __aosBodyResizeObserver: ResizeObserver;
 
 interface AOSNode {
   node: HTMLElement;
@@ -227,6 +228,14 @@ interface AOSNode {
     window.on("scroll", __aosScrollHandler);
 
     observe(refreshHard);
+
+    if (window.ResizeObserver && _$("#main")) {
+      __aosBodyResizeObserver?.disconnect?.();
+      __aosBodyResizeObserver = new ResizeObserver(
+        debounce(() => refresh(), options.debounceDelay),
+      );
+      __aosBodyResizeObserver.observe(_$("#main"));
+    }
 
     return $aosElements;
   };

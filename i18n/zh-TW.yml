@@ -11,8 +11,8 @@ archive_a: 彙整
 archive_b: 彙整 {{ . -}}
 page: 第 {{ . }} 頁
 recent_posts: 最新文章
-newer: Newer
-older: Older
+newer: 前一篇
+older: 後一篇
 share: 分享
 powered_by: 基於
 rss_feed: RSS 訂閱

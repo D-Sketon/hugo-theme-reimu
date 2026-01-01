@@ -58,161 +58,32 @@
 {{- end -}}
 
 {{- if $params.firework.enable -}}
-  {{- partial "helpers/js.html" (dict "raw" $js.firework "src" (index (partial "helpers/vendorCdn.html" (dict "item" $js.firework "ctx" $site)) 0) "integrity" (index (partial "helpers/vendorCdnIntegrity.html" (dict "item" $js.firework)) 0)) -}}
 <script>
-  if (window.firework) {
-    const options = JSON.parse({{ $params.firework.options | jsonify }});
-    options.excludeElements = options.excludeelements;
-    delete options.excludeelements;
-    window.firework(options);
+  var setupFirework = () => {
+    if (!{{ $params.firework.disable_on_mobile | default false }} || !window.matchMedia('(max-width: 768px)').matches) {
+      if (window.firework) {
+        const options = JSON.parse({{ $params.firework.options | jsonify }});
+        options.excludeElements = options.excludeelements;
+        delete options.excludeelements;
+        window.firework(options);
+      }
+    }
   }
 </script>
+  {{- partial "helpers/js.html" (dict "raw" $js.firework "src" (index (partial "helpers/vendorCdn.html" (dict "item" $js.firework "ctx" $site)) 0) "integrity" (index (partial "helpers/vendorCdnIntegrity.html" (dict "item" $js.firework)) 0) "onload" "setupFirework()" "defer" true) -}}
 {{- end -}}
 
 {{- if $params.pjax.enable -}}
   {{- partial "helpers/js.html" (dict "raw" $js.pjax "src" (index (partial "helpers/vendorCdn.html" (dict "item" $js.pjax "ctx" $site)) 0) "integrity" (index (partial "helpers/vendorCdnIntegrity.html" (dict "item" $js.pjax)) 0)) -}}
-  <script>
-    function loadScripts(scripts, index) {
-      if (index < scripts.length) {
-        const script = scripts[index];
-        const src = script.getAttribute('src');
-
-        const loadScript = (scriptContent) => {
-          return new Promise((resolve, reject) => {
-            const scriptElement = document.createElement('script');
-            if (script.type) {
-              scriptElement.type = script.type;
-            }
-            if (script.src) {
-              scriptElement.src = script.src;
-              if (script.integrity) {
-                scriptElement.integrity = script.integrity;
-              }
-              if (script.crossOrigin) {
-                scriptElement.crossOrigin = script.crossOrigin;
-              }
-              scriptElement.onload = resolve;
-              scriptElement.onerror = reject;
-            }
-            if (scriptContent) {
-              scriptElement.text = scriptContent;
-            }
-            document.head.appendChild(scriptElement);
-            if (!script.src) {
-              resolve();
-            }
-          })
-          
-        }
-
-        ;(src ? loadScript() : loadScript(script.text))
-          .then(() => loadScripts(scripts, index + 1))
-          .catch(error => {
-            console.error(`Failed to load script: ${src || 'inline script'}`, error);
-            loadScripts(scripts, index + 1);
-          });
-      }
-    }
-    if (window.Pjax) {
-      Pjax.prototype.getElements = function() {
-        const i18nLanguages = window.siteConfig.i18n_languages;
-        const baseUrl = window.siteConfig.base;
-        let basePathname = new URL(baseUrl).pathname;
-        if (!basePathname.endsWith('/')) {
-          basePathname += '/';  
-        }
-        const currentUrl = window.location.href;
-        const currentPathname = new URL(currentUrl).pathname.replace(basePathname, '');
-        const aLinks = document.querySelectorAll('a[href]');
-        const pjaxLinks = [];
-        for(let i = 0; i < aLinks.length; i++) {
-          const aLink = aLinks[i];
-          const aLinkHref = aLink.getAttribute('href');
-          const isExternal = aLink.getAttribute('target') === '_blank' || aLink.getAttribute('rel')?.includes('noopener');
-          if (isExternal || aLinkHref.startsWith('mailto:') || aLinkHref.startsWith('tel:') || aLinkHref.startsWith('javascript:') || aLinkHref.startsWith("data:") || aLinkHref.startsWith("vbscript:")) {
-            continue;
-          }
-          if (!i18nLanguages) {
-            // 多语言功能未打开
-            pjaxLinks.push(aLink);
-            continue;
-          }
-          const absoluteUrl = new URL(aLinkHref, currentUrl).href;
-          const absolutePathname = new URL(absoluteUrl).pathname.replace(basePathname, '');
-          if (!absolutePathname || !currentPathname) {
-            pjaxLinks.push(aLink);
-            continue;
-          }
-          const currentLangIndex = i18nLanguages.findIndex(lang => currentPathname.startsWith(lang.Lang));
-          if (currentLangIndex > -1) {
-            // 当前属于多语言站点
-            const absoluteLangIndex = i18nLanguages.findIndex(lang => absolutePathname.startsWith(lang.Lang));
-            if (absoluteLangIndex === currentLangIndex) {
-              // 同一语言站点，可以使用 pjax
-              pjaxLinks.push(aLink);
-            }
-          } else {
-            // 当前属于默认语言站点
-            const absoluteLangIndex = i18nLanguages.findIndex(lang => absolutePathname.startsWith(lang.Lang));
-            if (absoluteLangIndex === -1) {
-              // 同一语言站点，可以使用 pjax
-              pjaxLinks.push(aLink);
-            }
-          }
-        }
-        return pjaxLinks;
-      }
-    }
-    window.Pjax &&
-      new window.Pjax({
-        selectors: [
-          "#header>img",
-          "#header>picture",
-          "head title",
-          "#header-title",
-          "#subtitle-wrap",
-          "#main",
-          "#content",
-          ".sidebar-widget",
-          ".sidebar-wrapper",
-          "#mobile-nav",
-          "#lazy-script",
-          '#i18n-nav'
-        ],
-        switches: {
-          "#content": function(oldEl, newEl) {
-            // for sidebar change
-            oldEl.className = newEl.className;
-            this.onSwitch();
-          },
-          "#header-title": Pjax.switches.outerHTML,
-          "#subtitle-wrap": Pjax.switches.outerHTML,
-          "#main": function (oldEl, newEl) {
-            const scripts = [...newEl.querySelectorAll("script")];
-            loadScripts(scripts, 0);
-            oldEl.outerHTML = newEl.outerHTML;
-            this.onSwitch();
-          },
-          "#mobile-nav": Pjax.switches.outerHTML,
-          "#lazy-script": function (oldEl, newEl) {
-            const scripts = [...newEl.querySelectorAll("script")];
-            loadScripts(scripts, 0);
-            oldEl.innerHTML = newEl.innerHTML;
-            this.onSwitch();
-          },
-        },
-        cacheBust: false,
-      });
-  </script>
   {{- partial "helpers/ts.html" (dict "source" "js/pjax.ts" "ctx" .) -}}
 {{- end -}}
 
 {{- if $params.live2d.enable -}}
 <script>
-  function initLive2d() {
+  var setupLive2d = () => {
     live2d.init('{{ index (partial "helpers/vendorCdn.html" (dict "item" $js.live2d.base "ctx" $site)) 0 }}', {themeTipsPath: ""});
   }
-</script> {{- partial "helpers/js.html" (dict "raw" $js.live2d.js "src" (index (partial "helpers/vendorCdn.html" (dict "item" $js.live2d.js "ctx" $site)) 0) "async" true "onload" "initLive2d()") -}}
+</script> {{- partial "helpers/js.html" (dict "raw" $js.live2d.js "src" (index (partial "helpers/vendorCdn.html" (dict "item" $js.live2d.js "ctx" $site)) 0) "async" true "onload" "setupLive2d()") -}}
 {{- else if $params.live2d_widgets.enable -}}
   {{- partial "helpers/js.html" (dict "raw" $js.live2d_widgets "src" (index (partial "helpers/vendorCdn.html" (dict "item" $js.live2d_widgets "ctx" $site)) 0) "defer" true "integrity" (index (partial "helpers/vendorCdnIntegrity.html" (dict "item" $js.live2d_widgets)) 0)) -}}
 {{- end -}}
@@ -241,7 +112,7 @@
       {{- end -}}
       <script data-pjax>
         window.REIMU_POST = {
-          author: "{{ $params.author }}",
+          author: "{{ .Params.author | default $params.author }}",
           title: "{{ .Title }}",
           url: "{{ .Permalink }}",
           description: "{{ $desc }}",
@@ -252,84 +123,99 @@
     {{- if and (.Store.Get "hasMermaid") .Params.mermaid -}}
       {{- partial "helpers/js.html" (dict "raw" $js.mermaid "src" (index (partial "helpers/vendorCdn.html" (dict "item" $js.mermaid "ctx" $site)) 0) "pjax" true "integrity" (index (partial "helpers/vendorCdnIntegrity.html" (dict "item" $js.mermaid)) 0)) -}}
       {{- partial "helpers/js.html" (dict "raw" $js.dompurify "src" (index (partial "helpers/vendorCdn.html" (dict "item" $js.dompurify "ctx" $site)) 0) "pjax" true "integrity" (index (partial "helpers/vendorCdnIntegrity.html" (dict "item" $js.dompurify)) 0)) -}}
+      {{- if $params.mermaid.zoom -}}
+        {{- partial "helpers/js.html" (dict "raw" $js.svg_pan_zoom "src" (index (partial "helpers/vendorCdn.html" (dict "item" $js.svg_pan_zoom "ctx" $site)) 0) "pjax" true "integrity" (index (partial "helpers/vendorCdnIntegrity.html" (dict "item" $js.svg_pan_zoom)) 0)) -}}
+      {{- end -}}
       <script data-pjax>
         if (window.mermaid) {
           // https://github.com/mermaid-js/mermaid/issues/1945
-          const elementCode = ".mermaid";
-          const saveOriginalData = () => {
+          const elementCode = '.mermaid'
+          const processElements = (callback) => {
+            const els = _$$(elementCode);
+            if (!els.length) return Promise.resolve();
+            
             return new Promise((resolve, reject) => {
               try {
-                var els = _$$(elementCode),
-                  count = els.length;
-                els.forEach((element) => {
-                  if (element.getAttribute("data-original-code") == null) {
-                    element.setAttribute(
-                      "data-original-code",
-                      element.innerHTML,
-                    );
-                  }
-                  count--;
-                  if (count == 0) {
-                    resolve();
-                  }
-                });
+                els.forEach(callback);
+                resolve();
               } catch (error) {
                 reject(error);
               }
             });
           };
-          const resetProcessed = () => {
-            return new Promise((resolve, reject) => {
-              try {
-                var els = _$$(elementCode),
-                  count = els.length;
-                els.forEach((element) => {
-                  if (element.getAttribute("data-original-code") != null) {
-                    element.removeAttribute("data-processed");
-                    element.innerHTML = DOMPurify.sanitize(element.getAttribute("data-original-code"));
-                  }
-                  count--;
-                  if (count == 0) {
-                    resolve();
-                  }
-                });
-              } catch (error) {
-                reject(error);
+          const saveOriginalData = () => processElements(el => {
+            if (!el.getAttribute('data-original-code')) {
+              el.setAttribute('data-original-code', el.innerHTML);
+            }
+          });
+
+          const resetProcessed = () => processElements(el => {
+            const originalCode = el.getAttribute('data-original-code');
+            if (originalCode) {
+              el.removeAttribute('data-processed');
+              el.innerHTML = DOMPurify.sanitize(originalCode);
+            }
+          });
+          const loadMermaid = async (theme) => {
+            window.mermaid.initialize({theme, startOnLoad: false})
+            await window.mermaid.run({querySelector: elementCode, suppressErrors: true})
+            if (window.svgPanZoom) {
+              window.__panZoomList?.forEach(panZoom => {try {panZoom.destroy()} catch {}});
+              window.__panZoomList = [];
+              _$$('.mermaid > svg').forEach(el => {
+                const bbox = el.getBBox();
+                el.setAttribute('height', Math.max(bbox.height, 80));
+                window.__panZoomList.push(window.svgPanZoom(el, {
+                  zoomEnabled: true,
+                  controlIconsEnabled: true,
+                  fit: true,
+                  center: true
+                }));
+              });
+              if (window.__resizeMermaidSvg) {
+                window.removeEventListener('resize', window.__resizeMermaidSvg);
               }
-            });
+              window.__resizeMermaidSvg = () => {
+                try {
+                  window.__panZoomList.forEach(panZoom => {
+                    panZoom.resize();
+                    panZoom.fit();
+                    panZoom.center();
+                  });
+                } catch {
+                  window.removeEventListener('resize', window.__resizeMermaidSvg);
+                  window.__panZoomList = [];
+                }
+              }
+              window.addEventListener('resize', window.__resizeMermaidSvg);
+            }
+          }
+          const initMermaid = async (theme) => {
+            try {
+              await saveOriginalData();
+              await resetProcessed();
+              await loadMermaid(theme);
+            } catch (error) {
+              console.error(error);
+            }
           };
-          const loadMermaid = (theme) => {
-            window.mermaid.initialize({ theme });
-            window.mermaid.init({ theme }, _$$(elementCode));
-          };
-          document.body.addEventListener("dark-theme-set", () => {
-            saveOriginalData()
-              .then(resetProcessed())
-              .then(loadMermaid("dark"))
-              .catch(console.error);
-          });
-          document.body.addEventListener("light-theme-set", () => {
-            saveOriginalData()
-              .then(resetProcessed())
-              .then(loadMermaid("default"))
-              .catch(console.error);
-          });
-          if (localStorage.getItem("dark_mode") == "true") {
-            saveOriginalData()
-              .then(resetProcessed())
-              .then(loadMermaid("dark"))
-              .catch(console.error);
+          
+          document.body.addEventListener('dark-theme-set', () => initMermaid('dark'));
+          document.body.addEventListener('light-theme-set', () => initMermaid('default'));
+
+          const mode = localStorage.getItem('dark_mode');
+          if (mode === 'auto') {
+            const osMode = window.matchMedia("(prefers-color-scheme: dark)").matches;
+            initMermaid(osMode ? 'dark' : 'default');
           } else {
-            saveOriginalData()
-              .then(resetProcessed())
-              .then(loadMermaid("default"))
-              .catch(console.error);
+            initMermaid(mode === 'true' ? 'dark' : 'default');
           }
         }
       </script>
     {{- end -}}
     {{- if not .IsHome -}}
       {{- partial "helpers/ts.html" (dict "source" "js/insert_highlight.ts" "pjax" true "ctx" .) -}}
+      {{- partial "helpers/ts.html" (dict "source" "js/tabs.ts" "pjax" true "ctx" . "defer" true) -}}
       {{- $photoswipe_lightbox := index (partial "helpers/vendorCdn.html" (dict "item" $js.photoswipe_lightbox "ctx" $site)) 0 -}}
       {{- $photoswipe_lightbox_integrity := index (partial "helpers/vendorCdnIntegrity.html" (dict "item" $js.photoswipe_lightbox)) 0 -}}
       {{- $photoswipe := index (partial "helpers/vendorCdn.html" (dict "item" $js.photoswipe "ctx" $site)) 0 -}}
@@ -340,29 +226,22 @@
         {{- else -}}
         const PhotoSwipeLightbox = (await safeImport("{{ $photoswipe_lightbox }}", "{{ $photoswipe_lightbox_integrity }}")).default;
         {{- end -}}
+        const initPswp = (gallery, children) => {
+          if (_$$(`${gallery} ${children}`).length > 0) {
+            new PhotoSwipeLightbox({
+              gallery,
+              children,
+              {{- if (partial "helpers/vendorLocalCheck.html" $js.photoswipe) -}}
+              pswpModule: () => import('{{ $photoswipe }}'),
+              {{- else -}}
+              pswpModule: () => safeImport("{{ $photoswipe }}", "{{ $photoswipe_integrity }}")
+              {{- end -}}
+            }).init();
+          }
+        }
         const pswp = () => {
-          if (_$$('.article-entry a.article-gallery-item').length > 0) {
-            new PhotoSwipeLightbox({
-              gallery: '.article-entry',
-              children: 'a.article-gallery-item',
-              {{- if (partial "helpers/vendorLocalCheck.html" $js.photoswipe) -}}
-              pswpModule: () => import('{{ $photoswipe }}'),
-              {{- else -}}
-              pswpModule: () => safeImport("{{ $photoswipe }}", "{{ $photoswipe_integrity }}")
-              {{- end -}}
-            }).init();
-          }
-          if(_$$('.article-gallery a.article-gallery-item').length > 0) {
-            new PhotoSwipeLightbox({
-              gallery: '.article-gallery',
-              children: 'a.article-gallery-item',
-              {{- if (partial "helpers/vendorLocalCheck.html" $js.photoswipe) -}}
-              pswpModule: () => import('{{ $photoswipe }}'),
-              {{- else -}}
-              pswpModule: () => safeImport("{{ $photoswipe }}", "{{ $photoswipe_integrity }}")
-              {{- end -}}
-            }).init();
-          }
+          initPswp('.article-entry', 'a.article-gallery-item');
+          initPswp('.article-gallery', 'a.article-gallery-item');
           window.lightboxStatus = 'done';
           window.removeEventListener('lightbox:ready', pswp);
         }
@@ -434,8 +313,8 @@
         }
         const blockquote = _$('#outdate-blockquote');
         if (blockquote) {
-          blockquote.querySelector('p').innerText = message;
-          blockquote.style.display = 'block';
+          blockquote.querySelectorAll('p')[1].innerText = message;
+          blockquote.style.display = 'flow-root';
         }
       }
     }
@@ -479,60 +358,64 @@
 </script>
 
 {{- if $params.player.aplayer.enable -}}
-  {{- partial "helpers/js.html" (dict "raw" $js.aplayer "src" (index (partial "helpers/vendorCdn.html" (dict "item" $js.aplayer "ctx" $site)) 0) "integrity" (index (partial "helpers/vendorCdnIntegrity.html" (dict "item" $js.aplayer)) 0)) -}}
   {{- if not $params.player.meting.enable -}}
     <script>
-      var isMobile = window.matchMedia('(max-width: 959px)').matches;
-      if (isMobile) {
-      const aplayer = _$('#aplayer');
-        if (aplayer) {
-          const aside = aplayer.parentNode;
-          if (aside?.tagName === 'ASIDE') {
-            aplayer.removeAttribute('data-aos');
-            aside.removeChild(aplayer);
-            document.body.appendChild(aplayer);
+    var setupAPlayer = () => {
+      if (!{{ $params.player.disable_on_mobile | default false }} || !window.matchMedia('(max-width: 768px)').matches) {
+        if (window.matchMedia('(max-width: 959px)').matches) {
+        const aplayer = _$('#aplayer');
+          if (aplayer) {
+            const aside = aplayer.parentNode?.parentNode;
+            if (aside?.tagName === 'ASIDE') {
+              aplayer.removeAttribute('data-aos');
+              aside.parentNode.removeChild(aplayer);
+              document.body.appendChild(aplayer);
+            }
+          }
+        }
+        new APlayer({
+            theme: "var(--color-link)",
+            container: document.getElementById('aplayer'),
+            audio: JSON.parse({{ $params.player.aplayer.options.audio | jsonify }}) || [],
+            fixed: isMobile ? true : ({{ $params.player.aplayer.options.fixed }} || false),
+            autoplay: {{ $params.player.aplayer.options.autoplay }} || false,
+            loop: '{{ $params.player.aplayer.options.loop }}' || 'all',
+            order: '{{ $params.player.aplayer.options.order }}' || 'list',
+            preload: '{{ $params.player.aplayer.options.preload }}' || 'auto',
+            volume: {{ $params.player.aplayer.options.volume }} || 0.7,
+            mutex: {{ $params.player.aplayer.options.mutex }} || true,
+            listFolded: {{ $params.player.aplayer.options.listFolded }} || false,
+            lrcType: {{ $params.player.aplayer.options.lrcType }} || 0,
+        });
+      }
+    }
+    </script>
+  {{- else -}}
+    <script>
+    var setupAPlayer = () => {
+      if (!{{ $params.player.disable_on_mobile | default false }} || !window.matchMedia('(max-width: 768px)').matches) {
+        if (window.matchMedia('(max-width: 959px)').matches) {
+          const meting = _$('meting-js');
+          if (meting) {
+            meting.setAttribute('fixed', 'true');
+            const aside = meting.parentNode?.parentNode;
+            if (aside?.tagName === 'ASIDE') {
+              meting.parentNode.removeChild(meting);
+              document.body.appendChild(meting);
+            }
           }
         }
       }
-      const ap = new APlayer({
-          theme: "var(--color-link)",
-          container: document.getElementById('aplayer'),
-          audio: JSON.parse({{ $params.player.aplayer.options.audio | jsonify }}) || [],
-          fixed: isMobile ? true : ({{ $params.player.aplayer.options.fixed }} || false),
-          autoplay: {{ $params.player.aplayer.options.autoplay }} || false,
-          loop: '{{ $params.player.aplayer.options.loop }}' || 'all',
-          order: '{{ $params.player.aplayer.options.order }}' || 'list',
-          preload: '{{ $params.player.aplayer.options.preload }}' || 'auto',
-          volume: {{ $params.player.aplayer.options.volume }} || 0.7,
-          mutex: {{ $params.player.aplayer.options.mutex }} || true,
-          listFolded: {{ $params.player.aplayer.options.listFolded }} || false,
-          lrcType: {{ $params.player.aplayer.options.lrcType }} || 0,
-      });
-    </script>
-  {{- end -}}
-{{- end -}}
-
-{{- if $params.player.meting.enable -}}
-  {{- if $params.player.meting.meting_api -}}
-    <script>
+    };
+    {{- if $params.player.meting.meting_api -}}
       var meting_api = '{{ $params.player.meting.meting_api }}';
+    {{- end -}}
     </script>
   {{- end -}}
-  <script>
-    var isMobile = window.matchMedia('(max-width: 959px)').matches;
-    if (isMobile) {
-      const meting = _$('meting-js');
-      if (meting) {
-        meting.setAttribute('fixed', 'true');
-        const aside = meting.parentNode;
-        if (aside?.tagName === 'ASIDE') {
-          aside.removeChild(meting);
-          document.body.appendChild(meting);
-        }
-      }
-    }
-  </script>
-  {{- partial "helpers/js.html" (dict "raw" $js.meting "src" (index (partial "helpers/vendorCdn.html" (dict "item" $js.meting "ctx" $site)) 0) "integrity" (index (partial "helpers/vendorCdnIntegrity.html" (dict "item" $js.meting)) 0)) -}}
+  {{- partial "helpers/js.html" (dict "raw" $js.aplayer "src" (index (partial "helpers/vendorCdn.html" (dict "item" $js.aplayer "ctx" $site)) 0) "integrity" (index (partial "helpers/vendorCdnIntegrity.html" (dict "item" $js.aplayer)) 0) "defer" true "onload" "setupAPlayer()") -}}
+    {{- if $params.player.meting.enable -}}
+    {{- partial "helpers/js.html" (dict "raw" $js.meting "src" (index (partial "helpers/vendorCdn.html" (dict "item" $js.meting "ctx" $site)) 0) "integrity" (index (partial "helpers/vendorCdnIntegrity.html" (dict "item" $js.meting)) 0) "defer" true ) -}}
+  {{- end -}}
 {{- end -}}
 
 {{- if .Site.Params.pangu.enable -}}

@@ -1,54 +1,67 @@
-<aside id="sidebar">
+<aside id="sidebar" aria-label="Sidebar">
   {{- if .Site.Params.injector.sidebar_begin -}}
     {{- .Site.Params.injector.sidebar_begin | safeHTML -}}
   {{- end -}}
-  {{- if and .Site.Params.player.aplayer.enable (not .Site.Params.player.meting.enable) (not .Site.Params.player.aplayer.options.fixed) -}}
-    <div id="aplayer" theme="var(--color-link)" data-aos="{{ .Site.Params.animation.options.home.sidebar }}"></div>
+  <div class="sidebar-wrapper-container {{ if in .Site.Params.mainSections .Type }}sticky{{ end }}">
+  {{- if or (eq .Site.Params.player.position "before_sidebar") (not .Site.Params.player.position) -}}
+    {{- if and .Site.Params.player.aplayer.enable (not .Site.Params.player.meting.enable) (not .Site.Params.player.aplayer.options.fixed) -}}
+      <div id="aplayer" theme="var(--color-link)" data-aos="{{ .Site.Params.animation.options.home.sidebar }}"></div>
+    {{- end -}}
+    {{- if and .Site.Params.player.meting.enable (not .Site.Params.player.aplayer.options.fixed) -}}
+      <meting-js
+        theme="var(--color-link)"
+        {{ if ne .Site.Params.player.meting.options.id nil }}id="{{.Site.Params.player.meting.options.id}}"{{ end -}}
+        {{ if ne .Site.Params.player.meting.options.server nil }}server="{{ .Site.Params.player.meting.options.server }}"{{ end -}}
+        {{ if ne .Site.Params.player.meting.options.type nil }}type="{{ .Site.Params.player.meting.options.type }}"{{ end -}}
+        {{ if ne .Site.Params.player.meting.options.auto nil }}auto="{{ .Site.Params.player.meting.options.auto }}"{{ end -}}
+        {{ if ne .Site.Params.player.aplayer.options.fixed nil }}fixed="{{ .Site.Params.player.aplayer.options.fixed }}"{{ end -}}
+        {{ if ne .Site.Params.player.aplayer.options.autoplay nil }}autoplay="{{ .Site.Params.player.aplayer.options.autoplay }}"{{ end -}}
+        {{ if ne .Site.Params.player.aplayer.options.loop nil }}loop="{{ .Site.Params.player.aplayer.options.loop }}"{{ end -}}
+        {{ if ne .Site.Params.player.aplayer.options.order nil }}order="{{ .Site.Params.player.aplayer.options.order }}"{{ end -}}
+        {{ if ne .Site.Params.player.aplayer.options.preload nil }}preload="{{ .Site.Params.player.aplayer.options.preload }}"{{ end -}}
+        {{ if ne .Site.Params.player.aplayer.options.volume nil }}volume="{{ .Site.Params.player.aplayer.options.volume }}"{{ end -}}
+        {{ if ne .Site.Params.player.aplayer.options.mutex nil }}mutex="{{ .Site.Params.player.aplayer.options.mutex }}"{{ end -}}
+        {{ if ne .Site.Params.player.aplayer.options.listFolded nil }}list-folded="{{ .Site.Params.player.aplayer.options.listFolded }}"{{ end -}}
+        {{ if ne .Site.Params.player.aplayer.options.lrcType nil }}lrc-type="{{ .Site.Params.player.aplayer.options.lrcType }}"{{ end -}}
+        >
+      </meting-js>
+    {{- end -}}
   {{- end -}}
-  {{- if and .Site.Params.player.meting.enable (not .Site.Params.player.aplayer.options.fixed) -}}
-    <meting-js
-      theme="var(--color-link)"
-      {{ if ne .Site.Params.player.meting.options.id nil }}id="{{.Site.Params.player.meting.options.id}}"{{ end -}}
-      {{ if ne .Site.Params.player.meting.options.server nil }}server="{{ .Site.Params.player.meting.options.server }}"{{ end -}}
-      {{ if ne .Site.Params.player.meting.options.type nil }}type="{{ .Site.Params.player.meting.options.type }}"{{ end -}}
-      {{ if ne .Site.Params.player.meting.options.auto nil }}auto="{{ .Site.Params.player.meting.options.auto }}"{{ end -}}
-      {{ if ne .Site.Params.player.aplayer.options.fixed nil }}fixed="{{ .Site.Params.player.aplayer.options.fixed }}"{{ end -}}
-      {{ if ne .Site.Params.player.aplayer.options.autoplay nil }}autoplay="{{ .Site.Params.player.aplayer.options.autoplay }}"{{ end -}}
-      {{ if ne .Site.Params.player.aplayer.options.loop nil }}loop="{{ .Site.Params.player.aplayer.options.loop }}"{{ end -}}
-      {{ if ne .Site.Params.player.aplayer.options.order nil }}order="{{ .Site.Params.player.aplayer.options.order }}"{{ end -}}
-      {{ if ne .Site.Params.player.aplayer.options.preload nil }}preload="{{ .Site.Params.player.aplayer.options.preload }}"{{ end -}}
-      {{ if ne .Site.Params.player.aplayer.options.volume nil }}volume="{{ .Site.Params.player.aplayer.options.volume }}"{{ end -}}
-      {{ if ne .Site.Params.player.aplayer.options.mutex nil }}mutex="{{ .Site.Params.player.aplayer.options.mutex }}"{{ end -}}
-      {{ if ne .Site.Params.player.aplayer.options.listFolded nil }}list-folded="{{ .Site.Params.player.aplayer.options.listFolded }}"{{ end -}}
-      {{ if ne .Site.Params.player.aplayer.options.lrcType nil }}lrc-type="{{ .Site.Params.player.aplayer.options.lrcType }}"{{ end -}}
-      >
-    </meting-js>
+  {{- /* Backward compatibility */ -}}
+  {{- $showCommonSidebar := true -}}
+  {{- if and (reflect.IsMap .Site.Params.sidebar) (isset .Site.Params.sidebar.article "show_common") -}}
+    {{- $showCommonSidebar = .Site.Params.sidebar.article.show_common -}}
   {{- end -}}
-  <div class="sidebar-wrapper {{ if in .Site.Params.mainSections .Type }}wrap-sticky{{ end }}">
+  <div class="sidebar-wrapper">
     <div
       class="sidebar-wrap"
       data-aos="{{ .Site.Params.animation.options.home.sidebar }}"
     >
       {{- if in .Site.Params.mainSections .Type -}}
         {{- if eq .Params.toc false -}}
-          {{- partialCached "sidebar/commonBar.html" . -}}
+          {{- partial "sidebar/commonBar.html" (dict "ctx" . "mobile" false) -}}
         {{- else if and (ne .Params.toc true) (eq .Site.Params.toc false) -}}
-          {{- partialCached "sidebar/commonBar.html" . -}}
+          {{- partial "sidebar/commonBar.html" (dict "ctx" . "mobile" false) -}}
+        {{- else if not $showCommonSidebar -}}
+          <div class="sidebar-toc-sidebar" style="margin-bottom: 10px;">
+            {{- partial "sidebar/tocBar.html" . -}}
+          </div>
         {{- else -}}
           <div class="sidebar-toc-sidebar">
             {{- partial "sidebar/tocBar.html" . -}}
           </div>
           <div class="sidebar-common-sidebar hidden">
-            {{- partialCached "sidebar/commonBar.html" . -}}
+            {{- partial "sidebar/commonBar.html" (dict "ctx" . "mobile" false) -}}
           </div>
         {{- end -}}
       {{- else -}}
-        {{- partialCached "sidebar/commonBar.html" . -}}
+        {{- partial "sidebar/commonBar.html" (dict "ctx" . "mobile" false) -}}
       {{- end -}}
 
       {{- if in .Site.Params.mainSections .Type -}}
         {{- if eq .Params.toc false -}}
         {{- else if and (ne .Params.toc true) (eq .Site.Params.toc false) -}}
+        {{- else if not $showCommonSidebar -}}
         {{- else -}}
           <div class="sidebar-btn-wrapper" style="position:static">
             <div class="sidebar-toc-btn current"></div>
@@ -58,13 +71,63 @@
       {{- end -}}
     </div>
   </div>
-
+  {{- if (eq .Site.Params.player.position "after_sidebar") -}}
+    {{- if and .Site.Params.player.aplayer.enable (not .Site.Params.player.meting.enable) (not .Site.Params.player.aplayer.options.fixed) -}}
+      <div id="aplayer" class="aplayer-after-sidebar" theme="var(--color-link)" data-aos="{{ .Site.Params.animation.options.home.sidebar }}"></div>
+    {{- end -}}
+    {{- if and .Site.Params.player.meting.enable (not .Site.Params.player.aplayer.options.fixed) -}}
+      <meting-js
+        theme="var(--color-link)"
+        {{ if ne .Site.Params.player.meting.options.id nil }}id="{{.Site.Params.player.meting.options.id}}"{{ end -}}
+        {{ if ne .Site.Params.player.meting.options.server nil }}server="{{ .Site.Params.player.meting.options.server }}"{{ end -}}
+        {{ if ne .Site.Params.player.meting.options.type nil }}type="{{ .Site.Params.player.meting.options.type }}"{{ end -}}
+        {{ if ne .Site.Params.player.meting.options.auto nil }}auto="{{ .Site.Params.player.meting.options.auto }}"{{ end -}}
+        {{ if ne .Site.Params.player.aplayer.options.fixed nil }}fixed="{{ .Site.Params.player.aplayer.options.fixed }}"{{ end -}}
+        {{ if ne .Site.Params.player.aplayer.options.autoplay nil }}autoplay="{{ .Site.Params.player.aplayer.options.autoplay }}"{{ end -}}
+        {{ if ne .Site.Params.player.aplayer.options.loop nil }}loop="{{ .Site.Params.player.aplayer.options.loop }}"{{ end -}}
+        {{ if ne .Site.Params.player.aplayer.options.order nil }}order="{{ .Site.Params.player.aplayer.options.order }}"{{ end -}}
+        {{ if ne .Site.Params.player.aplayer.options.preload nil }}preload="{{ .Site.Params.player.aplayer.options.preload }}"{{ end -}}
+        {{ if ne .Site.Params.player.aplayer.options.volume nil }}volume="{{ .Site.Params.player.aplayer.options.volume }}"{{ end -}}
+        {{ if ne .Site.Params.player.aplayer.options.mutex nil }}mutex="{{ .Site.Params.player.aplayer.options.mutex }}"{{ end -}}
+        {{ if ne .Site.Params.player.aplayer.options.listFolded nil }}list-folded="{{ .Site.Params.player.aplayer.options.listFolded }}"{{ end -}}
+        {{ if ne .Site.Params.player.aplayer.options.lrcType nil }}lrc-type="{{ .Site.Params.player.aplayer.options.lrcType }}"{{ end -}}
+        class="aplayer-after-sidebar"
+        >
+      </meting-js>
+    {{- end -}}
+  {{- end -}}
   <div class="sidebar-widget">
     {{- if and (not (in .Site.Params.mainSections .Type)) .Site.Params.widgets -}}
       {{- range .Site.Params.widgets -}}
         {{- partialCached (printf "widget/%s.html" .) $ -}}
       {{- end -}}
     {{- end -}}
+  </div>
+  {{- if (eq .Site.Params.player.position "after_widget") -}}
+    {{- if and .Site.Params.player.aplayer.enable (not .Site.Params.player.meting.enable) (not .Site.Params.player.aplayer.options.fixed) -}}
+      <div id="aplayer" class="aplayer-after-widget" theme="var(--color-link)" data-aos="{{ .Site.Params.animation.options.home.sidebar }}"></div>
+    {{- end -}}
+    {{- if and .Site.Params.player.meting.enable (not .Site.Params.player.aplayer.options.fixed) -}}
+      <meting-js
+        theme="var(--color-link)"
+        {{ if ne .Site.Params.player.meting.options.id nil }}id="{{.Site.Params.player.meting.options.id}}"{{ end -}}
+        {{ if ne .Site.Params.player.meting.options.server nil }}server="{{ .Site.Params.player.meting.options.server }}"{{ end -}}
+        {{ if ne .Site.Params.player.meting.options.type nil }}type="{{ .Site.Params.player.meting.options.type }}"{{ end -}}
+        {{ if ne .Site.Params.player.meting.options.auto nil }}auto="{{ .Site.Params.player.meting.options.auto }}"{{ end -}}
+        {{ if ne .Site.Params.player.aplayer.options.fixed nil }}fixed="{{ .Site.Params.player.aplayer.options.fixed }}"{{ end -}}
+        {{ if ne .Site.Params.player.aplayer.options.autoplay nil }}autoplay="{{ .Site.Params.player.aplayer.options.autoplay }}"{{ end -}}
+        {{ if ne .Site.Params.player.aplayer.options.loop nil }}loop="{{ .Site.Params.player.aplayer.options.loop }}"{{ end -}}
+        {{ if ne .Site.Params.player.aplayer.options.order nil }}order="{{ .Site.Params.player.aplayer.options.order }}"{{ end -}}
+        {{ if ne .Site.Params.player.aplayer.options.preload nil }}preload="{{ .Site.Params.player.aplayer.options.preload }}"{{ end -}}
+        {{ if ne .Site.Params.player.aplayer.options.volume nil }}volume="{{ .Site.Params.player.aplayer.options.volume }}"{{ end -}}
+        {{ if ne .Site.Params.player.aplayer.options.mutex nil }}mutex="{{ .Site.Params.player.aplayer.options.mutex }}"{{ end -}}
+        {{ if ne .Site.Params.player.aplayer.options.listFolded nil }}list-folded="{{ .Site.Params.player.aplayer.options.listFolded }}"{{ end -}}
+        {{ if ne .Site.Params.player.aplayer.options.lrcType nil }}lrc-type="{{ .Site.Params.player.aplayer.options.lrcType }}"{{ end -}}
+        class="aplayer-after-widget"
+        >
+      </meting-js>
+    {{- end -}}
+  {{- end -}}
   </div>
   {{- if .Site.Params.injector.sidebar_end -}}
     {{- .Site.Params.injector.sidebar_end | safeHTML -}}

@@ -1,5 +1,5 @@
 {{- $articleCopyright := .Site.Params.article_copyright -}}
-{{- $author := .Site.Params.author -}}
+{{- $author := .Params.author | default .Site.Params.author -}}
 {{- $title := .Site.Title -}}
 {{- $permalink := .Permalink -}}
 {{- $date := .Date.Format .Site.Params.timeFormat -}}
@@ -7,7 +7,7 @@
 
 <blockquote class="article-copyright">
   {{- if $articleCopyright.content.author -}}
-    <p><strong><span class="icon-user icon"></span>{{ i18n "article_copyright.author" }}</strong>{{ $author }} @ {{ $title }}</p>
+    <p><strong><span class="icon-user icon"></span>{{ i18n "article_copyright.author" }}</strong>{{ $author }}</p>
   {{- end -}}
   {{- if $articleCopyright.content.link -}}
     <p>
@@ -25,7 +25,7 @@
   {{- end -}}
   {{- if $articleCopyright.content.license -}}
     <p>
-      {{ $licenseDom := printf "<a href=\"https://creativecommons.org/licenses/%s/4.0/deed.zh\" rel=\"noopener external nofollow noreferrer\" target=\"_blank\"><span class=\"icon-creative-commons\"></span>%s</a>" $articleCopyright.content.license_type ($articleCopyright.content.license_type | upper) }}
+      {{ $licenseDom := printf "<a href=\"https://creativecommons.org/licenses/%s/4.0/deed.zh\" rel=\"noopener nofollow noreferrer\" target=\"_blank\"><span class=\"icon-creative-commons\"></span>%s</a>" $articleCopyright.content.license_type ($articleCopyright.content.license_type | upper) }}
       <strong><span class="icon-copyright icon"></span>{{ i18n "article_copyright.license" }}</strong>
       {{ i18n "article_copyright.license_content" $licenseDom | safeHTML }}
     </p>

@@ -24,7 +24,8 @@
       if (
         expandThreshold === false ||
         (typeof expandThreshold === "number" &&
-          element.querySelectorAll("code[data-lang] .line").length > expandThreshold)
+          element.querySelectorAll("code[data-lang] .line").length >
+            expandThreshold)
       ) {
         element.classList.add("code-closed");
         // force rerender element to refresh AOS
@@ -56,9 +57,9 @@
       codeFigcaptionBottom.classList.remove("has-link");
     }
     if (fileName || url) {
-      codeFigcaptionBottom.style.marginBottom = '0.5em';
+      codeFigcaptionBottom.style.marginBottom = "12px";
     } else {
-      codeFigcaptionBottom.style.marginBottom = '0';
+      codeFigcaptionBottom.style.marginBottom = "0";
     }
   });
   // 代码收缩
@@ -108,9 +109,6 @@
   // 代码复制
   const clipboard = new ClipboardJS(".code-copy", {
     text: (trigger) => {
-      const selection = window.getSelection();
-      const range = document.createRange();
-
       let td =
         trigger.parentNode.parentNode.parentNode.querySelector(
           "tr td:last-of-type",
@@ -120,11 +118,8 @@
         td = trigger.parentNode.parentNode.parentNode.querySelector("code");
       }
 
-      range.selectNodeContents(td);
-      selection.removeAllRanges();
-      selection.addRange(range);
+      let selectedText = td ? td.innerText : "";
 
-      let selectedText = selection.toString();
       if (window.siteConfig.clipboard.copyright?.enable) {
         if (
           selectedText.length >= window.siteConfig.clipboard.copyright?.count
@@ -147,7 +142,9 @@
       successText = successConfig;
     } else if (typeof successConfig === "object") {
       const lang = document.documentElement.lang;
-      const key = Object.keys(successConfig).find(key => key.toLowerCase() === lang.toLowerCase());
+      const key = Object.keys(successConfig).find(
+        (key) => key.toLowerCase() === lang.toLowerCase(),
+      );
       if (key && successConfig[key]) {
         successText = successConfig[key];
       }
@@ -171,7 +168,9 @@
       failText = failConfig;
     } else if (typeof failConfig === "object") {
       const lang = document.documentElement.lang;
-      const key = Object.keys(failConfig).find(key => key.toLowerCase() === lang.toLowerCase());
+      const key = Object.keys(failConfig).find(
+        (key) => key.toLowerCase() === lang.toLowerCase(),
+      );
       if (key && failConfig[key]) {
         failText = failConfig[key];
       }

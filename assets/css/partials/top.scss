@@ -2,8 +2,8 @@
   position: fixed;
   bottom: 30px;
   right: 30px;
-  width: 50px;
-  height: 50px;
+  width: 48px;
+  height: 48px;
   background-color: var(--color-wrap);
   border-radius: 50%;
   @if $icon_font {
@@ -17,12 +17,14 @@
   }
   box-shadow: var(--shadow-card-hover);
   z-index: 999;
+  cursor: var(--cursor-pointer) !important;
 
   .sidebar-top-taichi {
-    width: 50px;
-    height: 50px;
+    width: 48px;
+    height: 48px;
     transition: 0.3s;
     border-radius: 50%;
+    opacity: 0;
 
     &.rotate {
       animation: rotate-all 3s linear infinite;
@@ -31,27 +33,37 @@
 
   .arrow-up {
     transition: 0.3s;
-    opacity: 0;
+    opacity: 1;
 
     &:before {
-      width: 50px;
-      height: 50px;
+      width: 48px;
+      height: 48px;
       position: absolute;
       color: var(--red-1);
       font-size: 20px;
       top: 0;
       text-align: center;
-      line-height: 50px;
+      line-height: 48px;
     }
   }
 
-  &:hover {
+  @media (hover: hover) {
     .sidebar-top-taichi {
-      opacity: 0;
+      opacity: 1;
     }
 
     .arrow-up {
-      opacity: 1;
+      opacity: 0;
+    }
+
+    &:hover {
+      .sidebar-top-taichi {
+        opacity: 0;
+      }
+
+      .arrow-up {
+        opacity: 1;
+      }
     }
   }
 }

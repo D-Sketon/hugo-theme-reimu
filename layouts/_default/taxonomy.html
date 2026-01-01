@@ -8,15 +8,26 @@
     {{- $sort_config = .Site.Params.sort_order.taxonomy.tag -}}
   {{- end -}}
 
-  {{- $paginator := .Paginator.Pages.GroupByDate .Site.Params.yearFormat "desc" -}}
+  {{- $pageSize := 0 -}}
+  {{- with $.Site.Params.paginate.archive -}}
+    {{- $pageSize = . -}}
+  {{- end -}}
+  {{- $paginator := "" -}}
+  {{- if gt $pageSize 0 -}}
+    {{- $paginator = .Paginate .Pages $pageSize -}}
+  {{- else -}}
+    {{- $paginator = .Paginate .Pages -}}
+  {{- end -}}
+  
+  {{- $sortedPages := $paginator.Pages.GroupByDate .Site.Params.yearFormat "desc" -}}
   {{- if eq $sort_config "weight" -}}
-    {{- $paginator = .Paginator.Pages.ByWeight -}}
+    {{- $sortedPages = $paginator.Pages.ByWeight -}}
   {{- else if eq $sort_config "weight-reverse" -}}
-    {{- $paginator = .Paginator.Pages.ByWeight.Reverse -}}
+    {{- $sortedPages = $paginator.Pages.ByWeight.Reverse -}}
   {{- else if eq $sort_config "date" -}}
-    {{- $paginator = .Paginator.Pages.GroupByDate .Site.Params.yearFormat "asc" -}}
+    {{- $sortedPages = $paginator.Pages.GroupByDate .Site.Params.yearFormat "asc" -}}
   {{- else if eq $sort_config "default" -}}
-    {{- $paginator = .Paginator.Pages -}}
+    {{- $sortedPages = $paginator.Pages -}}
   {{- end -}}
   <div
     class="archives-outer-wrap"
@@ -29,7 +40,7 @@
     {{- else -}}
       {{- partialCached "archives.html" . -}}
     {{- end -}}
-    {{- partial "list.html" (dict "paginator" $paginator "ctx" .) -}}
+    {{- partial "list.html" (dict "paginator" $sortedPages "ctx" .) -}}
   </div>
   {{- partial "pagination.html" . -}}
 {{- end -}}

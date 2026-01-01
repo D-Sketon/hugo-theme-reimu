@@ -13,7 +13,7 @@
 {{- if lt $over 0 -}}
   {{- $begin := add $begin $over -}}
 {{- end -}}
-<nav id="page-nav" data-aos="{{ .Site.Params.animation.options.archive.nav }}">
+<nav id="page-nav" aria-label="Pagination navigation" data-aos="{{ .Site.Params.animation.options.archive.nav }}">
   {{- if $pag.HasPrev -}}
     <a class="extend prev" rel="prev" href="{{ $pag.Prev.URL | relURL }}">
       &laquo;

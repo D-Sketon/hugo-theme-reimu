@@ -10,12 +10,13 @@
     @include reset-box-model;
     @include reset-font;
   }
-  
+
   body {
     @include reset-body;
   }
 
-  ol, ul {
+  ol,
+  ul {
     list-style: none;
   }
 
@@ -23,7 +24,9 @@
     @include reset-table;
   }
 
-  caption, th, td {
+  caption,
+  th,
+  td {
     @include reset-table-cell;
   }
 

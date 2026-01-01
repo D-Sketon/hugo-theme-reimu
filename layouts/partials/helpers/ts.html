@@ -3,6 +3,7 @@
 {{- $pjax := .pjax -}}
 {{- $target := .target -}}
 {{- $inline := .inline | default true -}}
+{{- $defer := .defer | default false -}}
 {{- $ctx := .ctx -}}
 
 {{- with resources.Get $source -}}
@@ -11,7 +12,7 @@
   {{- $opts := dict "targetPath" $target -}}
     {{- with $ts | js.Build $opts -}}
       {{- if $inline -}}
-      <script src="{{ .RelPermalink }}" {{ if $pjax }}data-pjax{{ end }}></script>
+      <script src="{{ .RelPermalink }}" {{ if $pjax }}data-pjax{{ end }} {{ if $defer }}defer{{ end }}></script>
       {{- else -}}
         <!-- {{ .RelPermalink }} -->
       {{- end -}}
@@ -21,7 +22,7 @@
     {{- $opts := dict "minify" true "targetPath" $target -}}
     {{- with $ts | js.Build $opts -}}
       {{- if $inline -}}
-      <script src="{{ .RelPermalink }}" integrity="{{- .Data.Integrity }}" crossorigin="anonymous" {{ if $pjax }}data-pjax{{ end }}></script>
+      <script src="{{ .RelPermalink }}" integrity="{{- .Data.Integrity }}" crossorigin="anonymous" {{ if $pjax }}data-pjax{{ end }} {{ if $defer }}defer{{ end }}></script>
       {{- else -}} 
          <!-- {{ .RelPermalink }} -->
       {{- end -}}

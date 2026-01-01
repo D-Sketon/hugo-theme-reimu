@@ -1,5 +1,6 @@
-<img src="https://cdn.jsdelivr.net/gh/D-Sketon/hugo-theme-reimu@main/images/screenshot.png"/>
+
 <div align = center>
+  <img src="https://fastly.jsdelivr.net/gh/D-Sketon/blog-img/icon.png"/>
   <h1>hugo-theme-reimu</h1>
   <img alt="version" src="https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fgithub.com%2FD-Sketon%2Fhugo-theme-reimu%2Fraw%2Fmain%2Fpackage.json&query=%24.version&label=version">
   <img alt="GitHub License" src="https://img.shields.io/github/license/D-Sketon/hugo-theme-reimu">
@@ -12,6 +13,7 @@
 
 简体中文 | [English](https://github.com/D-Sketon/hugo-theme-reimu/blob/main/README.en.md)
 
+<img src="https://cdn.jsdelivr.net/gh/D-Sketon/hugo-theme-reimu@main/images/screenshot.png"/>
 </div>
 
 A Hakurei Reimu style Hugo theme. Migrated from [hexo-theme-reimu](https://github.com/D-Sketon/hexo-theme-reimu).
@@ -21,10 +23,11 @@ A Hakurei Reimu style Hugo theme. Migrated from [hexo-theme-reimu](https://githu
 | framework                    | repository                                                         | version                                                                                                                                                                                     | stars                                                                                              |
 | ---------------------------- | ------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------- |
 | [Hexo](https://hexo.io/)     | [hexo-theme-reimu](https://github.com/D-Sketon/hexo-theme-reimu)   | <img alt="version" src="https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fgithub.com%2FD-Sketon%2Fhexo-theme-reimu%2Fraw%2Fmain%2Fpackage.json&query=%24.version&label=version">  | <img alt="GitHub Repo stars" src="https://img.shields.io/github/stars/D-Sketon/hexo-theme-reimu">  |
-| [Astro](https://astro.build) | [astro-theme-reimu](https://github.com/D-Sketon/astro-theme-reimu) | <img alt="version" src="https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fgithub.com%2FD-Sketon%2Fastro-theme-reimu%2Fraw%2Fmain%2Fpackage.json&query=%24.version&label=version"> | <img alt="GitHub Repo stars" src="https://img.shields.io/github/stars/D-Sketon/astro-theme-reimu"> |
 | [Hugo](https://gohugo.io)    | [hugo-theme-reimu](https://github.com/D-Sketon/hugo-theme-reimu)   | <img alt="version" src="https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fgithub.com%2FD-Sketon%2Fhugo-theme-reimu%2Fraw%2Fmain%2Fpackage.json&query=%24.version&label=version">  | <img alt="GitHub Repo stars" src="https://img.shields.io/github/stars/D-Sketon/hugo-theme-reimu">  |
+| [Astro](https://astro.build) | [astro-theme-reimu](https://github.com/D-Sketon/astro-theme-reimu) | <img alt="version" src="https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fgithub.com%2FD-Sketon%2Fastro-theme-reimu%2Fraw%2Fmain%2Fpackage.json&query=%24.version&label=version"> | <img alt="GitHub Repo stars" src="https://img.shields.io/github/stars/D-Sketon/astro-theme-reimu"> |
 
-**项目刚刚开始，欢迎提出 Issue 和 PR！**
+
+**欢迎提出 Issue 和 PR！**
 
 ## 特性
 
@@ -51,6 +54,7 @@ A Hakurei Reimu style Hugo theme. Migrated from [hexo-theme-reimu](https://githu
   - Twikoo
   - Gitalk
   - Giscus
+  - Disqus
 
 ### 统计与分析
 
@@ -71,7 +75,7 @@ A Hakurei Reimu style Hugo theme. Migrated from [hexo-theme-reimu](https://githu
 
 ### 导航与结构
 
-- 📑 目录导航（TOC）
+- 📑 目录导航
 - 🔄 PJAX 支持
 - 🔧 ServiceWorker 实现
 - 📰 RSS 订阅
@@ -80,13 +84,16 @@ A Hakurei Reimu style Hugo theme. Migrated from [hexo-theme-reimu](https://githu
 
 - 🎨 图标支持：
   - Iconfont
-  - FontAwesome
-- 🔗 自定义短代码：
+  - FontAwesome7
+- 🔗 内置短代码：
   - 内部链接
   - 外部链接
   - 友情链接
   - 热力图
   - 标签轮盘
+  - Alert块引用
+  - 标签页
+  - 照片墙
 - 🎨 动态适配主题色
 - ©️ 文章版权声明
 - 🌐 自定义 CDN 源 / 本地配置
@@ -224,7 +231,7 @@ cover: https://example.com
 ---
 ```
 
-- 如果文章的 Front matter 中包含 cover 为 `false`，则该文章不显示头图（首页上仍然是随机图片）
+- 如果文章的 Front matter 中包含 cover 为 `false`，则该文章不显示头图（首页缩略图仍然是随机图片）
 
 ```yaml
 ---
@@ -233,7 +240,7 @@ cover: false
 ---
 ```
 
-- 如果文章的 Front matter 中包含 cover 为 `rgb(xxx,xxx,xxx)`，则该文章头图为对应的渐变纯色（首页上仍然是随机图片）
+- 如果文章的 Front matter 中包含 cover 为 `rgb(xxx,xxx,xxx)`，则该文章头图为对应的渐变纯色（首页缩略图仍然是随机图片）
 
 ```yaml
 ---
@@ -242,8 +249,8 @@ cover: rgb(255,117,117)
 ---
 ```
 
-- 否则查找 `data` 文件夹中的 `covers.yml`，并从中随机挑选图片
-- 若上述文件均不存在，则显示头图
+- 否则首页缩略图查找 `data` 文件夹中的 `covers.yml`，并从中随机挑选图片，文章内头图查找 `params.yml` 中的 `cover` 配置
+- 若上述文件/配置均不存在，则显示 `banner` 头图作为兜底
 
 #### 头图
 
@@ -256,6 +263,131 @@ banner: "images/banner.webp"
 #### Favicon
 
 favicon 保存于 `themes/hugo-theme-reimu/static/favicon.ico`，可自行覆盖替换
+
+#### 文章总结
+
+默认关闭，可选择在副标题或者文章开头显示文章摘要
+
+```yaml
+summary:
+  enable: false
+  style: 'subtitle' # 'subtitle' | 'blockquote'
+```
+
+</details>
+
+<details>
+<summary>侧边栏</summary>
+
+### 侧边栏
+
+#### 侧边栏位置
+
+默认在右边，可在 `params.yml` 中修改
+
+```yaml
+sidebar:
+  position: right # left | right | false
+  menu: true # 是否显示侧边栏菜单按钮，移动端忽略
+  article:
+    show_common: true # 文章页是否显示通用侧边栏，移动端忽略
+```
+
+此外，也可以通过文章的 front-matter 控制，其优先级高于全局配置
+
+```yaml
+---
+sidebar: left # left | right | false
+---
+```
+
+> 当 sidebar 设置为 false 时，侧边栏将被隐藏，此时 aplayer 播放器和 widgets 小部件将同时无法显示
+
+#### TOC
+
+默认开启，可在 `params.yml` 中修改
+
+```yaml
+toc: true # true | false
+```
+
+此外，也可以通过文章的 front-matter 控制，其优先级高于全局配置
+
+```yaml
+---
+toc: true # true | false
+---
+```
+
+#### 社交链接
+
+可在 `params.yml` 中配置侧边栏中的社交链接
+
+```yaml
+social:
+  # github: https://github.com/yourname
+  # bilibili: https://space.bilibili.com/yourname
+  # ...
+```
+
+#### 侧边栏小部件
+
+可在 `params.yml` 中配置侧边栏小部件
+
+```yaml
+widgets:
+  - category # 分类
+  - tag # 标签
+  - tagcloud # 标签云
+  - recent_posts # 最近文章
+```
+
+此外，可使用如下配置对小部件进行行为配置
+
+```yaml
+category_limits: 10 # 分类数量限制
+tag_limits: 10 # 标签数量限制
+recent_posts_limits: 5 # 最近文章数量限制
+tagcloud_limits: 20 # 标签云数量限制
+```
+
+</details>
+<details>
+<summary>页脚</summary>
+
+### 页脚
+
+#### 基础信息
+
+页脚部分允许您配置基本显示信息和统计数据
+
+```yaml
+footer:
+  since: 2020 # 在版权信息中显示的起始年份（例如：2020-当前年份）
+  powered: true # 是否显示版权信息
+  count: true # 是否显示字数统计和阅读时间信息
+  busuanzi: true # 是否启用不蒜子访客统计功能
+```
+
+#### ICP 备案
+
+对于托管在中国大陆的网站，可以根据法规要求显示ICP备案信息
+
+```yml
+icp:
+  icpnumber: # ICP备案号
+  beian: # 网安备案号
+  recordcode: # 网安备案链接中的recordcode参数
+```
+
+#### 萌国 ICP 备案 (v0.12.1+)
+
+[萌国 ICP 备案](https://icp.gov.moe/)
+
+```yml
+moe_icp:
+  icpnumber: # 萌国ICP备案号
+```
 
 </details>
 <details>
@@ -330,6 +462,15 @@ valine:
   enable: true
   appId: "your appId"
   appKey: "your appKey"
+  pageSize: 10 # comment list page size
+  avatar: mp # gravatar style https://valine.js.org/#/avatar
+  # lang: zh-cn # deprecated, use html.lang instead
+  placeholder: Just go go # valine comment input placeholder(like: Please leave your footprints )
+  guest_info: nick,mail,link #valine comment header info
+  recordIP: true # whether to record the IP address of the commenters
+  highlight: true # whether to highlight the code blocks
+  visitor: false # whether to display the number of visitors
+  serverURLs: # leancloud server url
 ```
 
 若基于 [Waline](https://waline.js.org/)  
@@ -398,6 +539,16 @@ gitalk:
   owner: "repo owner"
   admin: "repo owner and collaborators"
   md5: false # 是否使用 md5 加密路径
+```
+
+若基于 [Disqus](https://disqus.com/)  
+请在内层 `params.yml` 中将 `disqus.enable` 改为 `true`，并填入自己的 `shortname`
+
+```yml
+disqus:
+  enable: true
+  shortname: "your shortname"
+  count: true # 是否启用评论数量统计
 ```
 
 </details>
@@ -489,6 +640,13 @@ mermaid: true
 ---
 ```
 
+此外，可在 `params.yml` 中对 Mermaid 进行配置
+
+```yaml
+mermaid:
+  zoom: false # 是否启用缩放功能
+```
+
 </details>
 <details>
 <summary>RSS</summary>
@@ -522,17 +680,17 @@ icon_font: 4552607_0khxww3tj3q9
 ```yml
 fontawesome:
   high_priority:
-    - src: webcache|@fortawesome/fontawesome-free@6.5.1/css/regular.min.css
-      integrity: sha384-k5640LgghgAohDLPwSqVWa96yQwWouT6wsAL+J1g0CFJVITNKYkIh1XpPLYKQe7Y
-    - src: webcache|@fortawesome/fontawesome-free@6.5.1/css/solid.min.css
-      integrity: sha384-8yO/A/BtltnG0hDxdwmmkza8UAleyDoAD1FhXiH6rsOQQsCho1P6WZP9TpBBH3YP
+    - src: webcache|@fortawesome/fontawesome-free@7.1.0/css/regular.min.css
+      integrity: sha384-4qYppzjH8EiA+cGdaubu2vL7Rk8WGiqCSj7oRuP1uwtFWkfKNHD20lPfcrbQc8dU
+    - src: webcache|@fortawesome/fontawesome-free@7.1.0/css/solid.min.css
+      integrity: sha384-wbMWab3UDSPm2kvIgVOn/d9KPTecgPU1+Nb3zoQrm/oVu0EkPL6IaKinjbwW0rum
   low_priority:
-    - src: webcache|@fortawesome/fontawesome-free@6.5.1/css/brands.min.css
-      integrity: sha384-/BRyRRN0wxxRgh/DAXU621go9pdoMHl6LFPiX5Pp8PZYZlKBQCDXj9X9DHx6LOud
-    - src: webcache|@fortawesome/fontawesome-free@6.5.1/css/v5-font-face.min.css
-      integrity: sha384-/mBKnLlGtog8q2qQrgugURRDV+iHWHAPvM5KulYXT1C2ErKOKkBI0vbff8ZPq7rL
-    - src: webcache|@fortawesome/fontawesome-free@6.5.1/css/v4-font-face.min.css
-      integrity: sha384-d2Yn1/9Iw78r3oqwk5B+EcpRcmepXR5LyhmRF2a+WoSe9mpRGvVk0ZviFwDGDOTO
+    - src: webcache|@fortawesome/fontawesome-free@7.1.0/css/brands.min.css
+      integrity: sha384-KTGeC2hIMzpeQakhsmzB9bZfhCD5xZZCgI1iZH6f/O457SxzlkzTQg/WXFNoi3ih
+    - src: webcache|@fortawesome/fontawesome-free@7.1.0/css/v5-font-face.min.css
+      integrity: sha384-nJ1ThfldViXoLpJ6jlKcP2beas8BMbYq26SG9Hi8cH89bZi4RZ644v7helMCqJxd
+    - src: webcache|@fortawesome/fontawesome-free@7.1.0/css/v4-font-face.min.css
+      integrity: sha384-UlkrhOIvZxJFd4MElSUp7ow6/RUeYKi/orfCZIRRiOENFuQPIAA3T3HjYfmBRhNq
 ```
 
 </details>
@@ -541,6 +699,16 @@ fontawesome:
 <summary>扩展功能</summary>
 
 ### 扩展功能
+
+#### 回到顶部
+
+默认开启
+
+```yaml
+top:
+  enable: true
+  position: right # left | right
+```
 
 #### 暗黑模式
 
@@ -552,6 +720,16 @@ dark_mode:
   # false 代表暗黑模式默认关闭
   # auto 代表根据用户系统设置自动切换
   enable: auto # true | false | auto
+```
+
+#### 站点统计
+
+默认关闭，支持百度统计、谷歌统计和微软 Clarity
+
+```yaml
+baidu_analytics: false
+google_analytics: false
+clarity: false
 ```
 
 #### Pace 进度条
@@ -570,6 +748,8 @@ pace:
 ```yaml
 firework:
   enable: true
+  disable_on_mobile: false # 是否在移动端禁用，可以提高性能
+  options: # mouse-firework 配置项
 ```
 
 具体配置请查看 [mouse-firework](https://github.com/D-Sketon/mouse-firework)
@@ -582,8 +762,6 @@ firework:
 pjax:
   enable: false
 ```
-
-> PJAX 用于那些需要添加音乐播放器等需要 SPA 的用户。但其仍然属于实验性质，引入后可能会出现诸如**脚本无法执行**、**脚本重复执行**、**页面渲染混乱**等 BUG。请慎重考虑！
 
 #### ServiceWorker
 
@@ -634,7 +812,9 @@ srcset:
     media: "(max-width: 479px)"
   - src: "images/banner-800w.webp"
     media: "(max-width: 799px)"
-  - src: "images/banner.webp"
+  - src: 
+    - "/images/banner.avif"
+    - "/images/banner.webp" #  支持数组形式的 fallback
     media: "(min-width: 800px)"
 ```
 
@@ -647,7 +827,7 @@ quicklink:
   enable: true
   timeout: 3000 # 预加载超时时间
   priority: true # 是否优先加载
-  ignores: [] # 忽略的链接，仅支持字符串
+  ignores: [] # 忽略的链接，仅支持字符串数组
 ```
 
 #### 文章版权声明
@@ -725,6 +905,15 @@ sponsor: true # 是否展示赞助二维码？
 
 使用Aplayer + Meting（可选）默认关闭
 
+##### 音乐播放器位置（v0.12.1+）
+
+默认在 sidebar 之后
+
+```yml
+player:
+  position: before_sidebar # before_sidebar / after_sidebar / after_widget
+```
+
 ##### 纯Aplayer
 
 将 `player.aplayer.enable` 设置为 `true`，并在 `player.aplayer.options` 中参考 [Aplayer Docs](https://aplayer.js.org/#/home?id=options) 进行配置
@@ -775,15 +964,6 @@ player:
       auto:
 ```
 
-#### Pangu 自动分割
-
-默认关闭，自动替你在文章中所有的中文字和半形的英文、数字、符号之间插入空白。
-
-```yml
-pangu:
-  enable: false
-```
-
 #### 分享链接/卡片（v0.5.0+）
 
 默认关闭，目前支持 `facebook`、`twitter`、`linkedin`、`reddit`、`weibo`、`qq`、`weixin`。
@@ -815,6 +995,40 @@ home_categories:
       cover:
 ```
 
+#### 注入器（v0.6.3+）
+
+用于注入自定义代码，其效果和 [Hexo#Injector](https://hexo.io/api/injector) 类似，支持 `head`、 `body` 和 `sidebar` 注入
+
+```yaml
+injector:
+  head_begin: # 在 <head> 标签后注入代码
+  head_end: # 在 </head> 标签前注入代码
+  body_begin: # 在 <body> 标签后注入代码
+  body_end: # 在 </body> 标签前注入代码
+  sidebar_begin: # 在 <aside> 标签后注入代码
+  sidebar_end: # 在 </aside> 标签前注入代码
+```
+
+#### Pangu 自动分割 （v0.7.0+）
+
+默认关闭，自动替你在文章中所有的中文字和半形的英文、数字、符号之间插入空白。
+
+```yml
+pangu:
+  enable: false
+```
+
+#### 三角徽标（v0.13.2+）
+
+默认关闭，打开后会在右上角展示三角徽标，支持自定义链接和图标
+
+```yml
+triangle_badge:
+  enable: false
+  icon: github # 与 social 配置里的 icon 相同
+  link: https://github.com/D-Sketon/hexo-theme-reimu
+```
+  
 #### 文章加密
 
 默认关闭，打开后可以将不想展示的文章进行加密，需要输入密码后才能查看
@@ -880,45 +1094,49 @@ Hello World!
 </details>
 
 <details>
-<summary>内置卡片shortcode</summary>
+<summary>内置shortcode</summary>
 
-### 内置卡片shortcode
+### 内置shortcode
 
 #### friendLink 友链卡片
 
-```yaml
+```markdown
 {{< friendsLink >}}
 ```
 
 无参数，直接读取 `data/friends.yml` 文件
 
-#### postLinkCard 内链卡片
+#### postLinkCard 内链卡片 (不推荐，建议使用 link)
 
-```yaml
+```markdown
 {{<postLinkCard path="?" cover="?" escape="?" >}}
 ```
 
+不推荐使用，建议使用 `link` shortcode 代替
+
 其中第一个参数为文章的 `path`；第二个参数（可选）为卡片展示的封面，如果设置为 `auto` 则自动使用博客的 `banner`；第三个参数（可选，`true | false`）表示文章标题是否被转义
 
-#### externalLinkCard 外链卡片
+#### externalLinkCard 外链卡片 (不推荐，建议使用 link)
 
-```yaml
+```markdown
 {{<externalLinkCard title="?" link="?" cover="?">}}
 ```
 
+不推荐使用，建议使用 `link` shortcode 代替
+
 其中第一个参数为文章的标题；第二个参数为文章的外部链接，第三个参数（可选）为卡片展示的封面，如果设置为 `auto` 则自动使用缺省封面
 
-#### heatMapCard 文章热力图 (v0.8.0+ 实验性功能)
+#### heatMapCard 文章热力图 (v0.8.0+)
 
-```yaml
+```markdown
 {{< heatMapCard levelStandard="?" >}}
 ```
 
 其中第一个参数为热力图的等级标准（按照文章字数分级），默认为 `"1000,5000,10000"`
 
-#### tagRoulette 标签轮盘 (v0.12.0+ 实验性功能)
+#### tagRoulette 标签轮盘 (v0.12.0+)
 
-```yaml
+```markdown
 {{< tagRoulette tags="?" icon="?" >}}
 ```
 
@@ -926,6 +1144,94 @@ tagRoulette 是一个互动元素，提供随机标签展示功能，点击按�
 
 - tags：可选参数，指定标签池，多个标签用英文逗号(,)分隔；未提供时默认使用几个示例标签，例如：tags="记忆衰退,表达欲丧失,更加怠惰,无感,好想睡觉"  
 - icon：可选参数，自定义触发按钮的图标，默认使用：🕹️（游戏手柄emoji），可替换为任何emoji或文字，如 🎲、🎯、🔄 等
+
+#### alertBlockquote 块引用 (v0.12.1+)
+
+```markdown
+{{< alertBlockquote type="?" >}}
+Your content here
+{{</alertBlockquote>}}
+```
+
+适用于 Hugo v0.132.0 以下版本不能使用 Hugo Blockquote render hooks 的场景。
+
+其中第一个参数为块引用的类型，可选参数为：`note`、`tip`、`important`、`warning`、`danger`
+
+#### link 链接卡片 (v0.14.0+)
+
+```markdown
+{{< link title="?" link/path="?" cover="?" escape="?" >}}
+```
+
+externalLinkCard 和 postLinkCard 的升级版，推荐使用。
+
+- title：链接卡片的标题，内链时可省略，自动使用文章标题
+- link/path：链接的 URL 地址，为保证兼容性，`link` 和 `path` 均可使用，二者效果相同
+- cover：卡片展示的封面，如果设置为 `auto` 则自动使用博客的 `banner` 或缺省封面
+- escape：文章标题是否被转义，取值`true | false`，默认为 `true`
+
+#### tabs 标签页 (v0.14.0+)
+
+```markdown
+{{< tabs [activeTab] ["center"] >}}
+<!-- tabName -->
+Tab content
+<!-- tabName -->
+Tab content
+{{< /tabs >}}
+```
+
+从 next, volantis, stellar 主题借鉴而来，支持在文章中创建标签页切换效果。
+
+- activeTab：可选参数，指定默认激活的标签页下标，从 1 开始计数，默认为 1
+- "center"：可选参数，指定标签页标题居中显示，默认左对齐
+- tabName：每个标签页的标题，必须用 `<!-- tabName -->` 包裹，支持使用 `@` + 图标十六进制代码 展示图标，例：
+  - 标题 `<!-- 标题 -->`
+  - 图标 `<!-- @e60c -->`
+  - 图标+标题 `<!-- 标题@e60c -->` 
+
+#### gallery 照片墙 (v0.14.0+)
+
+```markdown
+{{< gallery >}}
+![alt text](image_url1)
+![alt text](image_url2)
+...
+{{</gallery>}}
+```
+
+将多张图片以照片墙的形式展示出来，支持自动排列和响应式布局。
+
+#### grid 网格布局 (v0.14.1+)
+
+```markdown
+{{< grid width=? col=? >}}
+<!-- cell -->
+内容1
+<!-- cell -->
+内容2
+<!-- cell -->
+内容3
+{{< /grid >}}
+```
+
+将内容以网格的形式展示出来，支持响应式布局。
+
+- width：可选参数，设置最小列宽，如 `300` 表示最小列宽为 300px，默认值为 `240`
+- col：可选参数，设置固定列数，如 `3` 表示固定 3 列布局，默认值为自适应列数
+- 使用 `<!-- cell -->` 分隔每个网格单元，每个单元的内容会被独立渲染
+
+#### details 折叠面板 (v0.14.1+)
+
+```markdown
+{{< details summary="?" >}}
+内容
+{{< /details >}}
+```
+
+在文章中创建折叠面板。
+
+- summary：可选参数，设置折叠面板的标题
 
 #### encrypt 内容加密
 
@@ -945,6 +1251,8 @@ tagRoulette 是一个互动元素，提供随机标签展示功能，点击按�
 <details>
 <summary>自定义主题</summary>
 
+### 自定义主题
+
 #### 动态适配主题色 (v0.8.0+ 实验性功能)
 
 默认关闭，打开后会基于 Google's Material You 的设计规范根据文章头图的主色调动态生成主题色
@@ -959,8 +1267,6 @@ material_theme:
 #### 手动定制主题颜色
 
 hugo-theme-reimu 主题支持通过 CSS 变量定制主题颜色，你可以通过修改 `:root` 伪类下的 CSS 变量来定制你的主题颜色。
-
-~~变量文件位于 `assets/css/_variables.scss`，你可以在这个文件中找到所有的 CSS 变量，但其实只需要修改以下伪类下的变量即可~~
 
 v0.9.0 对外暴露了 `internal_theme` 配置用于定制主题颜色 token
 
@@ -978,40 +1284,46 @@ internal_theme:
     --color-red-6-shadow: "rgba(255, 78, 78, 0.6)"
     --color-red-3-shadow: "rgba(255, 78, 78, 0.3)"
 
-    --highlight-nav: "#e6e6e6"
+    --highlight-nav: "#f5f5f5"
     --highlight-scrollbar: "#d6d6d6"
-    --highlight-background: "#f7f7f7"
-    --highlight-current-line: "#dadada"
-    --highlight-selection: "#e9e9e9"
-    --highlight-foreground: "#4d4d4d"
+    --highlight-background: "#fdfdfd"
+    --highlight-selection: "#e9e9e988"
+    --highlight-foreground: "#24292e"
     --highlight-comment: "#7d7d7d"
-    --highlight-red: "#c8362b"
-    --highlight-orange: "#b66014"
+    --highlight-red: "#d73a49"
+    --highlight-orange: "#e36209"
     --highlight-yellow: "#cb911d"
-    --highlight-green: "#2ea52e"
-    --highlight-aqua: "#479d9d"
-    --highlight-blue: "#1973b8"
-    --highlight-purple: "#7135ac"
+    --highlight-green: "#22863a"
+    --highlight-aqua: "#005cc5"
+    --highlight-blue: "#032f62"
+    --highlight-purple: "#6f42c1"
+    --highlight-deletion: "#b31d28"
+    --highlight-deletion-bg: "#ffeef0"
+    --highlight-addition: "#22863a"
+    --highlight-addition-bg: "#f0fff4"
   dark:
     --red-4: "rgba(255, 208, 208, 0.5)"
     --red-5: "rgba(255,228,228,0.15)"
     --red-5-5: "rgba(255,236,236,0.05)"
     --red-6: "rgba(255, 243, 243, 0.2)"
 
-    --highlight-nav: "#2e353f"
+    --highlight-nav: "#222830"
     --highlight-scrollbar: "#454d59"
-    --highlight-background: "#22272e"
-    --highlight-current-line: "#393939"
-    --highlight-selection: "#515151"
-    --highlight-foreground: "#cccccc"
-    --highlight-comment: "#999999"
-    --highlight-red: "#f47067"
-    --highlight-orange: "#f69d50"
+    --highlight-background: "#1e2027"
+    --highlight-selection: "#51515155"
+    --highlight-foreground: "#c9d1d9"
+    --highlight-comment: "#8b949e"
+    --highlight-red: "#ff7b72"
+    --highlight-orange: "#ffa657"
     --highlight-yellow: "#ffcc66"
-    --highlight-green: "#99cc99"
-    --highlight-aqua: "#66cccc"
-    --highlight-blue: "#54b6ff"
-    --highlight-purple: "#dcbdfb"
+    --highlight-green: "#7ee787"
+    --highlight-aqua: "#a5d6ff"
+    --highlight-blue: "#79c0ff"
+    --highlight-purple: "#d2a8ff"
+    --highlight-deletion: "#ffa198"
+    --highlight-deletion-bg: "#490202"
+    --highlight-addition: "#7ee787"
+    --highlight-addition-bg: "#04260f"
 ```
 
 #### 自定义字体
@@ -1062,7 +1374,7 @@ custom_font:
 
 ##### 头部 / 侧边栏图标
 
-v0.1.0 的 `menu` 配置的结构发生了变化，允许用户自定义 icon。icon 为空时默认使用太极图标，你可以填写一个十六进制的数字来自定义 icon，同时支持 fontawesome 和 icon font。
+v0.1.0 的 `menu` 配置的结构发生了变化，允许用户自定义 icon。icon 为空时默认使用太极图标，你可以填写一个十六进制的数字来自定义 icon，同时支持 fontawesome，icon font 和 `false`。
 
 v0.10.2 icon 支持图片路径，如 `/avatar/avatar.webp`。
 
@@ -1073,7 +1385,7 @@ menu:
     icon: # 不填默认使用太极图标
   - name: archives
     url: /archives
-    icon: f0c1 # 你可以填写一个十六进制的数字来自定义 icon，支持 fontawesome 和 icon font
+    icon: f0c1 # 你可以填写一个十六进制的数字来自定义 icon，支持 fontawesome 和 icon font，如果填写 false 则不显示图标
   - name: about
     url: /about
     icon:
@@ -1093,7 +1405,7 @@ v0.1.0 的 `footer`、`top`、`sponsor` 配置均增加了 `icon` 配置用于�
 ```yaml
 footer:
   icon:
-    url: "../images/taichi.png" # 相对于 css/main.css 的路径，所以需要向上一级才能找到 images 文件夹
+    url: "../images/taichi.png" # 相对于 css/main.css 的路径，所以需要向上一级才能找到 images 文件夹，支持 false 以隐藏图标
     rotate: true
     mask: true
 
@@ -1105,7 +1417,7 @@ top:
 
 sponsor:
   icon:
-    url: "../images/taichi.png"
+    url: "../images/taichi.png" # 支持 false 以隐藏图标
     rotate: true
     mask: true
 ```
@@ -1151,6 +1463,36 @@ reimu_cursor:
     text: ../images/cursor/reimu-cursor-text.png
 ```
 
+#### 自定义滚动动画
+
+基于 [AOS.js](https://github.com/D-Sketon/aos.js) 实现的滚动动画效果，默认为 `true`，可以通过以下配置开启或关闭，并为不同页面设置不同的动画效果。
+
+```yaml
+animation:
+  enable: true
+  options:
+    header:
+    home:
+    article:
+    archive:
+```
+
+**可用动画效果：**
+
+- **Fade**: fade, fade-up, fade-down, fade-left, fade-right, fade-up-right, fade-up-left, fade-down-right, fade-down-left
+- **Flip**: flip-up, flip-down, flip-left, flip-right
+- **Slide**: slide-up, slide-down, slide-left, slide-right
+- **Zoom**: zoom-in, zoom-in-up, zoom-in-down, zoom-in-left, zoom-in-right, zoom-out, zoom-out-up, zoom-out-down, zoom-out-left, zoom-out-right
+
+#### 自定义样式
+
+可以通过修改 `layout.max_width` 来定制主要内容区域的最大宽度，默认为 `1350px`。
+
+```yaml
+layout:
+  max_width: 1350px # 主要内容区域的最大宽度
+```
+
 </details>
 
 <details>
@@ -1189,6 +1531,34 @@ js:
 以上两种形式均支持，建议对外部 CDN 资源使用 SRI 校验，以确保资源的完整性。
 
 </details>
+<details>
+<summary>Front-matter 字段</summary>
+
+### Front-matter 字段
+
+| meta        | 描述                                            | 类型                         | 取值逻辑           | 版本      |
+| ----------- | ----------------------------------------------- | ---------------------------- | ------------------ | --------- |
+| title       | 标题                                            | `string`                     | -                  | Hugo 内置 |
+| date        | 文章创建时间                                    | `datetime`                   | -                  | Hugo 内置 |
+| lastmod     | 文章最后修改时间                                | `datetime`                   | -                  | Hugo 内置 |
+| summary     | 文章摘要                                        | `string`                     | -                  | Hugo 内置 |
+| weight      | 文章权重，用于排序/置顶                         | `int`                        | -                  | Hugo 内置 |
+| categories  | 文章分类                                        | `string[]`                   | -                  | 0.0.1     |
+| tags        | 文章标签                                        | `string[]`                   | -                  | 0.0.1     |
+| description | 文章描述                                        | `string`                     | -                  | 0.0.1     |
+| mermaid     | 是否开启 mermaid，需配合 `mermaid` 配置一起使用 | `boolean`                    | `false`            | 0.0.1     |
+| math        | 是否开启 LaTeX，需配合 `math` 配置一起使用      | `boolean`                    | `false`            | 0.0.1     |
+| link        | 用于文章直接指向外部链接                        | `string`                     | -                  | 0.0.1     |
+| copyright   | 是否开启文章版权声明                            | `boolean`                    | 不传默认走全局配置 | 0.0.1     |
+| sponsor     | 是否开启文章赞助                                | `boolean`                    | 不传默认走全局配置 | 0.0.1     |
+| comments    | 是否开启文章评论                                | `boolean`                    | 不传默认走全局配置 | 0.0.1     |
+| photos      | 文章照片墙                                      | `string[]`                   | -                  | 0.0.1     |
+| sidebar     | 文章侧边栏位置                                  | `false \| 'left' \| 'right'` | 不传默认走全局配置 | 0.5.0     |
+| toc         | 是否开启文章目录                                | `boolean`                    | 不传默认走全局配置 | 0.7.0     |
+| outdated    | 文章是否过期                                    | `boolean`                    | 不传默认走全局配置 | 0.13.1    |
+| author      | 文章作者，用于文章版权和分享卡片                | `string`                     | 不传默认走全局配置 | 0.13.2    |
+| keywords    | 文章关键词                                      | `string[] \| string`         | 不传默认走全局配置 | 0.13.4    |
+</details>
 
 ## 贡献者
 
@@ -1197,6 +1567,10 @@ js:
 ## 赞助 💘
 
 [爱发电-afdian](https://afdian.tv/a/dsketon)
+
+## Star History
+
+[![Star History Chart](https://api.star-history.com/svg?repos=D-Sketon/hugo-theme-reimu&type=date&legend=top-left)](https://www.star-history.com/#D-Sketon/hugo-theme-reimu&type=date&legend=top-left)
 
 ## 许可
 

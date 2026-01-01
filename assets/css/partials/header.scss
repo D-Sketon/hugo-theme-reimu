@@ -8,7 +8,7 @@
     top: 0;
     left: 0;
     width: 100%;
-    height: 150%;
+    height: 180%;
     z-index: -2;
     user-select: none;
     display: block;
@@ -48,7 +48,9 @@
   justify-content: center;
   background: var(--color-header-background);
   box-shadow: var(--shadow-card);
-  transition: background 1s, top 0.3s;
+  transition:
+    background 1s,
+    top 0.3s;
   z-index: 200;
 
   &:hover {
@@ -61,13 +63,16 @@
 }
 
 #header-title {
-  font-family: $font-basic;
   font-weight: 700;
   text-align: center;
   position: absolute;
   top: 50%;
   margin: $logo-size * -0.5 2.5% 0;
   width: 95%;
+  opacity: 0;
+  filter: blur(8px);
+  will-change: transform, opacity, filter;
+  animation: fade-in-blur 800ms ease-out 200ms forwards;
 }
 
 @mixin logo-text {
@@ -82,10 +87,10 @@
   letter-spacing: 2px;
   display: inline-block;
   transform: translateY(-20%);
-  text-shadow: 0 0 0.5rem rgba(0, 0, 0, .7);
+  text-shadow: 0 0 0.5rem rgba(0, 0, 0, 0.7);
 
   @media #{$mg-large} {
-    font-size: 35px;
+    font-size: 36px;
   }
 
   @media #{$mq-tablet} {
@@ -103,9 +108,13 @@
   font-weight: 400;
   letter-spacing: 1px;
   text-shadow: 0 0 5px rgba(0, 0, 0, 0.7);
+  width: 70%;
+  margin: 0 auto;
+  display: block;
+  line-height: 1.5;
 
   @media #{$mg-large} {
-    font-size: 15px;
+    font-size: 16px;
   }
 
   @media #{$mq-tablet} {
@@ -134,25 +143,6 @@
   padding: 20px 15px;
 }
 
-@mixin nav-link-wrap {
-  @include nav-link;
-  padding: 0 15px;
-  display: flex;
-  transition: 0.3s;
-
-  &:hover {
-    opacity: 1;
-  }
-
-  @media #{$mg-large} {
-    padding: 0 10px;
-  }
-
-  @media #{$mg-normal} {
-    padding: 0 4px;
-  }
-}
-
 .nav-icon {
   @include nav-link;
   text-align: center;
@@ -176,7 +166,18 @@
 }
 
 .main-nav-link-wrap {
-  @include nav-link-wrap;
+  @include nav-link;
+  padding: 0 15px;
+  display: flex;
+  transition: 0.3s;
+
+  &:hover {
+    opacity: 1;
+  }
+
+  @media #{$mg-large} {
+    padding: 0 10px;
+  }
 
   @media #{$mg-normal} {
     display: none;
@@ -209,7 +210,9 @@
   align-items: center;
   font-size: 24px;
   font-weight: 400;
-  transition: transform 0.3s, color 0.3s;
+  transition:
+    transform 0.3s,
+    color 0.3s;
   will-change: transform;
 
   &.rotate {
@@ -233,7 +236,8 @@
   }
 }
 
-#sub-nav, #i18n-nav {
+#sub-nav,
+#i18n-nav {
   display: flex;
   align-items: center;
 }
@@ -267,14 +271,19 @@
   top: 100%;
   left: 0;
   right: 0;
-  border-radius: 5px;
+  border-radius: $tag-radius;
   background-color: var(--color-wrap);
-  margin-top: 5px;
-  display: none;
+  margin-top: 4px;
   z-index: 1;
   font-size: 14px;
-  overflow: hidden;
   box-shadow: var(--shadow-card);
+  interpolate-size: allow-keywords;
+  height: 0;
+  overflow: hidden;
+  transition: height 0.3s ease, opacity 0.3s ease, transform 0.3s ease;
+  opacity: 0;
+  transform: translateY(-10px);
+  pointer-events: none;
 }
 
 .select-items li {
@@ -291,10 +300,42 @@
 }
 
 .select-items.show {
-  display: block;
+  height: auto;
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
 }
 
 .select-items li.selected {
   background: var(--red-1);
   color: #fff;
+}
+
+@if $triangle-badge-enable {
+  .triangle-badge {
+    position: absolute;
+    top: -6px;
+    right: -26px;
+    transform: rotate(45deg);
+    width: 0;
+    height: 0;
+    border-left: 40px solid transparent;
+    border-right: 40px solid transparent;
+    border-bottom: 40px solid var(--red-2);
+    display: inline-block;
+    transition: 0.3s;
+
+    @media #{$mg-large} {
+      display: none;
+    }
+  }
+
+  .triangle-badge-icon {
+    position: absolute;
+    top: 12px;
+    left: -13px;
+    color: var(--color-header-background) !important;
+    font-size: 28px;
+    transition: 0.3s;
+  }
 }

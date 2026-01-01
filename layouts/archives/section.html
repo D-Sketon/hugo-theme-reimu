@@ -1,14 +1,25 @@
 {{- define "main" -}}
   {{- $sort_config := .Site.Params.sort_order.archive -}}
-  {{- $paginator := (.Paginate (where .Page.Site.RegularPages "Section" "in" .Site.Params.mainSections)).Pages.GroupByDate .Site.Params.yearFormat "desc" -}}
+  {{- $pageSize := 0 -}}
+  {{- with $.Site.Params.paginate.archive -}}
+    {{- $pageSize = . -}}
+  {{- end -}}
+  {{- $paginator := "" -}}
+  {{- if gt $pageSize 0 -}}
+    {{- $paginator = .Paginate (where .Page.Site.RegularPages "Section" "in" .Site.Params.mainSections) $pageSize -}}
+  {{- else -}}
+    {{- $paginator = .Paginate (where .Page.Site.RegularPages "Section" "in" .Site.Params.mainSections) -}}
+  {{- end -}}
+  
+  {{- $sortedPages := $paginator.Pages.GroupByDate .Site.Params.yearFormat "desc" -}}
   {{- if eq $sort_config "weight" -}}
-    {{- $paginator = (.Paginate (where .Page.Site.RegularPages "Section" "in" .Site.Params.mainSections)).Pages.ByWeight -}}
+    {{- $sortedPages = $paginator.Pages.ByWeight -}}
   {{- else if eq $sort_config "weight-reverse" -}}
-    {{- $paginator = (.Paginate (where .Page.Site.RegularPages "Section" "in" .Site.Params.mainSections)).Pages.ByWeight.Reverse -}}
+    {{- $sortedPages = $paginator.Pages.ByWeight.Reverse -}}
   {{- else if eq $sort_config "date" -}}
-    {{- $paginator = (.Paginate (where .Page.Site.RegularPages "Section" "in" .Site.Params.mainSections)).Pages.GroupByDate .Site.Params.yearFormat "asc" -}}
+    {{- $sortedPages = $paginator.Pages.GroupByDate .Site.Params.yearFormat "asc" -}}
   {{- else if eq $sort_config "default" -}}
-    {{- $paginator = (.Paginate (where .Page.Site.RegularPages "Section" "in" .Site.Params.mainSections)).Pages -}}
+    {{- $sortedPages = $paginator.Pages -}}
   {{- end -}}
   <div
     class="archives-outer-wrap"
@@ -21,7 +32,7 @@
     {{- else -}}
       {{- partialCached "archives.html" . -}}
     {{- end -}}
-    {{- partial "list.html" (dict "paginator" $paginator "ctx" .) -}}
+    {{- partial "list.html" (dict "paginator" $sortedPages "ctx" .) -}}
   </div>
   {{- partial "pagination.html" . -}}
 {{- end -}}

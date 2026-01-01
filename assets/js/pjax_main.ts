@@ -28,16 +28,20 @@ var scrollIntoViewAndWait = (element: HTMLElement) => {
 
 // anchor
 _$$(
-  ".article-entry h1>a, .article-entry h2>a, .article-entry h3>a, .article-entry h4>a, .article-entry h5>a, .article-entry h6>a",
+  ".article-entry h1>a.header-anchor, .article-entry h2>a.header-anchor, .article-entry h3>a.header-anchor, .article-entry h4>a.header-anchor, .article-entry h5>a.header-anchor, .article-entry h6>a.header-anchor",
 ).forEach((element) => {
   if (window.siteConfig.icon_font) {
     element.innerHTML = window.siteConfig.anchor_icon
       ? `&#x${window.siteConfig.anchor_icon};`
-      : window.siteConfig.anchor_icon === false ? "" : "&#xe635;";
+      : window.siteConfig.anchor_icon === false
+        ? ""
+        : "&#xe635;";
   } else {
     element.innerHTML = window.siteConfig.anchor_icon
       ? `&#x${window.siteConfig.anchor_icon};`
-      : window.siteConfig.anchor_icon === false ? "" : "&#xf292;";
+      : window.siteConfig.anchor_icon === false
+        ? ""
+        : "&#xf292;";
   }
 });
 
@@ -61,6 +65,16 @@ _$$(
     a.appendChild(element);
   },
 );
+
+// table wrap
+_$$(".article-entry table").forEach((element) => {
+  if (element.closest("div.highlight")) return;
+  const wrapper = document.createElement("div");
+  wrapper.classList.add("table-wrapper");
+  element.parentNode?.insertBefore(wrapper, element);
+  element.parentNode?.removeChild(element);
+  wrapper.appendChild(element);
+});
 
 window.lightboxStatus = "ready";
 window.dispatchEvent(new Event("lightbox:ready"));
@@ -250,7 +264,7 @@ function tocInit() {
 
     let parent = target.parentNode as HTMLElement;
 
-    while (!parent.matches(".sidebar-toc")) {
+    while (!parent.matches(".sidebar-toc-sidebar")) {
       if (parent.matches("li")) {
         parent.classList.add("active");
         const t = document.getElementById(
@@ -311,13 +325,34 @@ function tocInit() {
 
 tocInit();
 
-_$(".sponsor-button-wrapper")
+_$(".sponsor-button")
   ?.off("click")
   .on("click", () => {
-    _$(".sponsor-button-wrapper")?.classList.toggle("active");
+    _$(".sponsor-button")?.classList.toggle("active");
     _$(".sponsor-tip")?.classList.toggle("active");
     _$(".sponsor-qr")?.classList.toggle("active");
   });
+
+var shareWeixinHandler: (e: any) => void;
+if (shareWeixinHandler) {
+  document.off("click", shareWeixinHandler);
+}
+shareWeixinHandler = (e) => {
+  if (e.target.closest(".share-icon.icon-weixin")) return;
+  const sw = _$("#share-weixin") as HTMLElement | null;
+  if (sw && sw.classList.contains("active")) {
+    sw.classList.remove("active");
+    sw.addEventListener(
+      "transitionend",
+      function handler() {
+        sw.style.display = "none";
+        sw.removeEventListener("transitionend", handler);
+      },
+      { once: true },
+    );
+  }
+};
+document.on("click", shareWeixinHandler);
 
 _$(".share-icon.icon-weixin")
   ?.off("click")
@@ -333,7 +368,23 @@ _$(".share-icon.icon-weixin")
       shareWeixin.style.left = "-138px";
     }
     if (e.target === this) {
-      shareWeixin.classList.toggle("active");
+      const el = shareWeixin as HTMLElement;
+      if (!el) return;
+      if (!el.classList.contains("active")) {
+        el.style.display = "block";
+        requestAnimationFrame(() => {
+          el.classList.add("active");
+        });
+      } else {
+        el.classList.remove("active");
+        const onEnd = (ev: TransitionEvent) => {
+          if (ev.propertyName === "opacity") {
+            el.style.display = "none";
+            el.removeEventListener("transitionend", onEnd as any);
+          }
+        };
+        el.addEventListener("transitionend", onEnd as any);
+      }
     }
     // if contains img return
     if (_$(".share-weixin-canvas").children.length) {
@@ -350,18 +401,24 @@ _$(".share-icon.icon-weixin")
         return;
       }
       (_$("#share-weixin-qr") as HTMLImageElement).src = dataUrl;
-      snapdom.toPng(_$(".share-weixin-dom")).then((img) => {
-        _$(".share-weixin-canvas").appendChild(img);
-      }).catch(() => {
-        // we assume that the error is caused by the browser's security policy
-        // so we will remove the banner and try again
-        _$("#share-weixin-banner").remove();
-        snapdom.toPng(_$(".share-weixin-dom")).then((img) => {
+      snapdom
+        .toPng(_$(".share-weixin-dom"))
+        .then((img) => {
           _$(".share-weixin-canvas").appendChild(img);
-        }).catch(() => {
-          console.error("Failed to generate weixin share image.");
+        })
+        .catch(() => {
+          // we assume that the error is caused by the browser's security policy
+          // so we will remove the banner and try again
+          _$("#share-weixin-banner").remove();
+          snapdom
+            .toPng(_$(".share-weixin-dom"))
+            .then((img) => {
+              _$(".share-weixin-canvas").appendChild(img);
+            })
+            .catch(() => {
+              console.error("Failed to generate weixin share image.");
+            });
         });
-      });
     });
   });
 

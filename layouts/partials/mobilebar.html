@@ -1,20 +1,20 @@
-<nav id="mobile-nav">
+<nav id="mobile-nav" aria-label="Mobile navigation">
   <div class="sidebar-wrap">
     {{- if in .Site.Params.mainSections .Type -}}
       {{- if eq .Params.toc false -}}
-        {{- partialCached "sidebar/commonBar.html" . -}}
+        {{- partial "sidebar/commonBar.html" (dict "ctx" . "mobile" true) -}}
       {{- else if and (ne .Params.toc true) (eq .Site.Params.toc false) -}}
-        {{- partialCached "sidebar/commonBar.html" . -}}
+        {{- partial "sidebar/commonBar.html" (dict "ctx" . "mobile" true) -}}
       {{- else -}}
         <div class="sidebar-toc-sidebar">
           {{- partial "sidebar/tocBar.html" . -}}
         </div>
         <div class="sidebar-common-sidebar hidden">
-          {{- partialCached "sidebar/commonBar.html" . -}}
+          {{- partial "sidebar/commonBar.html" (dict "ctx" . "mobile" true) -}}
         </div>
       {{- end -}}
     {{- else -}}
-      {{- partialCached "sidebar/commonBar.html" . -}}
+      {{- partial "sidebar/commonBar.html" (dict "ctx" . "mobile" true) -}}
     {{- end -}}
   </div>
   {{- if in .Site.Params.mainSections .Type -}}

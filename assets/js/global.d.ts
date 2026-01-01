@@ -103,7 +103,10 @@ declare global {
   var materialTheme: any;
   var bannerElement: HTMLImageElement | undefined;
   var generateSchemeHandler: () => void;
-  var throttle:  (func: (...args: any[]) => void, limit: number) => (...args: any[]) => void;
+  var throttle: (
+    func: (...args: any[]) => void,
+    limit: number,
+  ) => (...args: any[]) => void;
   /**
    * Lightbox status
    */
@@ -120,6 +123,10 @@ declare global {
    * AOS init
    */
   var aosInit: (() => void) | undefined;
+  /**
+   * PanZoom instances list
+   */
+  var __panZoomList: any[] | undefined;
 
   var siteConfig: {
     icon_font?: string | boolean;
@@ -137,7 +144,12 @@ declare global {
     anchor_icon?: string | boolean;
     code_block?: {
       expand?: boolean;
-    }
+    };
+    i18n_languages?: {
+      Lang: string;
+      LanguageName: string;
+    }[];
+    base?: string;
   };
 
   var REIMU_POST: {
@@ -146,7 +158,7 @@ declare global {
     url: string;
     description: string;
     cover: string;
-  }
+  };
 
   var safeImport: (url: string, integrity?: string) => Promise<any>;
 

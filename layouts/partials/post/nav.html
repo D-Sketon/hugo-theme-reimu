@@ -1,13 +1,14 @@
 {{- if or .PrevInSection .NextInSection -}}
   <nav
     id="article-nav"
+    aria-label="Article navigation"
     data-aos="{{ .Site.Params.animation.options.article.nav }}"
   >
     {{- if .PrevInSection -}}
-      <div class="article-nav-link-wrap article-nav-link-left">
+      <div class="article-nav-link-wrap left">
         {{- if and .PrevInSection.Params.cover (not (strings.HasPrefix .PrevInSection.Params.cover "rgb")) -}}
           <img
-            data-src="{{ .PrevInSection.Params.cover }}"
+            data-src="{{ .PrevInSection.Params.cover | relURL }}"
             data-sizes="auto"
             alt="{{ .PrevInSection.Title }}"
             class="lazyload"
@@ -16,7 +17,7 @@
           {{- $covers := partial "helpers/randomCover.html" . -}}
           {{- if $covers -}}
             <img
-              data-src="{{ $covers }}"
+              data-src="{{ $covers | relURL }}"
               data-sizes="auto"
               alt="{{ .PrevInSection.Title }}"
               class="lazyload"
@@ -30,7 +31,19 @@
             />
           {{- end -}}
         {{- end -}}
-        <a href="{{ .PrevInSection.Permalink | relURL }}"></a>
+        <a
+          href="{{ .PrevInSection.Permalink | relURL }}"
+          aria-label="{{ i18n "newer" }}: {{- if .PrevInSection.Title -}}
+            {{- .PrevInSection.Title -}}
+          {{- else -}}
+            (no title)
+          {{- end -}}"
+          title="{{ i18n "newer" }}: {{- if .PrevInSection.Title -}}
+            {{- .PrevInSection.Title -}}
+          {{- else -}}
+            (no title)
+          {{- end -}}"
+        ></a>
         <div class="article-nav-caption">{{ i18n "newer" }}</div>
         <h3 class="article-nav-title">
           {{- if .PrevInSection.Title -}}
@@ -43,10 +56,10 @@
     {{- end -}}
 
     {{- if .NextInSection -}}
-      <div class="article-nav-link-wrap article-nav-link-right">
+      <div class="article-nav-link-wrap right">
         {{- if and .NextInSection.Params.cover (not (strings.HasPrefix .NextInSection.Params.cover "rgb")) -}}
           <img
-            data-src="{{ .NextInSection.Params.cover }}"
+            data-src="{{ .NextInSection.Params.cover | relURL }}"
             data-sizes="auto"
             alt="{{ .NextInSection.Title }}"
             class="lazyload"
@@ -55,7 +68,7 @@
           {{- $covers := partial "helpers/randomCover.html" . -}}
           {{- if $covers -}}
             <img
-              data-src="{{ $covers }}"
+              data-src="{{ $covers | relURL }}"
               data-sizes="auto"
               alt="{{ .NextInSection.Title }}"
               class="lazyload"
@@ -69,7 +82,19 @@
             />
           {{- end -}}
         {{- end -}}
-        <a href="{{ .NextInSection.Permalink | relURL }}"></a>
+        <a
+          href="{{ .NextInSection.Permalink | relURL }}"
+          aria-label="{{ i18n "older" }}: {{- if .NextInSection.Title -}}
+            {{- .NextInSection.Title -}}
+          {{- else -}}
+            (no title)
+          {{- end -}}"
+          title="{{ i18n "older" }}: {{- if .NextInSection.Title -}}
+            {{- .NextInSection.Title -}}
+          {{- else -}}
+            (no title)
+          {{- end -}}"
+        ></a>
         <div class="article-nav-caption">{{ i18n "older" }}</div>
         <h3 class="article-nav-title">
           {{- if .NextInSection.Title -}}

@@ -11,8 +11,8 @@ archive_a: Arquivos
 archive_b: "Arquivos: {{ . -}}"
 page: "Página {{ . -}}"
 recent_posts: Posts Recentes
-newer: Mais Recente
-older: Mais Antigo
+newer: Anterior
+older: Próximo
 share: Compartilhar
 powered_by: Desenvolvido com
 rss_feed: Feed RSS

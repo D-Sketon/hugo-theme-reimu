@@ -1,8 +1,12 @@
 #comments {
   background: var(--color-wrap);
-  padding: $article-padding $article-padding + 15px;
+  padding: $article-padding $article-padding + 16px;
   border-radius: $post-radius;
-  margin: 10px 0;
+  margin: 12px 0;
+
+  @media #{$mg-normal} {
+    padding: $article-padding 16px;
+  }
 
   a {
     color: var(--color-link);
@@ -15,7 +19,7 @@
   width: 100%;
 
   .comment-title {
-    margin: 0 0 10px;
+    margin: 0 0 12px;
     width: 100%;
     text-align: center;
     color: var(--color-default);
@@ -25,20 +29,20 @@
     width: 100%;
     display: flex;
     justify-content: flex-end;
-    margin-bottom: 15px;
+    margin-bottom: 16px;
   }
 
   .comment-selector-wrap {
     display: flex;
     overflow: hidden;
-    border-radius: 0.4em;
+    border-radius: $tag-radius;
 
     .selector-item {
-      font-size: 0.8rem;
+      font-size: 14px;
       color: #555;
       background-color: #c9ccd0;
       transition: 0.3s;
-      padding: 0.31rem 0.32rem;
+      padding: 4px;
       cursor: var(--cursor-pointer) !important;
       font-weight: bold;
 
@@ -191,7 +195,7 @@
   p,
   table {
     line-height: $line-height;
-    margin: ($line-height / 3 * 2) 0;
+    margin: 16px 0;
   }
 
   h1,
@@ -202,7 +206,7 @@
   h6 {
     font-weight: bold;
     line-height: $line-height-title;
-    margin: $line-height-title 0 ($line-height-title / 3 * 2);
+    margin: $line-height-title 0 0.75em;
   }
 
   h2 {
@@ -219,14 +223,8 @@
     }
   }
 
-  ul,
-  ol,
-  dl {
-    margin-top: ($line-height / 3 * 2);
-    margin-bottom: ($line-height / 3 * 2);
-  }
-
   li {
+    margin: 8px 0;
     &:hover {
       &::marker {
         transition: color 0.2s;
@@ -252,21 +250,22 @@
   th {
     font-weight: bold;
     border-bottom: 3px solid var(--color-border);
-    padding-bottom: 0.5em;
+    padding-bottom: 8px;
   }
 
   td {
     border-bottom: 1px solid var(--color-border);
-    padding: 10px 0;
+    padding: 8px 0;
   }
 
   blockquote {
     background: var(--red-5-5);
     border-left: 6px var(--red-4) solid !important;
-    margin: ($line-height / 3 * 2) 0 !important;
+    margin: 28px 0 !important;
     border-radius: $post-radius;
     transition: 0.3s;
-    padding: 1px 10px !important;
+    display: flow-root;
+    padding: 0 12px !important;
     box-shadow: var(--shadow-meta);
 
     &:hover {
@@ -275,20 +274,19 @@
 
     footer {
       font-size: $font-size;
-      margin: $line-height 0;
+      margin: 24px 0;
 
       cite {
         &:before {
           content: "—";
-          padding: 0 0.5em;
+          padding: 0 8px;
         }
       }
     }
   }
 
   details {
-    margin: 1.8em 0px;
-    padding: 18px 12px;
+    padding: 16px 12px;
     border-radius: $post-radius;
     background-color: var(--red-5-5);
     box-shadow: var(--shadow-meta);
@@ -305,7 +303,7 @@
     cursor: var(--cursor-pointer) !important;
     padding: 8px;
     border: none;
-    border-radius: 10px;
+    border-radius: $tag-radius;
     transition: 0.3s;
   }
 
@@ -323,9 +321,9 @@
 
   details p {
     margin: 20px 0 0;
-    padding: 10px;
+    padding: 12px;
     background-color: var(--color-footer-background);
-    border-radius: 10px;
+    border-radius: $tag-radius;
     transition: 0.3s;
   }
 
@@ -337,14 +335,14 @@
   pre,
   code {
     font-family: $font-code !important;
-    font-size: 95% !important;
+    font-size: 15px !important;
     transition: 0.3s;
     word-break: break-word;
   }
   code:not(pre code) {
     background: var(--color-code-background) !important;
-    padding: 1px 5px !important;
-    border-radius: 5px !important;
+    padding: 1px 4px !important;
+    border-radius: 6px !important;
     color: var(--color-link) !important;
   }
 }

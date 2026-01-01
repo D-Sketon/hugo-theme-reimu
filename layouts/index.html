@@ -1,13 +1,22 @@
 {{- define "main" -}}
   {{- $ctx := . -}}
-  {{- $paginator := .Paginate (where .Site.RegularPages "Section" "in" .Site.Params.mainSections) -}}
+  {{- $pageSize := 0 -}}
+  {{- with $.Site.Params.paginate.post -}}
+    {{- $pageSize = . -}}
+  {{- end -}}
+  {{- $paginator := "" -}}
+  {{- if gt $pageSize 0 -}}
+    {{- $paginator = .Paginate (where .Site.RegularPages "Section" "in" .Site.Params.mainSections) $pageSize -}}
+  {{- else -}}
+    {{- $paginator = .Paginate (where .Site.RegularPages "Section" "in" .Site.Params.mainSections) -}}
+  {{- end -}}
   {{- $sort_config := .Site.Params.sort_order.home -}}
   {{- if and (eq 1 $paginator.PageNumber) ($ctx.Site.Params.home_categories.enable) -}}
     <div class="post-categories-wrapper" data-aos="{{ $ctx.Site.Params.animation.options.home.post }}">
       {{- range $k, $v := $ctx.Site.Params.home_categories.content -}}
         {{- if $v.categories -}}
           <div class="post-categories-wrap">
-            <a class="post-link" href="{{ (printf "%s%s" "categories/" (urlize $v.categories)) | relLangURL }}" aria-label=""></a>
+            <a class="post-link" href="{{ (printf "%s%s" "categories/" (urlize $v.categories)) | relLangURL }}" aria-label="{{ $v.categories }}" title="{{ $v.categories }}"></a>
             <div class="post-categories-cover">
               {{- if $v.cover -}}
                 <img
@@ -20,7 +29,7 @@
                 {{- $cover := partial "helpers/randomCover.html" $ctx -}}
                 {{- if $cover -}}
                   <img
-                    data-src="{{ $cover }}"
+                    data-src="{{ $cover | relURL }}"
                     data-sizes="auto"
                     alt="{{ $v.categories }}"
                     class="lazyload"

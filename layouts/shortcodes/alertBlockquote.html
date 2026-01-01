@@ -1,0 +1,6 @@
+<blockquote class="alert-blockquote {{ .Get "type" }}">
+  <p class="alert-heading">
+    {{ title (.Get "type") }}
+  </p>
+  {{ .Inner | .Page.RenderString (dict "display" "block") }}
+</blockquote>

@@ -9,10 +9,11 @@
     @media #{$mg-large} {
       display: none;
     }
-  
+
     @media #{$mq-large} {
       width: 23%;
-      margin: 0 1%;
+      min-width: 268px;
+      margin: 0 16px;
       height: inherit;
     }
   }
@@ -26,8 +27,21 @@
   box-shadow: 0 0 0 0;
 }
 
+.sidebar-wrapper-container {
+  display: flex;
+  flex-direction: column;
+  &.sticky {
+    max-height: calc(100vh - 40px);
+    position: sticky;
+    top: 20px;
+  }
+}
+
 .sidebar-wrapper {
   transition: 0.3s;
+  flex: 1;
+  min-height: 0;
+  display: flex;
 
   .aos-animate {
     transition-property: initial !important;
@@ -36,15 +50,6 @@
       box-shadow: var(--shadow-card-hover);
     }
   }
-
-  &:hover {
-    transform: scale(1.015);
-  }
-
-  &.wrap-sticky {
-    position: sticky;
-    top: 5px;
-  }
 }
 
 .sidebar-wrap {
@@ -52,12 +57,13 @@
   border-radius: $post-radius;
   background: var(--color-wrap);
   display: flex;
-  flex-shrink: 0;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   transition: 0.3s;
   interpolate-size: allow-keywords;
+  flex: 1;
+  min-height: 0;
 
   .hidden {
     display: none;
@@ -98,37 +104,41 @@
     font-weight: bold;
     font-size: 20px;
     color: var(--red-2);
-    margin: 10px;
+    margin: 12px;
   }
 
   .sidebar-description {
     color: var(--grey-7);
     margin: 0 20px;
-  }
-}
-
-@mixin sidebar-state-content {
-  display: flex;
-  flex-direction: column;
-  flex-shrink: 0;
-  align-items: center;
-  padding: 0 20px;
-
-  div {
-    margin: 5px 0;
+    line-height: 1.2;
   }
 }
 
 .sidebar-state {
   display: flex;
   justify-content: center;
-  padding: 25px 0;
+  padding: 24px 0;
   color: var(--red-0);
   opacity: 0.8;
-  transition: opacity 0.5s, color 0.5s;
+  transition:
+    opacity 0.5s,
+    color 0.5s;
 
   &:hover {
     opacity: 1;
+  }
+
+  > div,
+  > a {
+    display: flex;
+    flex-direction: column;
+    flex-shrink: 0;
+    align-items: center;
+    padding: 0 20px;
+
+    div {
+      margin: 4px 0;
+    }
   }
 }
 
@@ -138,16 +148,10 @@
 }
 
 .sidebar-state-article {
-  @include sidebar-state-content;
   border-right: 1px solid var(--red-1);
 }
 
-.sidebar-state-category {
-  @include sidebar-state-content;
-}
-
 .sidebar-state-tag {
-  @include sidebar-state-content;
   border-left: 1px solid var(--red-1);
 }
 
@@ -203,7 +207,6 @@
 @if index($social-keys, "github") {
   .icon-github {
     color: #191717;
-    transition: 1;
   }
 
   [data-theme="dark"] .icon-github {
@@ -361,7 +364,9 @@
   color: var(--color-link);
   opacity: 0.8;
   text-decoration: none;
-  transition: opacity 0.2s, color 0.2s;
+  transition:
+    opacity 0.2s,
+    color 0.2s;
   display: block;
   padding: 10px 15px;
   font-weight: 700;
@@ -377,7 +382,10 @@
   position: relative;
   justify-content: center;
   border: 10px var(--color-red-3-shadow) double;
-  transition: border 0.5s, background 0.5s, color 0.5s;
+  transition:
+    border 0.5s,
+    background 0.5s,
+    color 0.5s;
   width: 70%;
   max-width: 200px;
   margin: 8px auto;
@@ -403,7 +411,10 @@
   @include menu-link;
   font-size: 24px;
   font-weight: 400;
-  transition: transform 0.3s, color 0.3s, opacity 0.3s;
+  transition:
+    transform 0.3s,
+    color 0.3s,
+    opacity 0.3s;
   will-change: transform;
 
   &.rotate {
@@ -458,20 +469,15 @@
   }
 }
 
-.sidebar-toc {
-  width: 100%;
-  padding: 10px 20px;
-  box-sizing: border-box;
-}
-
 .sidebar-toc-wrapper {
   color: var(--color-link);
-  max-height: calc(100vh - 150px);
+  flex: 1;
+  min-height: 0;
   overflow: auto;
 
   &::-webkit-scrollbar {
-    width: 5px;
-    height: 5px;
+    width: 8px;
+    height: 8px;
   }
 
   a {
@@ -487,13 +493,18 @@
 
   & ul,
   & ol {
-    margin-left: 15px;
+    margin-left: 16px;
     list-style: none;
   }
 
+  nav > ol,
+  nav > ul {
+    margin-left: 0;
+  }
+
   & li {
-    margin: 7px 0;
-    padding: 2px 0;
+    margin: 8px 0;
+    padding: 1px 0;
 
     &:before {
       content: "";
@@ -502,7 +513,7 @@
       background: var(--color-h2-after);
       display: inline-block;
       vertical-align: middle;
-      margin-right: 11px;
+      margin-right: 12px;
       box-shadow: var(--shadow-red-6-shadow);
       opacity: 0.5;
       transition: 0.3s;
@@ -557,44 +568,36 @@
   color: var(--grey-9);
   line-height: 1em;
   font-weight: bold;
-  padding: 10px 0;
-}
-
-@mixin siderbar-btn-icon {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 40px;
-  height: 40px;
-  background: var(--red-3);
-  color: white;
-  font-weight: bold;
-  box-shadow: var(--shadow-red-6-shadow);
-  border-radius: $post-radius;
-  margin: 20px;
-  transition: 0.3s;
-  will-change: transform;
-
-  &:hover {
-    transform: scale(1.05);
-  }
-
-  [data-theme="dark"] & {
-    filter: brightness(0.8);
-  }
+  padding: 10px 0 12px;
 }
 
 .sidebar-btn-wrapper {
   display: flex;
   justify-content: center;
-  position: absolute;
-  bottom: 10px;
-  left: 0;
-  right: 0;
 
   .sidebar-toc-btn,
   .sidebar-common-btn {
-    @include siderbar-btn-icon;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 40px;
+    height: 40px;
+    background: var(--red-3);
+    color: white;
+    font-weight: bold;
+    box-shadow: var(--shadow-red-6-shadow);
+    border-radius: $tag-radius;
+    margin: 20px;
+    transition: 0.3s;
+    will-change: transform;
+
+    &:hover {
+      transform: scale(1.05);
+    }
+
+    [data-theme="dark"] & {
+      filter: brightness(0.8);
+    }
   }
 
   .current {
@@ -608,14 +611,21 @@
   width: 100%;
   align-items: center;
   overflow-y: auto;
-  max-height: calc(100vh - 120px);
+  flex: 1;
+  min-height: 0;
 
   &::-webkit-scrollbar {
-    width: 5px;
-    height: 5px;
+    width: 8px;
+    height: 8px;
   }
 }
 
 .sidebar-toc-sidebar {
   width: 100%;
+  flex: 1;
+  min-height: 0;
+  padding: 10px 20px 0;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
 }

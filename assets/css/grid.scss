@@ -1,0 +1,26 @@
+.reimu-grid {
+  display: grid;
+  margin: 20px 0;
+  gap: 16px;
+
+  .grid-cell {
+    min-width: 0;
+
+    .post-link-card {
+      width: 100%;
+    }
+
+    &:has(> *:only-child) {
+      > *:only-child {
+        margin-top: 0 !important;
+        margin-bottom: 0 !important;
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 479px) {
+  .reimu-grid {
+    grid-template-columns: 1fr !important;
+  }
+}

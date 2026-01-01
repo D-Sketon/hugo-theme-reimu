@@ -1,0 +1,4 @@
+<details class="details custom-block">
+  <summary>{{ .Get "summary" }}</summary>
+  <div class="details-content">{{ .Inner | .Page.RenderString (dict "display" "block") }}</div>
+</details>

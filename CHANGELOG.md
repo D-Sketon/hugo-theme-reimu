@@ -1,3 +1,734 @@
+## 0.14.2
+
+**2026-01-01**
+
+### 特性
+
+- 新增归档页和分类标签页的分页支持，可通过 `paginate` 配置控制
+  ```yaml
+  paginate:
+    archive: # 归档页和分类标签页每页文章数量
+    post: # 首页和其他列表页每页文章数量
+  ```
+- 新增 `uppercase_capsule` 配置用于控制分类和标签胶囊是否转换为大写，默认开启
+  ```yaml
+  uppercase_capsule: true # true | false
+  ```
+- `banner_srcset` 的 `src` 字段现在支持数组，可以按顺序尝试加载多个图片格式（如优先加载 AVIF，失败后回退到 WebP）
+  ```yaml
+  banner_srcset:
+    enable: true
+    srcset:
+      - src: 
+        - "images/banner.avif"  # 优先尝试加载 AVIF
+        - "images/banner.webp"  # 失败后加载 WebP
+        media: "(min-width: 800px)"
+  ```
+- `footer`、`sponsor` 的 `icon.url` 配置现在支持传递 `false` 来隐藏图标
+  ```yaml
+  footer:
+    icon:
+      url: false  # 不显示图标
+  ```
+- `menu` 中每个菜单项的 `icon` 配置现在支持传递 `false` 来隐藏图标
+  ```yaml
+  menu:
+    - name: home
+      url: /
+      icon: false  # 不显示图标
+  ```
+- `sidebar` 新增 `menu` 配置用于控制是否显示侧边栏菜单按钮（移动端上将被忽略）
+  ```yaml
+  sidebar:
+    menu: true  # true | false
+  ```
+- `sidebar.article` 新增 `show_common` 配置用于控制文章页是否显示通用侧边栏（移动端上将被忽略）
+  ```yaml
+  sidebar:
+    article:
+      show_common: true  # true | false
+  ```
+- 文章的分类标签现在显示在文章底部，与标签一起展示
+
+### 重构
+
+- `sidebar` 配置结构发生变化，旧配置仍然兼容，但建议迁移到新配置
+  ```yaml
+  # 旧配置（仍然支持）
+  sidebar: right # left | right | false
+  
+  # 新配置（推荐）
+  sidebar:
+    position: right # left | right | false
+    menu: true  # 是否显示侧边栏菜单按钮，在移动端上被忽略
+    article:
+      show_common: true # 是否在文章页显示通用侧边栏，在移动端上被忽略
+  ```
+
+### 性能
+
+- 优化 shortcode 的 CSS 加载方式，现在使用异步加载减少阻塞，提升页面加载性能
+- `firework`、`aplayer` 和 `meting` 的 JavaScript 现在使用异步加载，减少对页面渲染的阻塞
+
+### 杂项
+
+- 更新 mouse-firework 至 v0.2.0
+
+---
+
+
+### Features
+
+- Added pagination support for archive pages and category/tag pages, configurable via `paginate`
+  ```yaml
+  paginate:
+    archive: # Number of posts per page for archive and category/tag pages
+    post: # Number of posts per page for homepage and other list pages
+  ```
+- Added `uppercase_capsule` configuration to control whether category and tag capsules are converted to uppercase, enabled by default
+  ```yaml
+  uppercase_capsule: true # true | false
+  ```
+- The `src` field in `banner_srcset` now supports arrays, allowing multiple image formats to be loaded in order (e.g., prioritize AVIF and fall back to WebP on failure)
+  ```yaml
+  banner_srcset:
+    enable: true
+    srcset:
+      - src: 
+        - "images/banner.avif"  # Try loading AVIF first
+        - "images/banner.webp"  # Load WebP on failure
+        media: "(min-width: 800px)"
+  ```
+- The `icon.url` configuration in `footer` and `sponsor` now supports passing `false` to hide the icon
+  ```yaml
+  footer:
+    icon:
+      url: false  # Hide icon
+  ```
+- The `icon` configuration for each menu item in `menu` now supports passing `false` to hide the icon
+  ```yaml
+  menu:
+    - name: home
+      url: /
+      icon: false  # Hide icon
+  ```
+- Added `menu` configuration in `sidebar` to control whether to display the sidebar menu button (ignored on mobile)
+  ```yaml
+  sidebar:
+    menu: true  # true | false
+  ```
+- Added `show_common` configuration in `sidebar.article` to control whether to display the common sidebar on article pages (ignored on mobile)
+  ```yaml
+  sidebar:
+    article:
+      show_common: true  # true | false
+  ```
+- Article categories are now displayed at the bottom of the article, alongside tags
+
+### Refactoring
+
+- The `sidebar` configuration structure has changed. Old configurations are still compatible, but migration to the new configuration is recommended
+  ```yaml
+  # Old configuration (still supported)
+  sidebar: right # left | right | false
+  
+  # New configuration (recommended)
+  sidebar:
+    position: right # left | right | false
+    menu: true  # Whether to display sidebar menu button, ignored on mobile
+    article:
+      show_common: true # Whether to display common sidebar on article pages, ignored on mobile
+  ```
+
+### Performance
+
+- Optimized CSS loading for shortcodes, now using asynchronous loading to reduce blocking and improve page load performance
+- JavaScript for `firework`, `aplayer`, and `meting` now uses asynchronous loading to reduce blocking of page rendering
+
+### Miscellaneous
+
+- Updated mouse-firework to v0.2.0
+
+## 0.14.1
+
+**2025-11-29**
+
+### 特性
+
+- 随机头图现在使用伪随机算法，确保每次生成页面时都能展示不同的头图
+- 新增 Grid 短代码，支持将内容以网格的形式展示出来，支持响应式布局。
+  ```markdown
+  {{< grid width=? col=? >}}
+  <!-- cell -->
+  内容1
+  <!-- cell -->
+  内容2
+  <!-- cell -->
+  内容3
+  {{< /grid >}}
+  ```
+    - width：可选参数，设置最小列宽，如 `300` 表示最小列宽为 300px，默认值为 `240`
+    - col：可选参数，设置固定列数，如 `3` 表示固定 3 列布局，默认值为自适应列数
+    - 使用 `<!-- cell -->` 分隔每个网格单元，每个单元的内容会被独立渲染
+- 新增 Details 短代码，支持在文章中创建折叠面板
+  ```markdown
+  {{< details summary="?" >}}
+  内容
+  {{< /details >}}
+  ```
+    - summary：可选参数，设置折叠面板的标题
+
+---
+
+### Features
+
+- The random header image now uses a pseudo-random algorithm to ensure that different header images are displayed each time the page is generated.
+- Added the Grid shortcode, which supports displaying content in a grid layout, supporting responsive design.
+  ```markdown
+  {{< grid width=? col=? >}}
+  <!-- cell -->
+  Content 1
+  <!-- cell -->
+  Content 2
+  <!-- cell -->
+  Content 3
+  {{< /grid >}}
+  ```
+    - width: Optional parameter, sets the minimum column width, e.g., `300` means a minimum column width of 300px. Default is `240`
+    - col: Optional parameter, sets a fixed number of columns, e.g., `3` means a fixed 3-column layout. Default is auto column count
+    - Use `<!-- cell -->` to separate each grid cell, and each cell's content will be rendered independently
+- Added the Details shortcode, which supports creating foldable panels in the article.
+  ```markdown
+  {{< details summary="?" >}}
+  content
+  {{< /details >}}
+  ```
+    - summary: Optional parameter, set the title of the foldable panel
+
+## 0.14.0
+
+**2025-11-23**
+
+### 修复
+
+- 修复移动端下超长文本无法换行的问题
+- 修复 postLinkCard 短代码中的错误转义逻辑
+- 修复文章 nav 封面在使用本地图片时可能的404问题
+
+### 特性
+
+- 新增 [Disqus](https://disqus.com/) 评论系统支持
+  ```yml
+  disqus:
+    enable: true
+    shortname: "your shortname"
+    count: true # 是否启用评论数量统计
+  ```
+- 新增 Tabs 短代码，从 next, volantis, stellar 主题借鉴而来，支持在文章中创建标签页切换效果。
+  ```markdown
+  {{< tabs [activeTab] ["center"] >}}
+  <!-- tabName -->
+  Tab content
+  <!-- tabName -->
+  Tab content
+  {{< /tabs >}}
+  ```
+  - activeTab：可选参数，指定默认激活的标签页下标，从 1 开始计数，默认为 1
+  - "center"：可选参数，指定标签页标题居中显示，默认左对齐
+  - tabName：每个标签页的标题，必须用 `<!-- tabName -->` 包裹，支持使用 `@` + 图标十六进制代码 展示图标，例：
+    - 标题 `<!-- 标题 -->`
+    - 图标 `<!-- @e60c -->`
+    - 图标+标题 `<!-- 标题@e60c -->`
+- 新增 Gallery 短代码，将多张图片以照片墙的形式展示出来，支持自动排列和响应式布局。
+  ```markdown
+  {{< gallery >}}
+  ![alt text](image_url1)
+  ![alt text](image_url2)
+  ...
+  {{</gallery>}}
+  ```
+- 新增 Link 短代码，用于替代 externalLinkCard 和 postLinkCard，支持内链和外链。
+  ```markdown
+  {{< link title="?" link/path="?" cover="?" escape="?" >}}
+  ```
+  - title：链接卡片的标题，内链时可省略，自动使用文章标题
+  - link/path：链接的 URL 地址，为保证兼容性，`link` 和 `path` 均可使用，二者效果相同
+  - cover：卡片展示的封面，如果设置为 `auto` 则自动使用博客的 `banner` 或缺省封面
+  - escape：文章标题是否被转义，取值`true | false`，默认为 `true`
+- 优化代码块的样式，现在使用了 Github Theme 的配色方案
+- 优化表格的样式，提升响应式和滚动体验
+- algolia 搜索兼容 DocSearch 格式
+
+---
+
+### Fixes
+
+- Fixed an issue where extra-long text could not wrap on mobile devices
+- Fixed incorrect escaping logic in the postLinkCard shortcode
+- Fixed possible 404 errors when using local images for article nav covers
+
+### Features
+
+- Added support for the [Disqus](https://disqus.com/) comment system
+  ```yml
+  disqus:
+    enable: true
+    shortname: "your shortname"
+    count: true # Enable comment count display
+  ```
+- Added the Tabs shortcode, inspired by the next, volantis, and stellar themes, which supports creating tabbed content switches within articles.
+  ```markdown
+  {{< tabs [activeTab] ["center"] >}}
+  <!-- tabName -->
+  Tab content
+  <!-- tabName -->
+  Tab content
+  {{< /tabs >}}
+  ```
+  - activeTab: Optional parameter, specifies the index of the default active tab (counting starts from 1). Default is 1.
+  - "center": Optional parameter, specifies center alignment for tab titles. Default is left-aligned.
+  - tabName: The title of each tab, must be wrapped in `<!-- tabName -->`. Supports displaying icons using `@` + the icon's hexadecimal code. Example:
+    - Title: `<!-- Title -->`
+    - Icon: `<!-- @e60c -->`
+    - Icon + Title: `<!-- Title@e60c -->`
+- Added the Gallery shortcode, which displays multiple images in a photo wall format, supporting automatic arrangement and responsive layout.
+  ```markdown
+  {{< gallery >}}
+  ![alt text](image_url1)
+  ![alt text](image_url2)
+  ...
+  {{</gallery>}}
+  ```
+- Added a new `Link` shortcode to replace `externalLinkCard` and `postLinkCard`, supporting both internal and external links.  
+  ```markdown  
+  {{< link title="?" link/path="?" cover="?" escape="?" >}}  
+  ```  
+  - **title**: The title of the link card. Can be omitted for internal links, where the article title will be used automatically.  
+  - **link/path**: The URL of the link. For compatibility, both `link` and `path` can be used, and they have the same effect.  
+  - **cover**: The cover image displayed on the card. If set to `auto`, the blog's `banner` or default cover will be used automatically.  
+  - **escape**: Whether the article title should be escaped. Values: `true | false`. Default is `true`.
+- Optimized the code block styling, now using the Github Theme color scheme.
+- Optimize the styling of the table to enhance responsiveness and scrolling experience  
+- Ensure Algolia search compatibility with the DocSearch format
+
+## v0.13.4
+
+**2025-11-01**
+
+### 修复
+
+- 修复 markdown 小标题中的超链接错误显示的问题
+
+### 特性
+
+- 新增 keywords meta 标签，用于提升 SEO 优化，可在 front-matter 中通过 `keywords` 字段自定义，支持字符串和数组两种形式：
+  ```yaml
+  ---
+  keywords: keyword1, keyword2, keyword3 # 文章关键词，逗号分隔字符串形式
+  keywords:
+    - keyword1
+    - keyword2
+    - keyword3 # 文章关键词，数组形式
+  ---
+  ```
+- 新增 `layout.max_width` 配置用于控制博客内容的最大宽度，默认值为 `1350px`
+  ```yaml
+  layout:
+    max_width: 1350px # 博客内容最大宽度
+  ```
+
+---
+
+### Fixes
+
+- Fixed incorrect display of hyperlinks in Markdown subheadings.
+
+### Features
+
+- Added `keywords` meta tag to improve SEO optimization. Customize via the `keywords` field in front-matter, supporting both string and array formats:
+  ```yaml
+  ---
+  keywords: keyword1, keyword2, keyword3 # Article keywords as a comma-separated string
+  keywords:
+    - keyword1
+    - keyword2
+    - keyword3 # Article keywords as an array
+  ---
+  ```
+- Added `layout.max_width` configuration to control the maximum width of blog content. The default value is `1350px`:
+  ```yaml
+  layout:
+    max_width: 1350px # Maximum width of blog content
+  ```
+
+## v0.13.3
+
+**2025-10-26**
+
+### 修复
+
+- 修复 pjax 模式下 valine 评论系统多次加载的问题
+
+### 特性
+
+- 优化样式
+  - 优化多语言下拉，分享卡片和赞助的动画效果
+  - 移除侧边栏的 hover 放大效果
+  - 优化移动端下归档页的样式
+  - 优化移动端下的置顶按钮样式，现在移动端下将始终展示向上箭头图标
+- `firework` 和 `player` 新增 `disable_on_mobile` 配置用于控制是否在移动端禁用，默认关闭
+  ```yaml
+  firework:
+    disable_on_mobile: false # true | false
+  player:
+    disable_on_mobile: false # true | false
+  ```
+
+---
+
+### Fixes
+
+- Fixed the issue of Valine comment system loading multiple times in pjax mode.
+
+### Features
+
+- Optimized styles
+  - Improved animation effects for the language dropdown, share cards, and sponsorship.
+  - Removed the hover zoom effect on the sidebar.
+  - Optimized the archive page layout on mobile devices.
+  - Improved the back-to-top button style on mobile devices; it will now always display an upward arrow icon.
+- Added `disable_on_mobile` configuration for `firework` and `player` to control whether they are disabled on mobile devices. Default is `false`.
+  ```yaml
+  firework:
+    disable_on_mobile: false # true | false
+  player:
+    disable_on_mobile: false # true | false
+  ```
+
+## v0.13.2
+
+**2025-10-19**
+
+### 修复
+
+- 修复 valine/waline 评论计数器无法正确展示的问题
+
+### 特性
+
+- 渐进支持了 `text-autospace`，现在 Chrome 140+ 的浏览器会自动在 CJK 和 EN 之间添加间距，无需手动配置
+- 优化分享微信弹出卡片，现在点击分享图标以外的区域会自动关闭卡片
+- 优化顶部 nav 菜单点击热区，现在点击 icon 也能触发菜单跳转
+- Front-matter 中新增 `author` 字段用于标记文章作者 (用于分享卡片和文章版权)，其优先级最高
+  ```yaml
+  ---
+  author: D-Sketon # 文章作者
+  ---
+  ```
+- 新增 `triangle_badge` 配置用于在右上角展示三角徽章，支持自定义链接和图标
+  ```yaml
+  triangle_badge:
+    enable: false # true | false
+    icon: github # 与 social 配置里的 icon 相同
+    link: 
+  ```
+
+### 杂项
+
+- 更新 mermaid 至 v11.12.0
+- 更新 quicklink 至 v3.0.1
+- 更新 katex 至 v0.16.24
+- 更新 snapdom 至 v1.9.14
+- 更新 fontawesome 至 v7.1.0
+
+---
+
+### Fixes
+
+- Fixed the issue where Valine/Waline comment counters could not display correctly.
+
+### Features
+
+- Gradually added support for `text-autospace`. Browsers with Chrome 140+ will now automatically add spacing between CJK and Latin characters, eliminating the need for manual configuration.
+- Optimized the WeChat share card popup. Clicking outside the share icon will now automatically close the card.
+- Improved the clickable area of the top navigation menu. Clicking the icon will now also trigger menu navigation.
+- Added an `author` field in the Front-matter to mark the article author (for share cards and article copyright), with the highest priority.
+  ```yaml
+  ---
+  author: D-Sketon # Article author
+  ---
+  ```
+- Added a `triangle_badge` configuration to display a triangular badge in the upper right corner, supporting custom links and icons.
+  ```yaml
+  triangle_badge:
+    enable: false # true | false
+    icon: github # Same as the icon in the social configuration
+    link: 
+  ```
+
+### Miscellaneous
+
+- Updated Mermaid to v11.12.0
+- Updated Quicklink to v3.0.1
+- Updated KaTeX to v0.16.24
+- Updated Snapdom to v1.9.14
+- Updated FontAwesome to v7.1.0
+
+## v0.13.1
+
+**2025-10-05**
+
+### 修复
+
+- 修复当博客页面高度加载发生抖动时，底部 nav 无法正确展示的问题
+
+### 特性
+
+- 优化过期提示的样式，现在其样式和 WARNING 块引用一致
+- Front-matter 中新增 `outdated` 字段用于标记文章过期，其优先级最高，且无视全局配置
+  ```yaml
+  ---
+  outdated: true # true | false
+  ---
+  ```
+  当该字段为 `true` 时，文章顶部会显示过期提示
+
+---
+
+### Fixes
+
+- Fixed an issue where the bottom navigation bar was not displayed correctly when the page height flickered during loading.
+
+### Features
+
+- Optimized the style of the outdated notice, which is now consistent with the WARNING blockquote style.
+- Added an `outdated` field in the front-matter to mark an article as outdated. It has the highest priority and overrides the global configuration.
+  ```yaml
+  ---
+  outdated: true # true | false
+  ---
+  ```
+  When this field is `true`, an outdated notice will be displayed at the top of the article.
+
+## v0.13.0
+
+**2025-09-25**
+
+### 修复
+
+- 修复折叠代码块的复制按钮无法复制的问题
+- 修复自动主题切换时 mermaid 首次展示主题不正确的问题
+
+### 特性
+
+- 新增 mermaid 的 `zoom` 配置，用于控制是否启用缩放，默认关闭
+  ```yaml
+  mermaid:
+    zoom: false # true | false
+  ```
+
+### 重构
+
+- 重构样式以提升一致性与美观度
+  - 调整卡片、评论与容器的内外边距，优化留白
+  - 改进小部件与侧边栏样式，优化对齐与间距
+  - 统一圆角值，增强视觉一致性
+  - 优化友链、页脚与页眉的响应式布局
+  - 更新热力图样式，提升可读性与清晰度
+  - 规范按钮与通知样式，统一交互与状态
+  - 调整字体大小与行高，提升阅读体验
+  - 优化移动端与桌面端滚动条样式
+  - 优化代码块样式，提升可读性与一致性
+  - 为标题添加淡入模糊动画
+  - 优化移动端文章内边距，提升阅读体验
+- 增强可访问性（a11y）
+  - 为布局、导航与交互控件补充 aria-label
+  - 为可能截断的内容补充 title 提示
+  - 优化搜索弹窗的可访问性与交互，完善键盘导航与关闭逻辑
+
+### 性能
+
+- 精简 HTML，本人博客总体积大约减少了 8%
+  - 移除链接不必要的 external 属性
+  - 外置 pjax 相关 js 逻辑
+  - 精简 after-footer 与 loader 逻辑
+  - 按需动态生成评论系统配置，减少无效代码输出
+
+---
+
+### Fixes
+
+- Fixed copy button in folded code blocks failing to copy content
+- Fix incorrect theme display on first render of mermaid during automatic theme switching
+
+### Features
+
+- Added `zoom` configuration for mermaid to control whether zoom is enabled, defaults to false
+  ```yaml
+  mermaid:
+    zoom: false # true | false
+  ```
+
+### Refactor
+
+- Refactored styles to improve consistency and aesthetics
+  - Adjusted padding and margins for cards, comments, and containers to optimize whitespace
+  - Improved widget and sidebar styles for better alignment and spacing
+  - Unified border-radius values for enhanced visual consistency
+  - Optimized responsive layout for friend links, footer, and header
+  - Updated heatmap styles for better readability and clarity
+  - Standardized button and notification styles for consistent interaction and states
+  - Adjusted font sizes and line heights to improve reading experience
+  - Optimized scrollbar styles for mobile and desktop
+  - Enhanced code block styles for better readability and consistency
+  - Added fade-in blur animation for headings
+  - Optimized article padding on mobile for improved reading experience
+- Enhanced accessibility (a11y)
+  - Added aria-labels for layout, navigation, and interactive controls
+  - Added title hints for potentially truncated content
+  - Improved accessibility and interaction of the search modal, enhancing keyboard navigation and close logic
+
+### Performance
+
+- Streamlined HTML, reducing total blog size by approximately 8%
+  - Removed unnecessary external attributes from links
+  - Externalized pjax-related JavaScript logic
+  - Simplified after-footer and loader logic
+  - Dynamically generated comment system configurations on-demand to reduce invalid code output
+
+## v0.12.2
+
+**2025-09-06**
+
+### 修复
+
+- 修复 v0.12.1 改变结构后 “开启播放器后移动端将强制展示 fixed 类型的播放器” 特性失效的问题
+- RSS 中排除 shortcode 内容
+
+### 特性
+
+- 新增 `summary` 配置用于控制是否展示文章摘要，默认关闭。可选择 `subtitle` 或 `blockquote` 样式
+  ```yaml
+  summary:
+    enable: false # true | false
+    style: 'subtitle' # 'subtitle' or 'blockquote'
+  ```
+
+### 性能
+
+- CSS 持续性优化
+
+---
+
+### Fixes
+
+- Fixed the issue where the "when the player is enabled, the fixed type player will be forcibly displayed on the mobile end" feature in v0.12.1 was disabled
+- Excluded shortcode content in RSS
+
+### Features
+
+- Added `summary` configuration to control whether to display the article summary, disabled by default. Can choose `subtitle` or `blockquote` style
+  ```yaml
+  summary:
+    enable: false # true | false
+    style: 'subtitle' # 'subtitle' or 'blockquote'
+  ```
+
+### Performance
+
+- Continuous CSS optimization
+
+## v0.12.1
+
+**2025-08-24**
+
+### 修复
+
+- 修复热力图未来日期的处理逻辑，确保只统计过去的文章数据
+- 修复热力图日期标签重叠的问题
+
+### 特性
+
+- 新增 `player.position` 配置用于控制播放器的位置，可选择在 sidebar 之前、之后或 widget 之后，默认在 sidebar 之后
+  ```yaml
+  player:
+    position: before_sidebar # before_sidebar / after_sidebar / after_widget
+  ```
+- 新增 `show_update_time` 配置用于控制是否展示文章更新时间，默认关闭
+  ```yaml
+  show_update_time: true # true | false
+  ```
+- 新增 `moe_icp` 配置用于控制是否展示萌 ICP 备案信息，默认关闭
+  ```yaml
+  moe_icp:
+    icpnumber: # 萌国ICP备案号
+  ```
+- 对于 Hugo v0.132.0 以下版本，新增 `alertBlockquote` shortcode 用于展示块引用，支持多种类型
+  ```yaml
+  {{< alertBlockquote type="?" >}}
+  Your content here
+  {{</alertBlockquote>}}
+  ```
+  - type：块引用的类型，可选参数为：`note`、`tip`、`important`、`warning`、`danger`
+- 对于 Hugo v0.132.0 及以上版本 支持使用 Hugo Blockquote render hooks 展示 Alert 块引用
+  ```markdown
+  > [!NOTE]
+  > Useful information that users should know, even when skimming content.
+  ```
+- 多语言增加对葡萄牙语（巴西）的支持
+- 使用 snapdom 替代 html2image 生成截图
+
+### 杂项
+
+- 更新 mermaid 至 v11.10.1
+- 更新 qrcode 至 v1.5.1
+- 更新 dompurify 至 v3.2.6
+- 更新 fontawesome 至 v7.0.0
+
+---
+
+### Fixes
+
+- Fixed the issue where future dates were incorrectly processed in the heatmap, ensuring that only past article data is counted.
+- Fixed the issue of overlapping date labels in the heatmap.
+
+### Features
+
+- Added `player.position` configuration to control the player's position, which can be placed before the sidebar, after the sidebar, or after the widget. Defaults to after the sidebar.
+  ```yaml
+  player:
+    position: before_sidebar # before_sidebar / after_sidebar / after_widget
+  ```
+- Added `show_update_time` configuration to control whether to display the article update time. Disabled by default.
+  ```yaml
+  show_update_time: true # true | false
+  ```
+- Added `moe_icp` configuration to control whether to display Moe ICP filing information. Disabled by default.
+  ```yaml
+  moe_icp:
+    icpnumber: # Moe ICP filing number
+  ```
+- For Hugo versions below v0.132.0, a new `alertBlockquote` shortcode has been added to display blockquotes, supporting multiple types  
+  ```yaml  
+  {{< alertBlockquote type="?" >}}  
+  Your content here  
+  {{</alertBlockquote>}}  
+  ```  
+  - type: specifies the type of blockquote. Available options: `note`, `tip`, `important`, `warning`, `danger`  
+- For Hugo v0.132.0 and above, support for using Hugo Blockquote render hooks to display Alert blockquotes  
+  ```markdown  
+  > [!NOTE]  
+  > Useful information that users should know, even when skimming content.  
+  ```
+- Added support for Portuguese (Brazil) in multilingual settings.
+- Replaced html2image with snapdom for generating screenshots.
+
+### Miscellaneous
+
+- Updated mermaid to v11.10.1
+- Updated qrcode to v1.5.1
+- Updated dompurify to v3.2.6
+- Updated fontawesome to v7.0.0
+
 ## v0.12.0
 
 **2025-07-06**

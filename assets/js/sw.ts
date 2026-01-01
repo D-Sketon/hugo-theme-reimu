@@ -5,7 +5,7 @@ const preCache = [
   '{{ "css/loader.css" | relURL }}',
   '{{ "css/main.css" | relURL }}',
   '{{ "js/main.js" | relURL }}',
-  '{{ .Site.Params.banner | relURL }}',
+  "{{ .Site.Params.banner | relURL }}",
 ];
 
 const cacheDomain = [
@@ -79,9 +79,9 @@ self.addEventListener("activate", (event) => {
             console.log(`Service Worker: deleting old cache ${cacheName}`);
             return caches.delete(cacheName);
           }
-        })
+        }),
       );
-    })
+    }),
   );
   console.log(`Service Worker ${VERSION} activated.`);
 });

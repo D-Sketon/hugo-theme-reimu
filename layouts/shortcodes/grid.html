@@ -1,0 +1,45 @@
+{{- $width := 240 -}}
+{{- with .Get "width" -}}
+	{{- $val := int . -}}
+	{{- if gt $val 0 -}}
+		{{- $width = $val -}}
+	{{- end -}}
+{{- end -}}
+{{- $columns := 0 -}}
+{{- with .Get "col" -}}
+	{{- $val := int . -}}
+	{{- if gt $val 0 -}}
+		{{- $columns = $val -}}
+	{{- end -}}
+{{- end -}}
+
+{{- $raw := .Inner -}}
+{{- $normalized := replaceRE `<!--\s*cell\s*-->` `<!--cell-->` $raw -}}
+{{- $parts := split $normalized "<!--cell-->" -}}
+{{- $cells := slice -}}
+{{- range $parts -}}
+	{{- $trimmed := trim . " \t\r\n" -}}
+	{{- if gt (len $trimmed) 0 -}}
+		{{- $cells = $cells | append $trimmed -}}
+	{{- end -}}
+{{- end -}}
+{{- if eq (len $cells) 0 -}}
+	{{- $cells = slice (trim .Inner " \t\r\n") -}}
+{{- end -}}
+
+{{- $gridClass := printf "grid-container-%d" $width -}}
+{{- if gt $columns 0 -}}
+	{{- $gridClass = printf "%s-col-%d" $gridClass $columns -}}
+{{- end -}}
+{{- $gridStyle := printf "grid-template-columns: repeat(auto-fit, minmax(%dpx, 1fr));" $width -}}
+{{- if gt $columns 0 -}}
+	{{- $gridStyle = printf "grid-template-columns: repeat(%d, 1fr);" $columns -}}
+{{- end -}}
+
+<div class="reimu-grid {{ $gridClass }}" style="{{ $gridStyle | safeCSS }}">
+	{{- range $cells -}}
+		<div class="grid-cell">{{ . | markdownify }}</div>
+	{{- end -}}
+</div>
+
+{{- partial "helpers/scss.html" (dict "source" "css/grid.scss" "temp" "grid.scss" "target" "css/grid.css" "ctx" . "async" true) -}}

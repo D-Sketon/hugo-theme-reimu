@@ -17,8 +17,8 @@
     overflow: auto;
 
     &::-webkit-scrollbar {
-      width: 5px;
-      height: 5px;
+      width: 8px;
+      height: 8px;
     }
 
     .mobile-nav-on & {
@@ -29,4 +29,5 @@
 
 #mobile-nav .sidebar-wrap {
   background: var(--color-mobile-nav-background);
+  max-height: calc(100vh - 100px);
 }

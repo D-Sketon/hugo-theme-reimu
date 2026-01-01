@@ -5,9 +5,9 @@
 <div class="post-wrapper">
   <div
     class="{{ if mod $index 2 }}
-      post-wrap-right
+      post-wrap right
     {{ else }}
-      post-wrap-left
+      post-wrap left
     {{ end }}"
     data-aos="{{ $ctx.Site.Params.animation.options.home.post }}"
   >
@@ -17,8 +17,9 @@
         href="{{ $page.Params.link }}"
         itemprop="url"
         target="_blank"
-        rel="noopener external nofollow noreferrer"
+        rel="noopener nofollow noreferrer"
         aria-label="{{ $page.Title }}"
+        title="{{ $page.Title }}"
       >
       </a>
     {{- else -}}
@@ -26,6 +27,7 @@
         class="post-link"
         href="{{ $page.Permalink | relURL }}"
         aria-label="{{ $page.Title }}"
+        title="{{ $page.Title }}"
       >
       </a>
     {{- end -}}
@@ -34,14 +36,14 @@
     {{- end -}}
     <div
       class="{{ if mod $index 2 }}
-        post-cover-right
+        post-cover right
       {{ else }}
-        post-cover-left
+        post-cover left
       {{ end }}"
     >
       {{- if and $page.Params.cover (not (hasPrefix $page.Params.cover "rgb")) -}}
         <img
-          data-src="{{ $page.Params.cover }}"
+          data-src="{{ $page.Params.cover | relURL }}"
           data-sizes="auto"
           alt="{{ .Title }}"
           class="lazyload"
@@ -50,7 +52,7 @@
         {{- $cover := partial "helpers/randomCover.html" $ctx -}}
         {{- if $cover -}}
           <img
-            data-src="{{ $cover }}"
+            data-src="{{ $cover | relURL }}"
             data-sizes="auto"
             alt="{{ $page.Title }}"
             class="lazyload"
@@ -71,6 +73,12 @@
           ><span class="icon-calendar"></span
           >{{ $page.Date.Format $ctx.Site.Params.dateFormat }}</span
         >
+        {{- if $ctx.Site.Params.show_update_time -}}
+          <span
+            ><span class="icon-calendar-plus"></span
+            >{{ $page.Lastmod.Format $ctx.Site.Params.dateFormat }}</span
+          >
+        {{- end -}}
         <span
           ><span class="icon-pencil"></span
           >{{ i18n "post.count" $page.WordCount }}</span

@@ -6,6 +6,7 @@
   "twikoo" (cond (and $params.twikoo.enable $params.twikoo.envId) true false)
   "gitalk" (cond (and $params.gitalk.enable $params.gitalk.clientID $params.gitalk.clientSecret) true false)
   "giscus" (cond $params.giscus.enable true false)
+  "disqus" (cond (and $params.disqus.enable $params.disqus.shortname) true false)
 -}}
 
 {{- $activeSystems := slice -}}
@@ -45,9 +46,13 @@
 
 <div class="comment-content">
   {{- range $name, $enabled := $commentSystems -}}
-    {{- if $enabled -}}
+    {{- if and $enabled (ne $name "disqus") -}}
     <div class="comment {{ $name }}-comment" data-aos="{{ $params.animation.options.article.whole }}"
      {{ if eq $name "gitalk" }}id="gitalk-comment"{{ end }}>
+    </div>
+    {{- else if and $enabled (eq $name "disqus") -}}
+    <div class="comment disqus-comment" data-aos="{{ $params.animation.options.article.whole }}">
+      <div id="disqus_thread"></div>
     </div>
     {{- end -}}
   {{- end -}}

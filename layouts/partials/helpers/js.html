@@ -12,10 +12,10 @@
   {{- $onload := index $items "onload" -}}
   <script
     src="{{ $src }}"
-    {{ if $defer }}defer{{ end -}}
-    {{ if $async }}async{{ end -}}
-    {{ if $pjax }}data-pjax{{ end -}}
-    {{ if $onload }}onload="{{ $onload | safeJS }}"{{ end -}}
+    {{ if $defer }}defer{{ end }}
+    {{ if $async }}async{{ end }}
+    {{ if $pjax }}data-pjax{{ end }}
+    {{ if $onload }}onload="{{ $onload | safeJS }}"{{ end }}
     {{ if and $integrity (not (hasPrefix $raw "local|")) }}integrity="{{ $integrity }}" crossorigin="anonymous"{{ end -}}
   ></script>
 {{- else -}}

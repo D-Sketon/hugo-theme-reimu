@@ -1,10 +1,10 @@
 @mixin code-block {
   background: var(--highlight-background);
-  padding: 0 $article-padding 15px;
-  border-radius: 10px;
+  padding: 0 $article-padding 16px;
+  border-radius: $post-radius;
   //overflow: auto;
   color: var(--highlight-foreground);
-  line-height: $line-height;
+  line-height: $font-size * $line-height;
 }
 
 .article-entry {
@@ -16,15 +16,15 @@
   code,
   kbd {
     font-family: $font-code;
-    font-size: 95%;
+    font-size: 15px;
     transition: 0.3s;
     word-break: break-word;
   }
   code,
   kbd {
     background: var(--color-code-background);
-    padding: 1px 5px;
-    border-radius: 5px;
+    padding: 1px 4px;
+    border-radius: 6px;
     color: var(--color-link);
   }
 
@@ -42,7 +42,7 @@
 
   div.highlight {
     @include code-block;
-    margin: ($line-height / 3 * 2) 0;
+    margin: 16px 0;
     transition: 0.3s;
     interpolate-size: allow-keywords;
     box-shadow: var(--shadow-card);
@@ -60,8 +60,8 @@
     }
 
     ::-webkit-scrollbar {
-      width: 10px;
-      height: 10px;
+      width: 8px;
+      height: 8px;
       background-color: transparent;
     }
 
@@ -94,12 +94,16 @@
 
     // with lineno
     tr td:first-of-type {
-      width: 30px;
-      padding-right: 10px;
+      width: 36px;
+      text-align: right;
+      padding-right: 12px;
       vertical-align: top;
+      box-sizing: border-box;
 
       pre code {
         color: #666;
+        font-size: 14px;
+        line-height: $font-size * $line-height;
       }
     }
 
@@ -131,7 +135,8 @@
   background: linear-gradient(
     to right,
     transparent 0%,
-    var(--highlight-nav) 50%,
+    var(--highlight-nav) 20%,
+    var(--highlight-nav) 80%,
     transparent 100%
   );
   margin-bottom: 10px;
@@ -154,9 +159,9 @@
 }
 
 .code-figcaption-bottom {
-  font-size: .85em;
+  font-size: 14px;
   color: var(--highlight-comment);
-  line-height: 1em;
+  line-height: 1;
   display: flow-root;
 }
 
@@ -191,6 +196,8 @@
   font-weight: bold;
   z-index: 1;
   filter: invert(50%);
+  user-select: none;
+  --webkit-user-select: none;
 }
 
 .code-expand {
@@ -295,10 +302,28 @@
   }
 
   .gd {
-    background: #ff5e5e80;
+    color: var(--highlight-deletion);
+    background: var(--highlight-deletion-bg);
   }
 
   .gi {
-    background: #5eff667a;
+    color: var(--highlight-addition);
+    background: var(--highlight-addition-bg);
   }
+}
+
+#copy-tooltip,
+#lang-tooltip {
+  pointer-events: none;
+  opacity: 0;
+  transition: all 0.2s ease;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  z-index: 999;
+  transform: translate(-50%, -50%);
+  color: white;
+  background: rgba(0, 0, 0, 0.5);
+  padding: 12px 16px;
+  border-radius: 8px;
 }

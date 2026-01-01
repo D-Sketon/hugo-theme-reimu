@@ -1,0 +1,9 @@
+{{- $title := .Get "title" -}}
+{{- $link := .Get "link" -}}
+{{- $cover := .Get "cover" -}}
+
+{{- if or (not $title) (not $link) -}}
+  {{- errorf "externalLinkCard shortcode: title and link are required" -}}
+{{- end -}}
+
+<a href="{{ $link }}" title="{{ $title }}" target="_blank">{{ $title }}</a>

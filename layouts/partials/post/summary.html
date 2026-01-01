@@ -1,0 +1,12 @@
+{{- if and .Site.Params.summary.enable (eq .Site.Params.summary.style "blockquote") -}}
+  {{- if .Summary -}}
+    <div class="article-entry">
+      <blockquote
+        class="article-summary"
+        data-aos="{{- .Site.Params.animation.options.article.tag -}}"
+      >
+        <p>{{- .Summary | plainify | truncate 200 -}}</p>
+      </blockquote>
+    </div>
+  {{- end -}}
+{{- end -}}

@@ -4,6 +4,7 @@
   background: var(--color-wrap) !important;
   transition: all 0.3s;
   font-family: $font-basic !important;
+  box-shadow: none !important;
 
   button,
   .aplayer-icon {
@@ -12,6 +13,17 @@
         fill: var(--color-link) !important;
       }
     }
+  }
+
+  &:hover {
+    box-shadow: var(--shadow-card-hover) !important;
+  }
+
+  .aplayer-after-sidebar &,
+  &.aplayer-after-sidebar,
+  .aplayer-after-widget &,
+  &.aplayer-after-widget {
+    margin: 40px 0 0 0 !important;
   }
 
   .aplayer-miniswitcher {
@@ -49,7 +61,7 @@
   color: var(--color-link) !important;
 }
 
-.aplayer .aplayer-list ol li {
+.aplayer-list ol li {
   transition: all 0.3s;
   border-top: 1px solid var(--color-h2-border) !important;
   cursor: var(--cursor-pointer) !important;
@@ -70,19 +82,24 @@
   }
 }
 
-
-.aplayer .aplayer-lrc .aplayer-lrc-contents,
-.aplayer .aplayer-info .aplayer-music {
+.aplayer-lrc-contents,
+.aplayer-music {
   cursor: var(--cursor-default) !important;
 }
 
-.aplayer .aplayer-pic,
+.aplayer-pic,
 body .aplayer .aplayer-info .aplayer-controller .aplayer-bar-wrap,
-.aplayer .aplayer-list-cur,
-.aplayer .aplayer-list-index,
-.aplayer .aplayer-list-author,
+.aplayer-list-cur,
+.aplayer-list-index,
+.aplayer-list-author,
 body .aplayer .aplayer-info .aplayer-controller .aplayer-volume-wrap,
-.aplayer .aplayer-info .aplayer-controller .aplayer-bar-wrap .aplayer-bar .aplayer-played .aplayer-thumb,
-.aplayer .aplayer-icon {
+.aplayer-thumb,
+.aplayer-icon {
   cursor: var(--cursor-pointer) !important;
+}
+
+.aplayer-author,
+.aplayer-lrc p,
+.aplayer-list-author {
+  color: var(--grey-7) !important;
 }

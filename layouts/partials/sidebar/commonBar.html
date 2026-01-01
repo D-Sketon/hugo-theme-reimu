@@ -1,68 +1,78 @@
-{{- $params := .Site.Params -}}
+{{- $params := .ctx.Site.Params -}}
+{{- $mobile := .mobile -}}
+{{- $showMenu := true -}}
+{{- /* Backward compatibility */ -}}
+{{- if and (reflect.IsMap $params.sidebar) (isset $params.sidebar "menu") -}}
+  {{- $showMenu = $params.sidebar.menu -}}
+{{- end -}}
 <div class="sidebar-author">
   <img
-    data-src="{{ "avatar/" | relURL }}{{ .Site.Params.avatar }}"
+    data-src="{{ "avatar/" | relURL }}{{ $params.avatar }}"
     data-sizes="auto"
-    alt="{{ .Site.Params.author }}"
+    alt="{{ $params.author }}"
     class="lazyload"
   />
-  <div class="sidebar-author-name">{{ .Site.Params.author }}</div>
-  <div class="sidebar-description">{{ .Site.Params.description }}</div>
+  <div class="sidebar-author-name">{{ $params.author }}</div>
+  <div class="sidebar-description">{{ $params.description }}</div>
 </div>
 <div class="sidebar-state">
   <div class="sidebar-state-article">
     <div>{{ i18n "sidebar.post" }}</div>
-    {{- $posts := (where .Page.Site.RegularPages "Section" "in" .Site.Params.mainSections) -}}
+    {{- $posts := (where .ctx.Page.Site.RegularPages "Section" "in" $params.mainSections) -}}
     <div class="sidebar-state-number">{{ len $posts }}</div>
   </div>
   <a class="sidebar-state-category" href="{{ "categories/" | relLangURL }}" aria-label="sidebar-state-category-link">
     <div>{{ i18n "sidebar.category" }}</div>
     <div class="sidebar-state-number">
-      {{ len .Site.Taxonomies.categories }}
+      {{ len .ctx.Site.Taxonomies.categories }}
     </div>
   </a>
   <a class="sidebar-state-tag" href="{{ "tags/" | relLangURL }}" aria-label="sidebar-state-tag-link">
     <div>{{ i18n "sidebar.tag" }}</div>
-    <div class="sidebar-state-number">{{ len .Site.Taxonomies.tags }}</div>
+    <div class="sidebar-state-number">{{ len .ctx.Site.Taxonomies.tags }}</div>
   </a>
 </div>
-<div class="sidebar-social">
-  {{- range $name, $url := .Site.Params.social -}}
+<div class="sidebar-social" {{ if not (or $showMenu $mobile) }}style="margin-bottom: 20px;"{{ end }}>
+  {{- range $name, $url := $params.social -}}
     <div class="icon-{{ $name }} sidebar-social-icon">
       <a
         href="{{ $url }}"
         itemprop="url"
         target="_blank"
         aria-label="{{ $name }}"
-        rel="noopener external nofollow noreferrer"
+        rel="noopener nofollow noreferrer"
       ></a>
     </div>
   {{- end -}}
 </div>
+{{- if or $showMenu $mobile -}}
 <div class="sidebar-menu">
-  {{- range .Site.Params.menu -}}
+  {{- range $params.menu -}}
     <div class="sidebar-menu-link-wrap">
       <a
         class="sidebar-menu-link-dummy"
         href="{{ .url | relLangURL }}"
         aria-label="{{ i18n .name }}"
       ></a>
-      <div class='sidebar-menu-icon icon {{ if or (and (eq .icon "e62b") ($params.icon_font)) (and (eq .icon "f6ad") (not $params.icon_font)) (not .icon) }}rotate{{ end }}'>
-        {{- if .icon -}}
-          {{- if and (strings.Contains .icon ".") (strings.Contains .icon "/") -}}
-            <img src="{{ .icon | relURL }}" alt="{{ .name }} icon" class="" style="height: 1em;">
+      {{- if ne .icon false -}}
+        <div class='sidebar-menu-icon icon {{ if or (and (eq .icon "e62b") ($params.icon_font)) (and (eq .icon "f6ad") (not $params.icon_font)) (not .icon) }}rotate{{ end }}'>
+          {{- if .icon -}}
+            {{- if and (strings.Contains .icon ".") (strings.Contains .icon "/") -}}
+              <img src="{{ .icon | relURL }}" alt="{{ .name }} icon" class="" style="height: 1em;">
+            {{- else -}}
+              &#x{{- .icon -}};
+            {{- end -}}
           {{- else -}}
-            &#x{{- .icon -}};
+            {{- if $params.icon_font -}}
+              &#xe62b;
+            {{- else -}}
+              &#xf6ad;
+            {{- end -}}
           {{- end -}}
-        {{- else -}}
-          {{- if $params.icon_font -}}
-            &#xe62b;
-          {{- else -}}
-            &#xf6ad;
-          {{- end -}}
-        {{- end -}}
-      </div>
+        </div>
+      {{- end -}}
       <div class="sidebar-menu-link">{{ i18n .name }}</div>
     </div>
   {{- end -}}
 </div>
+{{- end -}}

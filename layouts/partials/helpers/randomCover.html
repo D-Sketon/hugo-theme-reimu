@@ -1,3 +1,11 @@
 {{- $covers := .Site.Data.covers -}}
-{{- $cover := index $covers (math.Rand | mul (len $covers) | math.Floor | int) -}}
+{{- /* Maintain a shuffled queue so covers only repeat after a full cycle. */ -}}
+{{- $scratchKey := "helpers/randomCover/queue" -}}
+{{- $queue := .Scratch.Get $scratchKey | default (slice) -}}
+{{- if lt (len $queue) 1 -}}
+	{{- $queue = shuffle $covers -}}
+{{- end -}}
+{{- $cover := index $queue 0 -}}
+{{- $nextQueue := cond (gt (len $queue) 1) (after 1 $queue) (slice) -}}
+{{- .Scratch.Set $scratchKey $nextQueue -}}
 {{- return $cover -}}

@@ -1,0 +1,36 @@
+{{- $target := or (.Get "link") (.Get "path") -}}
+{{- $cover := .Get "cover" -}}
+{{- $escape := .Get "escape" | default true -}}
+{{- $titleParam := .Get "title" -}}
+
+{{- if not $target -}}
+	{{- errorf "link shortcode: link/path parameter is required" -}}
+{{- end -}}
+
+{{- $protocolPattern := `^(?:https?://|mailto:|tel:)` -}}
+{{- $isExternal := gt (len (findRE $protocolPattern $target)) 0 -}}
+
+{{- $href := "" -}}
+{{- $title := "" -}}
+
+{{- if $isExternal -}}
+	{{- if not $titleParam -}}
+		{{- errorf "link shortcode: title is required for external links" -}}
+	{{- end -}}
+	{{- $title = $titleParam -}}
+	{{- $href = $target -}}
+{{- else -}}
+	{{- $page := .Site.GetPage $target -}}
+	{{- if not $page -}}
+		{{- errorf "link shortcode: page not found: %s" $target -}}
+	{{- end -}}
+	{{- $title = $page.Title -}}
+	{{- $href = $page.Permalink | relURL -}}
+{{- end -}}
+
+{{- $displayTitle := $title -}}
+{{- if not $escape -}}
+	{{- $displayTitle = $title | safeHTML -}}
+{{- end -}}
+
+<a href="{{ $href }}" title="{{ $title }}" target="_blank">{{ $displayTitle }}</a>

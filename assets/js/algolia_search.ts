@@ -20,7 +20,7 @@ const algoliaHandler = () => {
     indexName: algoliaSettings.indexName,
     searchClient: algoliasearch(
       algoliaSettings.applicationID,
-      algoliaSettings.apiKey
+      algoliaSettings.apiKey,
     ),
     searchFunction: (helper) => {
       if ((_$("#reimu-search-input input") as HTMLInputElement).value) {
@@ -47,11 +47,30 @@ const algoliaHandler = () => {
       container: "#reimu-hits",
       templates: {
         item: (data) => {
+          let title = data.title;
+          let highlightTitle = data._highlightResult?.title?.value;
+          if (!title && data.type) {
+            // try DocSearch-compatible fields
+            if (data.type === "content" && data.content) {
+              title = data.content;
+              highlightTitle = data._highlightResult?.content?.value;
+            } else if (data.type.startsWith("lvl") && data.hierarchy) {
+              title = Object.values(data.hierarchy).join(" > ");
+              highlightTitle = Object.values(
+                data._highlightResult?.hierarchy || {},
+              )
+                .map((v: any) => v?.value)
+                .filter(Boolean)
+                .join(" > ");
+            }
+          }
           return (
             '<a href="' +
-            data.permalink +
-            '" class="reimu-hit-item-link">' +
-            data._highlightResult.title.value +
+            (data.permalink ?? data.url) +
+            '" class="reimu-hit-item-link" title="' +
+            (title || "") +
+            '">' +
+            highlightTitle +
             "</a>"
           );
         },
@@ -60,7 +79,7 @@ const algoliaHandler = () => {
             '<div id="reimu-hits-empty">' +
             algoliaSettings.labels.hits_empty.replace(
               /\$\{query}/,
-              data.query
+              data.query,
             ) +
             "</div>"
           );
@@ -112,23 +131,50 @@ const algoliaHandler = () => {
     ?.off("click")
     .on("click", (event) => {
       event.stopPropagation();
-      const scrollWidth = window.innerWidth - document.documentElement.offsetWidth;
+      const scrollWidth =
+        window.innerWidth - document.documentElement.offsetWidth;
       _$("#container")!.style.marginRight = scrollWidth + "px";
       _$("#header-nav")!.style.marginRight = scrollWidth + "px";
-      _$(".popup")!.classList.add("show");
+      const popup = _$(".popup");
+      popup.classList.add("show");
       _$("#mask")!.classList.remove("hide");
       document.body.style.overflow = "hidden";
-      _$("#reimu-search-input input")!.focus();
+      setTimeout(() => {
+        _$("#reimu-search-input input")?.focus();
+      }, 100);
+      const keydownHandler = (e) => {
+        const focusables = popup.querySelectorAll("input, [href]");
+        const firstFocusable = focusables[0] as HTMLElement;
+        const lastFocusable = focusables[focusables.length - 1] as HTMLElement;
+        if (e.key === "Escape") {
+          closePopup();
+        } else if (e.key === "Tab" && focusables.length) {
+          if (e.shiftKey && document.activeElement === firstFocusable) {
+            e.preventDefault();
+            lastFocusable?.focus();
+          } else if (!e.shiftKey && document.activeElement === lastFocusable) {
+            e.preventDefault();
+            firstFocusable?.focus();
+          }
+        }
+      };
+      document.addEventListener("keydown", keydownHandler);
+      function closePopup() {
+        popup.classList.remove("show");
+        _$("#mask").classList.add("hide");
+        _$("#container").style.marginRight = "";
+        _$("#header-nav").style.marginRight = "";
+        document.body.style.overflow = "";
+        document.removeEventListener("keydown", keydownHandler);
+        _$("#nav-search-btn")?.focus();
+      }
+      (popup as any).__closePopup = closePopup;
     });
 
-    _$(".popup-btn-close")
+  _$(".popup-btn-close")
     ?.off("click")
     .on("click", () => {
-      _$(".popup")!.classList.remove("show");
-      _$("#mask").classList.add("hide");
-      _$("#container")!.style.marginRight = "";
-      _$("#header-nav")!.style.marginRight = "";
-      document.body.style.overflow = "";
+      (_$(".popup") as any).__closePopup?.();
     });
 };
 

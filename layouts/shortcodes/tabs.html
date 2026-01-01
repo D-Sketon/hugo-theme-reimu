@@ -1,0 +1,75 @@
+{{- $raw := .Inner -}}
+{{- $arg0 := .Get 0 -}}
+{{- $arg1 := .Get 1 -}}
+{{- $align := "" -}}
+{{- $tabActive := 0 -}}
+
+{{- if eq $arg0 "center" -}}
+	{{- $align = " center" -}}
+{{- else if $arg0 -}}
+	{{- if (gt (len (findRE `^\d+$` $arg0)) 0) -}}
+		{{- $tabActive = (int $arg0) -}}
+	{{- end -}}
+	{{- if eq $arg1 "center" -}}
+		{{- $align = " center" -}}
+	{{- end -}}
+{{- end -}}
+
+{{- $ordinal := default (now.UnixNano) .Ordinal -}}
+{{- $tabName := printf "tab_%s_%d" (substr (md5 $raw) 0 8) $ordinal -}}
+
+{{- $delim := "§§TAB§§" -}}
+{{- $prepared := replace $raw "<!-- tab" (print $delim "<!-- tab") -}}
+{{- $chunks := split $prepared $delim -}}
+{{- $tabs := slice -}}
+{{- range $i, $c := $chunks -}}
+	{{- if gt $i 0 -}}
+		{{- $header := (replaceRE `(?s)^<!--\s*tab\s*(.*?)\s*-->.*` "$1" $c) | strings.TrimSpace -}}
+		{{- if ne $header "" -}}
+			{{- $bodyRaw := (replaceRE `(?s)^<!--\s*tab\s*(.*?)\s*-->` "" $c) -}}
+			{{- $tabs = $tabs | append (dict "header" $header "body" $bodyRaw) -}}
+		{{- end -}}
+	{{- end -}}
+{{- end -}}
+
+{{- if lt (len $tabs) 1 -}}
+	{{- /* 无有效 tab 时不输出 */ -}}
+{{- else -}}
+	{{- $nav := slice -}}
+	{{- $panes := slice -}}
+	{{- range $i, $t := $tabs -}}
+		{{- $header := $t.header -}}
+		{{- $parts := split $header "@" -}}
+		{{- $icon := "" -}}
+		{{- $caption := "" -}}
+		{{- if gt (len $parts) 1 -}}
+			{{- $icon = index $parts (sub (len $parts) 1) -}}
+			{{- $caption = delimit (first (sub (len $parts) 1) $parts) "@" -}}
+		{{- else -}}
+			{{- $caption = $header -}}
+		{{- end -}}
+
+		{{- $id := printf "%s-%d" $tabName (add $i 1) | lower -}}
+		{{- if and (eq (len (strings.TrimSpace $caption)) 0) (eq (len (strings.TrimSpace $icon)) 0) -}}
+			{{- $caption = printf "%s %d" $tabName (add $i 1) -}}
+		{{- end -}}
+
+		{{- $isActive := or (and (gt $tabActive 0) (eq $tabActive (add $i 1))) (and (eq $tabActive 0) (eq (add $i 1) 1)) -}}
+
+		{{- $iconHtml := "" -}}
+		{{- if gt (len (strings.TrimSpace $icon)) 0 -}}
+			{{- $iconHtml = printf `<span class="icon" style="margin:0 4px;">&#x%s;</span>` (strings.TrimSpace $icon) -}}
+		{{- end -}}
+		{{- $nav = $nav | append (printf `<li class="tab%[1]s"><a class="#%[2]s">%[3]s%[4]s</a></li>` (cond $isActive " active" "") $id $iconHtml (htmlEscape $caption)) -}}
+
+		{{- $rendered := ($t.body | markdownify | strings.TrimSpace) -}}
+		{{- $panes = $panes | append (printf `<div class="tab-pane%[1]s" id="%[2]s">%[3]s</div>` (cond $isActive " active" "") $id $rendered) -}}
+	{{- end -}}
+
+	<div class="tabs" id="tab-{{ $tabName }}">
+		<ul class="nav-tabs{{ $align }}">{{ safeHTML (delimit $nav "") }}<div class="tab-indicator"></div></ul>
+		<div class="tab-content">{{ safeHTML (delimit $panes "") }}</div>
+	</div>
+  {{- partial "helpers/scss.html" (dict "source" "css/tabs.scss" "temp" "tabs.scss" "target" "css/tabs.css" "ctx" . "async" true) -}}
+{{- end -}}
+

@@ -1,6 +1,6 @@
 {{- $path := .Get "path" -}}
 {{- $cover := .Get "cover" -}}
-{{- $escape := .Get "escape" -}}
+{{- $escape := .Get "escape" | default true -}}
 
 {{- $page := .Site.GetPage $path -}}
 
@@ -8,18 +8,22 @@
   {{- errorf "postLinkCard shortcode: page not found: %s" $path -}}
 {{- end -}}
 
-{{- $safeTitle := $page.Title | safeHTML -}}
+{{- $title := $page.Title -}}
+{{- $displayTitle := $title -}}
+{{- if not $escape -}}
+	{{- $displayTitle = $title | safeHTML -}}
+{{- end -}}
 
 <div class="post-link-card-wrap">
   <div class="post-link-card">
-    <a href="{{ $page.Permalink | relURL }}" title="{{ $safeTitle }}"></a>
+    <a href="{{ $page.Permalink | relURL }}" title="{{ $title }}"></a>
     {{- if eq $cover "auto" -}}
       <div class="post-link-card-cover-wrap">
         <img
           src="{{ .Site.Params.banner | relURL }}"
           class="no-lightbox"
-          title="{{ $safeTitle }}"
-          alt="{{ $safeTitle }}"
+          title="{{ $title }}"
+          alt="{{ $title }}"
         />
       </div>
     {{- else if $cover -}}
@@ -27,26 +31,22 @@
         <img
           src="{{ $cover | relURL }}"
           class="no-lightbox"
-          title="{{ $safeTitle }}"
-          alt="{{ $safeTitle }}"
+          title="{{ $title }}"
+          alt="{{ $title }}"
         />
       </div>
     {{- end -}}
     <div class="post-link-card-item-wrap">
       <div class="post-link-card-title">
-        {{- if $escape -}}
-          {{- $safeTitle -}}
-        {{- else -}}
-          {{- $page.Title -}}
-        {{- end -}}
+        {{ $displayTitle }}
       </div>
       <div class="post-link-card-excerpt">
         {{- if $page.Params.description -}}
-          {{- $page.Params.description | plainify | truncate 300 -}}
+          {{- $page.Params.description | plainify | truncate 100 -}}
         {{- else if $page.Summary -}}
-          {{- $page.Summary | plainify | truncate 200 -}}
+          {{- $page.Summary | plainify | truncate 100 -}}
         {{- else -}}
-          {{- $page.RawContent | truncate 200 -}}
+          {{- $page.RawContent | truncate 100 -}}
         {{- end -}}
       </div>
     </div>

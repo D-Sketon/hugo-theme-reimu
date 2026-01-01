@@ -35,6 +35,7 @@ $sponsor_icon_mask: {{  $params.sponsor.icon.mask }};
 $live2d_position: {{ $params.live2d.position }};
 $live2d_widgets_position: {{ $params.live2d_widgets.position }};
 $top_position: {{ $params.top.position }};
+$show_update_time: {{ $params.show_update_time }};
 
 $cursor-default: {{ if reflect.IsMap $params.reimu_cursor }}"{{ $params.reimu_cursor.cursor.default }}"{{ else }}"../images/cursor/reimu-cursor-default.png"{{ end }};
 $cursor-pointer: {{ if reflect.IsMap $params.reimu_cursor }}"{{ $params.reimu_cursor.cursor.pointer }}"{{ else }}"../images/cursor/reimu-cursor-pointer.png"{{ end }};
@@ -51,6 +52,10 @@ $social-keys: {{ delimit (apply $social_keys "printf" "'%s'" "." ) "," }};
 {{ $share_keys := default slice $params.share }}
 {{ $share_keys = $share_keys | append "__dummy__" }}
 $share-keys: {{ delimit (apply $share_keys "printf" "'%s'" "." ) "," }};
+
+$content_max_width: {{ default "1350px" $params.layout.max_width }};
+
+$uppercase_capsule: {{ $params.uppercase_capsule }};
 
 :root {
   --footer-icon: url({{ $params.footer.icon.url }});
@@ -80,45 +85,54 @@ $light-red-6: {{ default "#fff7f7" (index $params.internal_theme.light "--red-6"
 $light-color-red-6-shadow: {{ default "rgba(255, 78, 78, 0.6)" (index $params.internal_theme.light "--color-red-6-shadow") }};
 $light-color-red-3-shadow: {{ default "rgba(255, 78, 78, 0.3)" (index $params.internal_theme.light "--color-red-3-shadow") }};
 
-$light-highlight-nav: {{ default "#e6e6e6" (index $params.internal_theme.light "--highlight-nav") }};
+$light-highlight-nav: {{ default "#f5f5f5" (index $params.internal_theme.light "--highlight-nav") }};
 $light-highlight-scrollbar: {{ default "#d6d6d6" (index $params.internal_theme.light "--highlight-scrollbar") }};
-$light-highlight-background: {{ default "#f7f7f7" (index $params.internal_theme.light "--highlight-background") }};
-$light-highlight-current-line: {{ default "#dadada" (index $params.internal_theme.light "--highlight-current-line") }};
-$light-highlight-selection: {{ default "#e9e9e9" (index $params.internal_theme.light "--highlight-selection") }};
-$light-highlight-foreground: {{ default "#4d4d4d" (index $params.internal_theme.light "--highlight-foreground") }};
+$light-highlight-background: {{ default "#fdfdfd" (index $params.internal_theme.light "--highlight-background") }};
+$light-highlight-selection: {{ default "#e9e9e988" (index $params.internal_theme.light "--highlight-selection") }};
+$light-highlight-foreground: {{ default "#24292e" (index $params.internal_theme.light "--highlight-foreground") }};
 $light-highlight-comment: {{ default "#7d7d7d" (index $params.internal_theme.light "--highlight-comment") }};
-$light-highlight-red: {{ default "#c8362b" (index $params.internal_theme.light "--highlight-red") }};
-$light-highlight-orange: {{ default "#b66014" (index $params.internal_theme.light "--highlight-orange") }};
+$light-highlight-red: {{ default "#d73a49" (index $params.internal_theme.light "--highlight-red") }};
+$light-highlight-orange: {{ default "#e36209" (index $params.internal_theme.light "--highlight-orange") }};
 $light-highlight-yellow: {{ default "#cb911d" (index $params.internal_theme.light "--highlight-yellow") }};
-$light-highlight-green: {{ default "#2ea52e" (index $params.internal_theme.light "--highlight-green") }};
-$light-highlight-aqua: {{ default "#479d9d" (index $params.internal_theme.light "--highlight-aqua") }};
-$light-highlight-blue: {{ default "#1973b8" (index $params.internal_theme.light "--highlight-blue") }};
-$light-highlight-purple: {{ default "#7135ac" (index $params.internal_theme.light "--highlight-purple") }};
+$light-highlight-green: {{ default "#22863a" (index $params.internal_theme.light "--highlight-green") }};
+$light-highlight-aqua: {{ default "#005cc5" (index $params.internal_theme.light "--highlight-aqua") }};
+$light-highlight-blue: {{ default "#032f62" (index $params.internal_theme.light "--highlight-blue") }};
+$light-highlight-purple: {{ default "#6f42c1" (index $params.internal_theme.light "--highlight-purple") }};
+$light-highlight-deletion: {{ default "#b31d28" (index $params.internal_theme.light "--highlight-deletion") }};
+$light-highlight-deletion-bg: {{ default "#ffeef0" (index $params.internal_theme.light "--highlight-deletion-bg") }};
+$light-highlight-addition: {{ default "#22863a" (index $params.internal_theme.light "--highlight-addition") }};
+$light-highlight-addition-bg: {{ default "#f0fff4" (index $params.internal_theme.light "--highlight-addition-bg") }};
 
 $dark-red-4: {{ default "rgba(255, 208, 208, 0.5)" (index $params.internal_theme.dark "--red-4") }};
 $dark-red-5: {{ default "rgba(255,228,228,0.15)" (index $params.internal_theme.dark "--red-5") }};
 $dark-red-5-5: {{ default "rgba(255,236,236,0.05)" (index $params.internal_theme.dark "--red-5-5") }};
 $dark-red-6: {{ default "rgba(255, 243, 243, 0.2)" (index $params.internal_theme.dark "--red-6") }};
 
-$dark-highlight-nav: {{ default "#2e353f" (index $params.internal_theme.dark "--highlight-nav") }};
+$dark-highlight-nav: {{ default "#222830" (index $params.internal_theme.dark "--highlight-nav") }};
 $dark-highlight-scrollbar: {{ default "#454d59" (index $params.internal_theme.dark "--highlight-scrollbar") }};
-$dark-highlight-background: {{ default "#22272e" (index $params.internal_theme.dark "--highlight-background") }};
-$dark-highlight-current-line: {{ default "#393939" (index $params.internal_theme.dark "--highlight-current-line") }};
-$dark-highlight-selection: {{ default "#515151" (index $params.internal_theme.dark "--highlight-selection") }};
-$dark-highlight-foreground: {{ default "#cccccc" (index $params.internal_theme.dark "--highlight-foreground") }};
-$dark-highlight-comment: {{ default "#999999" (index $params.internal_theme.dark "--highlight-comment") }};
-$dark-highlight-red: {{ default "#f47067" (index $params.internal_theme.dark "--highlight-red") }};
-$dark-highlight-orange: {{ default "#f69d50" (index $params.internal_theme.dark "--highlight-orange") }};
+$dark-highlight-background: {{ default "#1e2027" (index $params.internal_theme.dark "--highlight-background") }};
+$dark-highlight-selection: {{ default "#51515155" (index $params.internal_theme.dark "--highlight-selection") }};
+$dark-highlight-foreground: {{ default "#c9d1d9" (index $params.internal_theme.dark "--highlight-foreground") }};
+$dark-highlight-comment: {{ default "#8b949e" (index $params.internal_theme.dark "--highlight-comment") }};
+$dark-highlight-red: {{ default "#ff7b72" (index $params.internal_theme.dark "--highlight-red") }};
+$dark-highlight-orange: {{ default "#ffa657" (index $params.internal_theme.dark "--highlight-orange") }};
 $dark-highlight-yellow: {{ default "#ffcc66" (index $params.internal_theme.dark "--highlight-yellow") }};
-$dark-highlight-green: {{ default "#99cc99" (index $params.internal_theme.dark "--highlight-green") }};
-$dark-highlight-aqua: {{ default "#66cccc" (index $params.internal_theme.dark "--highlight-aqua") }};
-$dark-highlight-blue: {{ default "#54b6ff" (index $params.internal_theme.dark "--highlight-blue") }};
-$dark-highlight-purple: {{ default "#dcbdfb" (index $params.internal_theme.dark "--highlight-purple") }};
+$dark-highlight-green: {{ default "#7ee787" (index $params.internal_theme.dark "--highlight-green") }};
+$dark-highlight-aqua: {{ default "#a5d6ff" (index $params.internal_theme.dark "--highlight-aqua") }};
+$dark-highlight-blue: {{ default "#79c0ff" (index $params.internal_theme.dark "--highlight-blue") }};
+$dark-highlight-purple: {{ default "#d2a8ff" (index $params.internal_theme.dark "--highlight-purple") }};
+$dark-highlight-deletion: {{ default "#ffa198" (index $params.internal_theme.dark "--highlight-deletion") }};
+$dark-highlight-deletion-bg: {{ default "#490202" (index $params.internal_theme.dark "--highlight-deletion-bg") }};
+$dark-highlight-addition: {{ default "#7ee787" (index $params.internal_theme.dark "--highlight-addition") }};
+$dark-highlight-addition-bg: {{ default "#04260f" (index $params.internal_theme.dark "--highlight-addition-bg") }};
 
 $waline: {{ (cond (and $params.valine.enable $params.valine.appId $params.valine.appKey) true false) }};
 $valine: {{ (cond (and $params.waline.enable $params.waline.serverURL) true false) }};
 $gitalk: {{ (cond (and $params.gitalk.enable $params.gitalk.clientID $params.gitalk.clientSecret) true false) }};
 $giscus: {{ (cond $params.giscus.enable true false) }};
+
+$triangle-badge-enable: {{ $params.triangle_badge.enable }};
+$triangle-badge-icon: {{ $params.triangle_badge.icon }};
 
 @import "_reset";
 @import "_variables";
@@ -134,7 +148,6 @@ $giscus: {{ (cond $params.giscus.enable true false) }};
 @include global-reset;
 
 h1, h2, h3, h4, h5, h6 {
-  font-family: $font-basic;
   font-weight: 700;
 }
 
@@ -163,6 +176,7 @@ body {
   font-family: $font-basic;
   transition: background 1s;
   color: var(--color-default);
+  text-autospace: normal;
 
   ::selection {
     background: var(--red-1);
@@ -221,21 +235,25 @@ a, .main-nav-icon, .popup-btn-close, button {
 
 #main {
   flex: 1;
-  padding: 0 10px;
+  padding: 0 20px;
   max-width: 100%;
   box-sizing: border-box;
 
   @media #{$mg-large} {
     min-width: 100%;
   }
+
+  @media #{$mg-normal} {
+    padding: 0 16px;
+  }
 }
 
 #content {
   position: relative;
   display: flex;
-  padding-top: 5px;
+  padding-top: 8px;
   align-items: stretch;
-  max-width: 1350px;
+  max-width: $content_max_width;
   margin: 0 auto;
   overflow: visible;
 }
@@ -246,7 +264,8 @@ a, .main-nav-icon, .popup-btn-close, button {
     @media #{$mq-large} {
       padding: 0;
       width: 73%;
-      margin: 0 1%;
+      max-width: calc(100% - 268px - 64px);
+      margin: 0 16px;
     }
   }
 }
@@ -287,6 +306,7 @@ a, .main-nav-icon, .popup-btn-close, button {
 @import "partials/friend";
 @import "partials/card";
 @import "partials/sidebar";
+@import "partials/container";
 
 {{ if $params.top.enable }}
 @import "partials/top";
@@ -327,6 +347,7 @@ a, .main-nav-icon, .popup-btn-close, button {
 [data-theme="dark"] {
   ::-webkit-scrollbar, ::-webkit-scrollbar-track {
     background-color: #616161;
+    border-radius: 10px;
   }
 }
 

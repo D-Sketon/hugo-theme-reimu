@@ -1,5 +1,7 @@
 :root {
-  --font-icon: "Font Awesome 6 Free", "Font Awesome 6 Brands", "Font Awesome 5 Free", "Font Awesome 5 Brands", "FontAwesome";
+  --font-icon: "Font Awesome 7 Free", "Font Awesome 7 Brands",
+    "Font Awesome 6 Free", "Font Awesome 6 Brands", "Font Awesome 5 Free",
+    "Font Awesome 5 Brands", "FontAwesome";
 }
 
 .archives-tag-list-link:before {
@@ -15,11 +17,13 @@
 .article-date-link:before {
   font-family: var(--font-icon);
   content: "\f017";
+  font-weight: 900;
 }
 
 .article-category-link:before {
   font-family: var(--font-icon);
   content: "\f02e";
+  font-weight: 900;
 }
 
 .article-tag-list-link:before {
@@ -30,6 +34,7 @@
 .article-comment-link:before {
   font-family: var(--font-icon);
   content: "\f075";
+  font-weight: 900;
 }
 
 .icon-copyright:before {
@@ -50,11 +55,13 @@
 .icon-eye:before {
   font-family: var(--font-icon);
   content: "\f06e";
+  font-weight: 900;
 }
 
 .icon-user:before {
   font-family: var(--font-icon);
   content: "\f007";
+  font-weight: 900;
 }
 
 #main-nav-toggle:before {
@@ -75,11 +82,13 @@
 #nav-sun-btn:before {
   font-family: var(--font-icon);
   content: "\f185";
+  font-weight: 900;
 }
 
 #nav-moon-btn:before {
   font-family: var(--font-icon);
   content: "\f186";
+  font-weight: 900;
 }
 
 #nav-circle-half-stroke-btn:before {
@@ -114,7 +123,14 @@
 
 .icon-calendar:before {
   font-family: var(--font-icon);
-  content: "\f073";
+  content: "\f133";
+  font-weight: 900;
+}
+
+.icon-calendar-plus:before {
+  font-family: var(--font-icon);
+  content: "\f271";
+  font-weight: 900;
 }
 
 .icon-pencil:before {
@@ -125,16 +141,19 @@
 .icon-clock:before {
   font-family: var(--font-icon);
   content: "\f252";
+  font-weight: 900;
 }
 
 .post-sticky:before {
   font-family: var(--font-icon);
   content: "\f164";
+  font-weight: 900;
 }
 
 .popup-btn-close:before {
   font-family: var(--font-icon);
   content: "\f057";
+  font-weight: 900;
 }
 
 .reimu-search-input-icon:before {
@@ -152,162 +171,186 @@
   content: "\f105";
 }
 
-@if index($social-keys, "github") {
+@if index($social-keys, "github") or $triangle-badge-icon == "github" {
   .icon-github:before {
     content: "\f09b";
   }
 }
 
-@if index($social-keys, "google") {
+@if index($social-keys, "google") or $triangle-badge-icon == "google" {
   .icon-google:before {
     content: "\f0d5";
   }
 }
 
-@if index($social-keys, "facebook") or index($share-keys, "facebook") {
+@if index($social-keys, "facebook") or
+  index($share-keys, "facebook") or
+  $triangle-badge-icon ==
+  "facebook"
+{
   .icon-facebook:before {
     content: "\f09a";
   }
 }
 
-@if index($social-keys, "twitter") or index($share-keys, "twitter") {
+@if index($social-keys, "twitter") or
+  index($share-keys, "twitter") or
+  $triangle-badge-icon ==
+  "twitter"
+{
   .icon-twitter:before {
     content: "\e61b";
   }
 }
 
-@if index($social-keys, "instagram") {
+@if index($social-keys, "instagram") or $triangle-badge-icon == "instagram" {
   .icon-instagram:before {
     content: "\f16d";
   }
 }
 
-@if index($social-keys, "linkedin") or index($share-keys, "linkedin") {
+@if index($social-keys, "linkedin") or
+  index($share-keys, "linkedin") or
+  $triangle-badge-icon ==
+  "linkedin"
+{
   .icon-linkedin:before {
     content: "\f08c";
   }
 }
 
-@if index($social-keys, "pinterest") {
+@if index($social-keys, "pinterest") or $triangle-badge-icon == "pinterest" {
   .icon-pinterest:before {
     content: "\f0d2";
   }
 }
 
-@if index($social-keys, "youtube") {
+@if index($social-keys, "youtube") or $triangle-badge-icon == "youtube" {
   .icon-youtube:before {
     content: "\f167";
   }
 }
 
-@if index($social-keys, "vimeo") {
+@if index($social-keys, "vimeo") or $triangle-badge-icon == "vimeo" {
   .icon-vimeo:before {
     content: "\f194";
   }
 }
 
-@if index($social-keys, "flickr") {
+@if index($social-keys, "flickr") or $triangle-badge-icon == "flickr" {
   .icon-flickr:before {
     content: "\f16e";
   }
 }
 
-@if index($social-keys, "dribbble") {
+@if index($social-keys, "dribbble") or $triangle-badge-icon == "dribbble" {
   .icon-dribbble:before {
     content: "\f17d";
   }
 }
 
-@if index($social-keys, "behance") {
+@if index($social-keys, "behance") or $triangle-badge-icon == "behance" {
   .icon-behance:before {
     content: "\f1b4";
   }
 }
 
-@if index($social-keys, "bilibili") {
+@if index($social-keys, "bilibili") or $triangle-badge-icon == "bilibili" {
   .icon-bilibili:before {
     content: "\e3d9";
   }
 }
 
-@if index($social-keys, "weibo") or index($share-keys, "weibo") {
+@if index($social-keys, "weibo") or
+  index($share-keys, "weibo") or
+  $triangle-badge-icon ==
+  "weibo"
+{
   .icon-weibo:before {
     content: "\f18a";
   }
 }
 
-@if index($social-keys, "zhihu") {
+@if index($social-keys, "zhihu") or $triangle-badge-icon == "zhihu" {
   .icon-zhihu:before {
     content: "\f63f";
   }
 }
 
-@if index($social-keys, "reddit") or index($share-keys, "reddit") {
+@if index($social-keys, "reddit") or
+  index($share-keys, "reddit") or
+  $triangle-badge-icon ==
+  "reddit"
+{
   .icon-reddit:before {
     content: "\f1a1";
   }
 }
 
-@if index($social-keys, "tumblr") {
+@if index($social-keys, "tumblr") or $triangle-badge-icon == "tumblr" {
   .icon-tumblr:before {
     content: "\f173";
   }
 }
 
-@if index($social-keys, "medium") {
+@if index($social-keys, "medium") or $triangle-badge-icon == "medium" {
   .icon-medium:before {
     content: "\f23a";
   }
 }
 
-@if index($social-keys, "deviantart") {
+@if index($social-keys, "deviantart") or $triangle-badge-icon == "deviantart" {
   .icon-deviantart:before {
     content: "\f1bd";
   }
 }
 
-@if index($social-keys, "stackoverflow") {
+@if index($social-keys, "stackoverflow") or
+  $triangle-badge-icon ==
+  "stackoverflow"
+{
   .icon-stackoverflow:before {
     content: "\f16c";
   }
 }
 
-@if index($social-keys, "keybase") {
+@if index($social-keys, "keybase") or $triangle-badge-icon == "keybase" {
   .icon-keybase:before {
     content: "\f4f5";
   }
 }
 
-@if index($social-keys, "telegram") {
+@if index($social-keys, "telegram") or $triangle-badge-icon == "telegram" {
   .icon-telegram:before {
     content: "\f2c6";
   }
 }
 
-@if index($social-keys, "discord") {
+@if index($social-keys, "discord") or $triangle-badge-icon == "discord" {
   .icon-discord:before {
     content: "\f392";
   }
 }
 
-@if index($social-keys, "steam") {
+@if index($social-keys, "steam") or $triangle-badge-icon == "steam" {
   .icon-steam:before {
     content: "\f1b6";
   }
 }
 
-@if index($social-keys, "email") {
+@if index($social-keys, "email") or $triangle-badge-icon == "email" {
   .icon-email:before {
     content: "\f0e0";
+    font-weight: 900;
   }
 }
 
-.sidebar-btn-wrapper .sidebar-toc-btn:before {
+.sidebar-toc-btn:before {
   font-family: var(--font-icon);
   content: "\f0e8";
 }
 
-.sidebar-btn-wrapper .sidebar-common-btn:before {
+.sidebar-common-btn:before {
   font-family: var(--font-icon);
   content: "\e3af";
 }
@@ -325,6 +368,7 @@
 .icon-globe:before {
   font-family: var(--font-icon);
   content: "\f0ac";
+  font-weight: 900;
 }
 
 .icon-creative-commons:before {
@@ -354,6 +398,7 @@
 .icon-image:before {
   font-family: var(--font-icon);
   content: "\f03e";
+  font-weight: 900;
 }
 
 .icon {

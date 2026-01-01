@@ -1,0 +1,84 @@
+{{- $target := or (.Get "link") (.Get "path") -}}
+{{- $cover := .Get "cover" -}}
+{{- $escape := .Get "escape" | default true -}}
+{{- $titleParam := .Get "title" -}}
+
+{{- if not $target -}}
+	{{- errorf "link shortcode: link/path parameter is required" -}}
+{{- end -}}
+
+{{- $protocolPattern := `^(?:https?://|mailto:|tel:)` -}}
+{{- $isExternal := gt (len (findRE $protocolPattern $target)) 0 -}}
+
+{{- $href := "" -}}
+{{- $title := "" -}}
+{{- $excerpt := "" -}}
+
+{{- if $isExternal -}}
+	{{- if not $titleParam -}}
+		{{- errorf "link shortcode: title is required for external links" -}}
+	{{- end -}}
+	{{- $title = $titleParam -}}
+	{{- $href = $target -}}
+	{{- $excerpt = (printf `<span class="icon-link"></span>%s` $target) | safeHTML -}}
+{{- else -}}
+	{{- $page := .Site.GetPage $target -}}
+	{{- if not $page -}}
+		{{- errorf "link shortcode: page not found: %s" $target -}}
+	{{- end -}}
+	{{- $title = $page.Title -}}
+	{{- $href = $page.Permalink | relURL -}}
+	{{- if $page.Params.description -}}
+		{{- $excerpt = $page.Params.description | plainify | truncate 100 -}}
+	{{- else if $page.Summary -}}
+		{{- $excerpt = $page.Summary | plainify | truncate 100 -}}
+	{{- else -}}
+		{{- $excerpt = $page.RawContent | truncate 100 -}}
+	{{- end -}}
+{{- end -}}
+
+{{- $displayTitle := $title -}}
+{{- if not $escape -}}
+	{{- $displayTitle = $title | safeHTML -}}
+{{- end -}}
+
+<div class="post-link-card-wrap">
+	<div class="post-link-card">
+		<a
+			href="{{ $href }}"
+			title="{{ $title }}"
+			{{- if $isExternal -}} rel="noopener nofollow noreferrer" target="_blank"{{- end -}}
+		></a>
+		{{- if eq $cover "auto" -}}
+			{{- if $isExternal -}}
+				<div class="post-link-card-cover-wrap auto">
+					<div class="icon-globe"></div>
+				</div>
+			{{- else -}}
+				<div class="post-link-card-cover-wrap">
+					<img
+						src="{{ .Site.Params.banner | relURL }}"
+						class="no-lightbox"
+						title="{{ $title }}"
+						alt="{{ $title }}"
+					/>
+				</div>
+			{{- end -}}
+		{{- else if $cover -}}
+			<div class="post-link-card-cover-wrap">
+				<img
+					src="{{ $cover | relURL }}"
+					class="no-lightbox"
+					title="{{ $title }}"
+					alt="{{ $title }}"
+				/>
+			</div>
+		{{- end -}}
+		<div class="post-link-card-item-wrap">
+			<div class="post-link-card-title">{{ $displayTitle }}</div>
+			<div class="post-link-card-excerpt">
+				{{- $excerpt -}}
+			</div>
+		</div>
+	</div>
+</div>
