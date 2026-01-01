@@ -218,7 +218,7 @@ cover: https://example.com
 ---
 ```
 
-- If the article's Front matter contains cover set to `false`, the article won't display a header image (homepage will still show random images)
+- If the article's Front matter contains cover set to `false`, the article won't display a header image (homepage thumbnail will still show random images)
 
 ```yaml
 ---
@@ -227,7 +227,7 @@ cover: false
 ---
 ```
 
-- If the article's Front matter contains cover set to `rgb(xxx,xxx,xxx)`, the article header will be a gradient of that solid color (homepage will still show random images)
+- If the article's Front matter contains cover set to `rgb(xxx,xxx,xxx)`, the article header will be a gradient of that solid color (homepage thumbnail will still show random images)
 
 ```yaml
 ---
@@ -236,8 +236,8 @@ cover: rgb(255,117,117)
 ---
 ```
 
-- Otherwise, it will look for `covers.yml` in the `data` folder and randomly select an image
-- If none of the above files exist, it will display the banner image
+- Otherwise, the homepage thumbnail will look for `covers.yml` in the `data` folder and randomly select an image; the in-article header image will look for the `cover` configuration in `params.yml`
+- If none of the above files/configurations exist, it will display the `banner` header image as a fallback
 
 #### Banner
 
@@ -271,23 +271,29 @@ summary:
 
 #### Sidebar Position
 
-Default on the right. You can modify it in the inner `_config.yml`.
+Default on the right. You can modify it in `params.yml`.
 
 ```yaml
-sidebar: right # left | right
+sidebar:
+  position: right # left | right | false
+  menu: true # whether to show the sidebar menu button, ignored on mobile devices
+  article:
+    show_common: true # whether to show common sidebar on article pages, ignored on mobile devices
 ```
 
 Additionally, you can control it through the article's front-matter, which takes precedence over the global configuration.
 
 ```yaml
 ---
-sidebar: left # left | right
+sidebar: left # left | right | false
 ---
 ```
 
+> When sidebar is set to false, the sidebar will be hidden, and the aplayer player and widgets will not be displayed at the same time.
+
 #### TOC
 
-Default enabled. You can modify it in the inner `_config.yml`.
+Default enabled. You can modify it in `params.yml`.
 
 ```yaml
 toc: true # true | false
@@ -303,7 +309,7 @@ toc: true # true | false
 
 #### Social Links
 
-You can configure the social links in the sidebar in the inner `_config.yml`.
+You can configure the social links in the sidebar in `params.yml`.
 
 ```yaml
 social:
@@ -314,7 +320,7 @@ social:
 
 #### Widgets
 
-You can configure the widgets in the sidebar in the inner `_config.yml`.
+You can configure the widgets in the sidebar in `params.yml`.
 
 ```yaml
 widgets:
@@ -444,6 +450,15 @@ valine:
   enable: true
   appId: "your appId"
   appKey: "your appKey"
+  pageSize: 10 # comment list page size
+  avatar: mp # gravatar style https://valine.js.org/#/avatar
+  # lang: zh-cn # deprecated, use html.lang instead
+  placeholder: Just go go # valine comment input placeholder(like: Please leave your footprints )
+  guest_info: nick,mail,link #valine comment header info
+  recordIP: true # whether to record the IP address of the commenters
+  highlight: true # whether to highlight the code blocks
+  visitor: false # whether to display the number of visitors
+  serverURLs: # leancloud server url
 ```
 
 If using [Waline](https://waline.js.org/)  
@@ -574,7 +589,7 @@ math: true
 ---
 ```
 
-> Note: Do not enable both KaTeX and MathJax3 simultaneously
+> Note: Do not enable both KaTeX and MathJax3 at the same time.
 
 #### KaTex
 
@@ -611,6 +626,13 @@ mermaid: true
 ---
 ```
 
+Besides, you can configure Mermaid in `params.yml`:
+
+```yaml
+mermaid:
+  zoom: false # whether to enable zooming
+```
+
 </details>
 <details>
 <summary>RSS</summary>
@@ -644,17 +666,17 @@ If you want to continue using FontAwesome icons, set `icon_font` to `false`. Thi
 ```yml
 fontawesome:
   high_priority:
-    - src: webcache|@fortawesome/fontawesome-free@6.5.1/css/regular.min.css
-      integrity: sha384-k5640LgghgAohDLPwSqVWa96yQwWouT6wsAL+J1g0CFJVITNKYkIh1XpPLYKQe7Y
-    - src: webcache|@fortawesome/fontawesome-free@6.5.1/css/solid.min.css
-      integrity: sha384-8yO/A/BtltnG0hDxdwmmkza8UAleyDoAD1FhXiH6rsOQQsCho1P6WZP9TpBBH3YP
+    - src: webcache|@fortawesome/fontawesome-free@7.1.0/css/regular.min.css
+      integrity: sha384-4qYppzjH8EiA+cGdaubu2vL7Rk8WGiqCSj7oRuP1uwtFWkfKNHD20lPfcrbQc8dU
+    - src: webcache|@fortawesome/fontawesome-free@7.1.0/css/solid.min.css
+      integrity: sha384-wbMWab3UDSPm2kvIgVOn/d9KPTecgPU1+Nb3zoQrm/oVu0EkPL6IaKinjbwW0rum
   low_priority:
-    - src: webcache|@fortawesome/fontawesome-free@6.5.1/css/brands.min.css
-      integrity: sha384-/BRyRRN0wxxRgh/DAXU621go9pdoMHl6LFPiX5Pp8PZYZlKBQCDXj9X9DHx6LOud
-    - src: webcache|@fortawesome/fontawesome-free@6.5.1/css/v5-font-face.min.css
-      integrity: sha384-/mBKnLlGtog8q2qQrgugURRDV+iHWHAPvM5KulYXT1C2ErKOKkBI0vbff8ZPq7rL
-    - src: webcache|@fortawesome/fontawesome-free@6.5.1/css/v4-font-face.min.css
-      integrity: sha384-d2Yn1/9Iw78r3oqwk5B+EcpRcmepXR5LyhmRF2a+WoSe9mpRGvVk0ZviFwDGDOTO
+    - src: webcache|@fortawesome/fontawesome-free@7.1.0/css/brands.min.css
+      integrity: sha384-KTGeC2hIMzpeQakhsmzB9bZfhCD5xZZCgI1iZH6f/O457SxzlkzTQg/WXFNoi3ih
+    - src: webcache|@fortawesome/fontawesome-free@7.1.0/css/v5-font-face.min.css
+      integrity: sha384-nJ1ThfldViXoLpJ6jlKcP2beas8BMbYq26SG9Hi8cH89bZi4RZ644v7helMCqJxd
+    - src: webcache|@fortawesome/fontawesome-free@7.1.0/css/v4-font-face.min.css
+      integrity: sha384-UlkrhOIvZxJFd4MElSUp7ow6/RUeYKi/orfCZIRRiOENFuQPIAA3T3HjYfmBRhNq
 ```
 
 </details>
@@ -663,6 +685,16 @@ fontawesome:
 <summary>Extended features</summary>
 
 ### Extended features
+
+#### Back to Top
+
+Enabled by default
+
+```yaml
+top:
+  enable: true
+  position: right # left | right
+```
 
 #### Dark Mode
 
@@ -674,6 +706,16 @@ dark_mode:
   # false means that the dark mode is disabled by default
   # auto means that the dark mode is automatically switched according to the system settings
   enable: auto # true | false | auto
+```
+
+#### Analytics
+
+Disabled by default, supports Baidu Analytics, Google Analytics and Microsoft Clarity
+
+```yaml
+baidu_analytics: false
+google_analytics: false
+clarity: false
 ```
 
 #### Pace Progress Bar
@@ -692,6 +734,8 @@ Enabled by default
 ```yaml
 firework:
   enable: true
+  disable_on_mobile: false # whether to disable on mobile devices, which can improve performance
+  options: # mouse-firework options
 ```
 
 For detailed configuration, please check [mouse-firework](https://github.com/D-Sketon/mouse-firework)
@@ -756,7 +800,9 @@ srcset:
     media: "(max-width: 479px)"
   - src: "images/banner-800w.webp"
     media: "(max-width: 799px)"
-  - src: "images/banner.webp"
+  - src: 
+    - "/images/banner.avif"
+    - "/images/banner.webp" # support array format
     media: "(min-width: 800px)"
 ```
 
@@ -794,7 +840,7 @@ quicklink:
   enable: true
   timeout: 3000 # Timeout for quicklink
   priority: true # Whether to prioritize loading the page
-  ignores: [] # Ignore the specified link, only support string
+  ignores: [] # Ignore the specified link, only support string array
 ```
 
 #### Outdated Notice
@@ -1125,8 +1171,6 @@ material_theme:
 
 hugo-theme-reimu supports customizing theme colors through CSS variables. You can customize your theme colors by modifying the CSS variables under the `:root` pseudo-class.
 
-~~The variables file is located at `assets/css/_variables.scss`. You can find all CSS variables there, but you only need to modify the variables under these pseudo-classes~~
-
 v0.9.0 added `internal_theme` configuration to customize theme colors. You can change the theme colors by modifying the `internal_theme` configuration in `params.yml`. The default theme colors are as follows:
 
 ```yaml
@@ -1233,7 +1277,7 @@ custom_font:
 
 ##### Header / Sidebar Icons
 
-The `menu` configuration structure changed in v0.1.0, allowing users to customize icons. When icon is empty, it defaults to using the Taichi icon. You can fill in a hexadecimal number to customize the icon, supporting both FontAwesome and icon font.
+The `menu` configuration structure changed in v0.1.0, allowing users to customize icons. When icon is empty, it defaults to using the Taichi icon. You can fill in a hexadecimal number to customize the icon, supporting both FontAwesome, icon font and `false`.
 
 v0.10.2 icon supports image path, such as `/avatar/avatar.webp`.
 
@@ -1244,7 +1288,7 @@ menu:
     icon: # Default Taichi icon when empty
   - name: archives
     url: /archives
-    icon: f0c1 # You can fill in a hexadecimal number to customize the icon
+    icon: f0c1 # You can fill in a hexadecimal number to customize the icon. If set to false, no icon will be displayed.
   - name: about
     url: /about
     icon:
@@ -1264,7 +1308,7 @@ v0.1.0 added `icon` configuration to `footer`, `top`, and `sponsor` for customiz
 ```yaml
 footer:
   icon:
-    url: "../images/taichi.png" # Path relative to css/main.css
+    url: "../images/taichi.png" # Path relative to css/main.css. If set to false, no icon will be displayed
     rotate: true
     mask: true
 
@@ -1276,7 +1320,7 @@ top:
 
 sponsor:
   icon:
-    url: "../images/taichi.png"
+    url: "../images/taichi.png" # If set to false, no icon will be displayed
     rotate: true
     mask: true
 ```
@@ -1320,6 +1364,36 @@ reimu_cursor:
     default: ../images/cursor/reimu-cursor-default.png
     pointer: ../images/cursor/reimu-cursor-pointer.png
     text: ../images/cursor/reimu-cursor-text.png
+```
+
+#### Custom Scroll Animation
+
+Based on [AOS.js](https://github.com/D-Sketon/aos.js) scroll animation effects, default is `true`, you can enable or disable through the following configuration, and set different animation effects for different pages.
+
+```yaml
+animation:
+  enable: true
+  options:
+    header:
+    home:
+    article:
+    archive:
+```
+
+**Available Animation Effects:**
+
+- **Fade**: fade, fade-up, fade-down, fade-left, fade-right, fade-up-right, fade-up-left, fade-down-right, fade-down-left
+- **Flip**: flip-up, flip-down, flip-left, flip-right
+- **Slide**: slide-up, slide-down, slide-left, slide-right
+- **Zoom**: zoom-in, zoom-in-up, zoom-in-down, zoom-in-left, zoom-in-right, zoom-out, zoom-out-up, zoom-out-down, zoom-out-left, zoom-out-right
+
+#### Custom Styles
+
+You can customize the maximum width of the main content area by modifying `layout.max_width`, default is `1350px`.
+
+```yaml
+layout:
+  max_width: 1350px # Maximum width of the main content area
 ```
 
 </details>

@@ -231,7 +231,7 @@ cover: https://example.com
 ---
 ```
 
-- 如果文章的 Front matter 中包含 cover 为 `false`，则该文章不显示头图（首页上仍然是随机图片）
+- 如果文章的 Front matter 中包含 cover 为 `false`，则该文章不显示头图（首页缩略图仍然是随机图片）
 
 ```yaml
 ---
@@ -240,7 +240,7 @@ cover: false
 ---
 ```
 
-- 如果文章的 Front matter 中包含 cover 为 `rgb(xxx,xxx,xxx)`，则该文章头图为对应的渐变纯色（首页上仍然是随机图片）
+- 如果文章的 Front matter 中包含 cover 为 `rgb(xxx,xxx,xxx)`，则该文章头图为对应的渐变纯色（首页缩略图仍然是随机图片）
 
 ```yaml
 ---
@@ -249,8 +249,8 @@ cover: rgb(255,117,117)
 ---
 ```
 
-- 否则查找 `data` 文件夹中的 `covers.yml`，并从中随机挑选图片
-- 若上述文件均不存在，则显示头图
+- 否则首页缩略图查找 `data` 文件夹中的 `covers.yml`，并从中随机挑选图片，文章内头图查找 `params.yml` 中的 `cover` 配置
+- 若上述文件/配置均不存在，则显示 `banner` 头图作为兜底
 
 #### 头图
 
@@ -283,23 +283,29 @@ summary:
 
 #### 侧边栏位置
 
-默认在右边，可在内层 `_config.yml` 中修改
+默认在右边，可在 `params.yml` 中修改
 
 ```yaml
-sidebar: right # left | right
+sidebar:
+  position: right # left | right | false
+  menu: true # 是否显示侧边栏菜单按钮，移动端忽略
+  article:
+    show_common: true # 文章页是否显示通用侧边栏，移动端忽略
 ```
 
 此外，也可以通过文章的 front-matter 控制，其优先级高于全局配置
 
 ```yaml
 ---
-sidebar: left # left | right
+sidebar: left # left | right | false
 ---
 ```
 
+> 当 sidebar 设置为 false 时，侧边栏将被隐藏，此时 aplayer 播放器和 widgets 小部件将同时无法显示
+
 #### TOC
 
-默认开启，可在内层 `_config.yml` 中修改
+默认开启，可在 `params.yml` 中修改
 
 ```yaml
 toc: true # true | false
@@ -315,7 +321,7 @@ toc: true # true | false
 
 #### 社交链接
 
-可在内层 `_config.yml` 中配置侧边栏中的社交链接
+可在 `params.yml` 中配置侧边栏中的社交链接
 
 ```yaml
 social:
@@ -326,7 +332,7 @@ social:
 
 #### 侧边栏小部件
 
-可在内层 `_config.yml` 中配置侧边栏小部件
+可在 `params.yml` 中配置侧边栏小部件
 
 ```yaml
 widgets:
@@ -456,6 +462,15 @@ valine:
   enable: true
   appId: "your appId"
   appKey: "your appKey"
+  pageSize: 10 # comment list page size
+  avatar: mp # gravatar style https://valine.js.org/#/avatar
+  # lang: zh-cn # deprecated, use html.lang instead
+  placeholder: Just go go # valine comment input placeholder(like: Please leave your footprints )
+  guest_info: nick,mail,link #valine comment header info
+  recordIP: true # whether to record the IP address of the commenters
+  highlight: true # whether to highlight the code blocks
+  visitor: false # whether to display the number of visitors
+  serverURLs: # leancloud server url
 ```
 
 若基于 [Waline](https://waline.js.org/)  
@@ -625,6 +640,13 @@ mermaid: true
 ---
 ```
 
+此外，可在 `params.yml` 中对 Mermaid 进行配置
+
+```yaml
+mermaid:
+  zoom: false # 是否启用缩放功能
+```
+
 </details>
 <details>
 <summary>RSS</summary>
@@ -658,17 +680,17 @@ icon_font: 4552607_0khxww3tj3q9
 ```yml
 fontawesome:
   high_priority:
-    - src: webcache|@fortawesome/fontawesome-free@6.5.1/css/regular.min.css
-      integrity: sha384-k5640LgghgAohDLPwSqVWa96yQwWouT6wsAL+J1g0CFJVITNKYkIh1XpPLYKQe7Y
-    - src: webcache|@fortawesome/fontawesome-free@6.5.1/css/solid.min.css
-      integrity: sha384-8yO/A/BtltnG0hDxdwmmkza8UAleyDoAD1FhXiH6rsOQQsCho1P6WZP9TpBBH3YP
+    - src: webcache|@fortawesome/fontawesome-free@7.1.0/css/regular.min.css
+      integrity: sha384-4qYppzjH8EiA+cGdaubu2vL7Rk8WGiqCSj7oRuP1uwtFWkfKNHD20lPfcrbQc8dU
+    - src: webcache|@fortawesome/fontawesome-free@7.1.0/css/solid.min.css
+      integrity: sha384-wbMWab3UDSPm2kvIgVOn/d9KPTecgPU1+Nb3zoQrm/oVu0EkPL6IaKinjbwW0rum
   low_priority:
-    - src: webcache|@fortawesome/fontawesome-free@6.5.1/css/brands.min.css
-      integrity: sha384-/BRyRRN0wxxRgh/DAXU621go9pdoMHl6LFPiX5Pp8PZYZlKBQCDXj9X9DHx6LOud
-    - src: webcache|@fortawesome/fontawesome-free@6.5.1/css/v5-font-face.min.css
-      integrity: sha384-/mBKnLlGtog8q2qQrgugURRDV+iHWHAPvM5KulYXT1C2ErKOKkBI0vbff8ZPq7rL
-    - src: webcache|@fortawesome/fontawesome-free@6.5.1/css/v4-font-face.min.css
-      integrity: sha384-d2Yn1/9Iw78r3oqwk5B+EcpRcmepXR5LyhmRF2a+WoSe9mpRGvVk0ZviFwDGDOTO
+    - src: webcache|@fortawesome/fontawesome-free@7.1.0/css/brands.min.css
+      integrity: sha384-KTGeC2hIMzpeQakhsmzB9bZfhCD5xZZCgI1iZH6f/O457SxzlkzTQg/WXFNoi3ih
+    - src: webcache|@fortawesome/fontawesome-free@7.1.0/css/v5-font-face.min.css
+      integrity: sha384-nJ1ThfldViXoLpJ6jlKcP2beas8BMbYq26SG9Hi8cH89bZi4RZ644v7helMCqJxd
+    - src: webcache|@fortawesome/fontawesome-free@7.1.0/css/v4-font-face.min.css
+      integrity: sha384-UlkrhOIvZxJFd4MElSUp7ow6/RUeYKi/orfCZIRRiOENFuQPIAA3T3HjYfmBRhNq
 ```
 
 </details>
@@ -677,6 +699,16 @@ fontawesome:
 <summary>扩展功能</summary>
 
 ### 扩展功能
+
+#### 回到顶部
+
+默认开启
+
+```yaml
+top:
+  enable: true
+  position: right # left | right
+```
 
 #### 暗黑模式
 
@@ -688,6 +720,16 @@ dark_mode:
   # false 代表暗黑模式默认关闭
   # auto 代表根据用户系统设置自动切换
   enable: auto # true | false | auto
+```
+
+#### 站点统计
+
+默认关闭，支持百度统计、谷歌统计和微软 Clarity
+
+```yaml
+baidu_analytics: false
+google_analytics: false
+clarity: false
 ```
 
 #### Pace 进度条
@@ -706,6 +748,8 @@ pace:
 ```yaml
 firework:
   enable: true
+  disable_on_mobile: false # 是否在移动端禁用，可以提高性能
+  options: # mouse-firework 配置项
 ```
 
 具体配置请查看 [mouse-firework](https://github.com/D-Sketon/mouse-firework)
@@ -718,8 +762,6 @@ firework:
 pjax:
   enable: false
 ```
-
-> PJAX 用于那些需要添加音乐播放器等需要 SPA 的用户。但其仍然属于实验性质，引入后可能会出现诸如**脚本无法执行**、**脚本重复执行**、**页面渲染混乱**等 BUG。请慎重考虑！
 
 #### ServiceWorker
 
@@ -770,7 +812,9 @@ srcset:
     media: "(max-width: 479px)"
   - src: "images/banner-800w.webp"
     media: "(max-width: 799px)"
-  - src: "images/banner.webp"
+  - src: 
+    - "/images/banner.avif"
+    - "/images/banner.webp" #  支持数组形式的 fallback
     media: "(min-width: 800px)"
 ```
 
@@ -783,7 +827,7 @@ quicklink:
   enable: true
   timeout: 3000 # 预加载超时时间
   priority: true # 是否优先加载
-  ignores: [] # 忽略的链接，仅支持字符串
+  ignores: [] # 忽略的链接，仅支持字符串数组
 ```
 
 #### 文章版权声明
@@ -1149,8 +1193,6 @@ material_theme:
 
 hugo-theme-reimu 主题支持通过 CSS 变量定制主题颜色，你可以通过修改 `:root` 伪类下的 CSS 变量来定制你的主题颜色。
 
-~~变量文件位于 `assets/css/_variables.scss`，你可以在这个文件中找到所有的 CSS 变量，但其实只需要修改以下伪类下的变量即可~~
-
 v0.9.0 对外暴露了 `internal_theme` 配置用于定制主题颜色 token
 
 ```yaml
@@ -1257,7 +1299,7 @@ custom_font:
 
 ##### 头部 / 侧边栏图标
 
-v0.1.0 的 `menu` 配置的结构发生了变化，允许用户自定义 icon。icon 为空时默认使用太极图标，你可以填写一个十六进制的数字来自定义 icon，同时支持 fontawesome 和 icon font。
+v0.1.0 的 `menu` 配置的结构发生了变化，允许用户自定义 icon。icon 为空时默认使用太极图标，你可以填写一个十六进制的数字来自定义 icon，同时支持 fontawesome，icon font 和 `false`。
 
 v0.10.2 icon 支持图片路径，如 `/avatar/avatar.webp`。
 
@@ -1268,7 +1310,7 @@ menu:
     icon: # 不填默认使用太极图标
   - name: archives
     url: /archives
-    icon: f0c1 # 你可以填写一个十六进制的数字来自定义 icon，支持 fontawesome 和 icon font
+    icon: f0c1 # 你可以填写一个十六进制的数字来自定义 icon，支持 fontawesome 和 icon font，如果填写 false 则不显示图标
   - name: about
     url: /about
     icon:
@@ -1288,7 +1330,7 @@ v0.1.0 的 `footer`、`top`、`sponsor` 配置均增加了 `icon` 配置用于�
 ```yaml
 footer:
   icon:
-    url: "../images/taichi.png" # 相对于 css/main.css 的路径，所以需要向上一级才能找到 images 文件夹
+    url: "../images/taichi.png" # 相对于 css/main.css 的路径，所以需要向上一级才能找到 images 文件夹，支持 false 以隐藏图标
     rotate: true
     mask: true
 
@@ -1300,7 +1342,7 @@ top:
 
 sponsor:
   icon:
-    url: "../images/taichi.png"
+    url: "../images/taichi.png" # 支持 false 以隐藏图标
     rotate: true
     mask: true
 ```
@@ -1344,6 +1386,36 @@ reimu_cursor:
     default: ../images/cursor/reimu-cursor-default.png
     pointer: ../images/cursor/reimu-cursor-pointer.png
     text: ../images/cursor/reimu-cursor-text.png
+```
+
+#### 自定义滚动动画
+
+基于 [AOS.js](https://github.com/D-Sketon/aos.js) 实现的滚动动画效果，默认为 `true`，可以通过以下配置开启或关闭，并为不同页面设置不同的动画效果。
+
+```yaml
+animation:
+  enable: true
+  options:
+    header:
+    home:
+    article:
+    archive:
+```
+
+**可用动画效果：**
+
+- **Fade**: fade, fade-up, fade-down, fade-left, fade-right, fade-up-right, fade-up-left, fade-down-right, fade-down-left
+- **Flip**: flip-up, flip-down, flip-left, flip-right
+- **Slide**: slide-up, slide-down, slide-left, slide-right
+- **Zoom**: zoom-in, zoom-in-up, zoom-in-down, zoom-in-left, zoom-in-right, zoom-out, zoom-out-up, zoom-out-down, zoom-out-left, zoom-out-right
+
+#### 自定义样式
+
+可以通过修改 `layout.max_width` 来定制主要内容区域的最大宽度，默认为 `1350px`。
+
+```yaml
+layout:
+  max_width: 1350px # 主要内容区域的最大宽度
 ```
 
 </details>
