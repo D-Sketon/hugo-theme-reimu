@@ -1008,6 +1008,67 @@ triangle_badge:
   link: https://github.com/D-Sketon/hexo-theme-reimu
 ```
 
+#### Article Encryption
+
+Disabled by default. When enabled, you can encrypt articles you don't want to display publicly—users must enter a password to view the content.
+
+This feature relies on a third-party tool. Download it here: [reimuEncrypt-releases](https://github.com/2061360308/reimuEncrypt/releases)
+
+```yml
+encrypt:
+  enable: true # Enable encryption
+  defaultPassword: "123456" # Default password
+  theme: "xray" # Input box theme, options: "blink", "shrink", "flip", "up", "surge", "wave", "xray", "default"
+  message: "૮₍ ˃ ⤙ ˂ ₎ა I don't want this to be seen~" # Default message shown above the password input, can be customized
+  localStorage: false # Password cache strategy: false means the password is forgotten after closing the browser, true means it is stored persistently
+```
+
+To correctly generate the `encrypt.json` configuration file, add the following to your `hugo.toml`:
+
+```toml
+# If you need RSS and Algolia, add "Algolia" and "RSS" fields; otherwise, use the second option
+[outputs]
+home = ["Algolia", "HTML", "RSS", "Encrypt"]
+
+[outputs]
+home = ["HTML", "Encrypt"]
+
+[outputFormats.Encrypt]
+mediaType = "application/json"
+baseName = "encrypt"
+isPlainText = true
+notAlternative = true
+```
+
+Front Matter configuration example:
+```yaml
+encrypt:
+  enable: true                  # Enable encryption for this article
+  password: "secretpassword123" # Password
+  all: true                     # true to encrypt the entire article
+  message: "This is an article-level message"  # Custom message for this article, overrides the site-level message in params.yml
+```
+
+If the `all` parameter is set to false, you can encrypt only part of the content using the `encrypt` shortcode where needed:
+
+```markdown
+Encrypt raw content
+
+{{< encrypt >}}
+Hello World!
+{{< /encrypt >}}
+
+You can also encrypt markdown content, which will be rendered correctly:
+
+{{< encrypt >}}
+**Hello World!**
+{{< /encrypt >}}
+```
+
+> The `encrypt` shortcode supports **password** and **message** parameters. See the shortcode section below for details.
+
+> Note: Encryption only protects the generated static pages. The original Markdown files still contain the plain text content and passwords, so please keep them safe (e.g., use a private repository on GitHub).
+
 </details>
 
 <details>
@@ -1148,6 +1209,19 @@ Content
 Create a foldable panel in the article.
 
 - summary: Optional parameter, set the title of the foldable panel
+
+#### encrypt Content Encryption
+
+```yaml
+{{< encrypt password="?" message="?" >}}
+This is the content you want to **encrypt**
+{{< /encrypt >}}
+```
+
+The encrypted content requires a password to view. You must enable the **Article Encryption** feature in the **Extended Features** section as described in the documentation for this to work.
+
+- password: Optional parameter. Sets the password for the content. If not provided, it will be searched in the following order: the article's front matter `password`, then the site-wide `defaultPassword` in `params.yml`.
+- message: Optional parameter. The message displayed above the password input box. If not provided, it will be searched in the following order: the article's front matter `message`, then the site-wide `message` in `params.yml`.
 
 </details>
 
