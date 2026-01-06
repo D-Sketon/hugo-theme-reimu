@@ -22,7 +22,7 @@
             {{ replace $msg "{time}" ($.Lastmod.Format $.Site.Params.dateFormat) }}
           </p>
         </blockquote>
-      {{- else if .Site.Params.outdate.enable -}}
+      {{- else if and (not (isset .Params "outdated")) .Site.Params.outdate.enable -}}
         <blockquote
           class="alert-blockquote warning"
           id="outdate-blockquote"
