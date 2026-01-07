@@ -55,6 +55,7 @@ A Hakurei Reimu style Hugo theme. Migrated from [hexo-theme-reimu](https://githu
   - Gitalk
   - Giscus
   - Disqus
+  - Utterances
 
 ### 统计与分析
 
@@ -542,13 +543,24 @@ gitalk:
 ```
 
 若基于 [Disqus](https://disqus.com/)  
-请在内层 `params.yml` 中将 `disqus.enable` 改为 `true`，并填入自己的 `shortname`
+请在 `params.yml` 中将 `disqus.enable` 改为 `true`，并填入自己的 `shortname`
 
 ```yml
 disqus:
   enable: true
   shortname: "your shortname"
   count: true # 是否启用评论数量统计
+```
+
+若基于 [utterances](https://utteranc.es/)  
+请在 `params.yml` 中将 `utterances.enable` 改为 `true`，并填入自己的 `repo`
+
+```yml
+utterances:
+  enable: true
+  repo: owner/repo # 这里需要修改为 你的 GitHub 用户名/刚刚创建的，用户保存博客评论的 GitHub 仓库名
+  issue_term: title
+  theme: github-light # 你可以使用 auto 来自动适配深色和浅色主题
 ```
 
 </details>

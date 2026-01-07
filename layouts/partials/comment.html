@@ -7,6 +7,7 @@
   "gitalk" (cond (and $params.gitalk.enable $params.gitalk.clientID $params.gitalk.clientSecret) true false)
   "giscus" (cond $params.giscus.enable true false)
   "disqus" (cond (and $params.disqus.enable $params.disqus.shortname) true false)
+  "utterances" (cond (and $params.utterances.enable $params.utterances.repo) true false)
 -}}
 
 {{- $activeSystems := slice -}}

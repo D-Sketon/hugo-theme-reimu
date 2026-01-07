@@ -55,6 +55,7 @@ A Hakurei Reimu style Hugo theme. Migrated from [hexo-theme-reimu](https://githu
   - Gitalk
   - Giscus
   - Disqus
+  - Utterances
 
 ### Statistics & Analytics
 
@@ -443,7 +444,7 @@ comment:
 ```
 
 If using [Valine](https://valine.js.org/)  
-Please refer to their official documentation to complete the `LeanCloud` configuration, then set `valine.enable` to `true` in the inner `params.yml` and fill in your `appId` and `appKey`
+Please refer to their official documentation to complete the `LeanCloud` configuration, then set `valine.enable` to `true` in `params.yml` and fill in your `appId` and `appKey`
 
 ```yaml
 valine:
@@ -462,7 +463,7 @@ valine:
 ```
 
 If using [Waline](https://waline.js.org/)  
-Please refer to their [official documentation](https://waline.js.org/guide/get-started/) to complete the `LeanCloud` configuration, then set `waline.enable` to `true` in the inner `params.yml` and fill in your `serverURL`
+Please refer to their [official documentation](https://waline.js.org/guide/get-started/) to complete the `LeanCloud` configuration, then set `waline.enable` to `true` in `params.yml` and fill in your `serverURL`
 
 ```yaml
 waline:
@@ -489,7 +490,7 @@ waline:
 ```
 
 If using [twikoo](https://twikoo.js.org)  
-Please refer to their [official documentation](https://twikoo.js.org/quick-start.html) to complete Tencent Cloud or Vercel deployment, then set `twikoo.enable` to `true` in the inner `params.yml` and fill in your `envId`
+Please refer to their [official documentation](https://twikoo.js.org/quick-start.html) to complete Tencent Cloud or Vercel deployment, then set `twikoo.enable` to `true` in `params.yml` and fill in your `envId`
 
 ```yml
 twikoo:
@@ -499,7 +500,7 @@ twikoo:
 ```
 
 If using [giscus](https://giscus.app/)  
-Please refer to the documentation to complete repository configuration, then set `giscus.enable` to `true` in the inner `params.yml` and fill in the corresponding data
+Please refer to the documentation to complete repository configuration, then set `giscus.enable` to `true` in `params.yml` and fill in the corresponding data
 
 ```yml
 giscus:
@@ -516,7 +517,7 @@ giscus:
 ```
 
 If using [gitalk](https://gitalk.github.io/)  
-Please refer to their [official documentation](https://github.com/gitalk/gitalk?tab=readme-ov-file#usage) to complete repository configuration, then set `gitalk.enable` to `true` in the inner `params.yml` and fill in the corresponding data
+Please refer to their [official documentation](https://github.com/gitalk/gitalk?tab=readme-ov-file#usage) to complete repository configuration, then set `gitalk.enable` to `true` in `params.yml` and fill in the corresponding data
 
 ```yml
 gitalk:
@@ -530,13 +531,24 @@ gitalk:
 ```
 
 If using [Disqus](https://disqus.com/)  
-Please set `disqus.enable` to `true` in the inner `params.yml`, and fill in your `shortname`
+Please set `disqus.enable` to `true` in `params.yml`, and fill in your `shortname`
 
 ```yml
 disqus:
   enable: true
   shortname: "your shortname"
   count: true # Whether to enable comment count statistics
+```
+
+If using utterance [utterances](https://utteranc.es/)  
+Please set `utterances.enable` to `true` in `params.yml` and fill in your own `repo`
+
+```yml
+utterances:
+  enable: true
+  repo: owner/repo # Change this to "Your GitHub Username/The Repository Name" used for storing blog comments
+  issue_term: title
+  theme: github-light # You can use auto to automatically adapt to dark and light themes
 ```
 
 </details>

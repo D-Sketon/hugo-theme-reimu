@@ -130,6 +130,7 @@ $waline: {{ (cond (and $params.valine.enable $params.valine.appId $params.valine
 $valine: {{ (cond (and $params.waline.enable $params.waline.serverURL) true false) }};
 $gitalk: {{ (cond (and $params.gitalk.enable $params.gitalk.clientID $params.gitalk.clientSecret) true false) }};
 $giscus: {{ (cond $params.giscus.enable true false) }};
+$utterances: {{ (cond (and $params.utterances.enable $params.utterances.repo) true false) }};
 
 $triangle-badge-enable: {{ $params.triangle_badge.enable }};
 $triangle-badge-icon: {{ $params.triangle_badge.icon }};

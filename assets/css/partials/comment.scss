@@ -133,6 +133,12 @@
   }
 }
 
+@if $utterances {
+  .utterances {
+    max-width: none !important;
+  }
+}
+
 @if $gitalk {
   .gitalk-comment {
     color: var(--color-default);
