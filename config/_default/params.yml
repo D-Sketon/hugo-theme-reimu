@@ -668,6 +668,16 @@ player:
 pangu:
   # more information: https://github.com/vinta/pangu.js 
   enable: false  # enable pangu.js to add space between Chinese and English
+  
+########################################
+# Encrypted Articles
+########################################
+encrypt:
+  enable: true # enable encrypted articles
+  defaultPassword: "123456" # default password for encrypted articles
+  theme: "xray" # theme for encrypted input box, can be "blink" "shrink" "flip" "up" "surge" "wave" "xray" "default"
+  message: "૮₍ ˃ ⤙ ˂ ₎ა 这里不想被人看到呢~" # message when the article is encrypted
+  localStorage: false # whether to use localStorage to remember the password, if false, the password will not be remembered after refreshing the page
 
 ########################################
 # Theme

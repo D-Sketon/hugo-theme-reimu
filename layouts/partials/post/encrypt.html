@@ -1,0 +1,355 @@
+<!-- 获取theme值并检查是否合法 -->
+{{- $theme := .Site.Params.encrypt.theme | default "default" -}}
+{{- $validThemes := slice "blink" "shrink" "flip" "up" "surge" "wave" "xray" "default" -}}
+{{- if not (in $validThemes $theme) -}}
+{{- $theme = "default" -}}
+{{- end -}}
+
+{{- $tipMessage := i18n "encrypt.tipMessage" | default "🔐 内容已隐藏，输入密码后查看" -}}
+
+{{- $enctyptedArcitleElement := "" -}}
+{{- if eq $theme "default" -}}
+{{- $enctyptedArcitleElement = printf `
+<div class="hbe hbe-container">
+    <div class="hbe hbe-content">
+        <div class="hbe hbe-input hbe-input-default">
+            <input class="hbe hbe-input-field hbe-input-field-default" type="password" id="hbePass">
+            <label class="hbe hbe-input-label hbe-input-label-default" for="hbePass">
+                <span class="hbe hbe-input-label-content hbe-input-label-content-default">%s</span>
+            </label>
+        </div>
+    </div>
+</div>` $tipMessage -}}
+{{- else if eq $theme "shrink" -}}
+{{- $enctyptedArcitleElement = printf `
+<div class="hbe hbe-container">
+    <div class="hbe hbe-content">
+        <div class="hbe hbe-input hbe-input-shrink">
+            <input class="hbe hbe-input-field hbe-input-field-shrink" type="password" id="hbePass">
+            <label class="hbe hbe-input-label hbe-input-label-shrink" for="hbePass">
+                <span class="hbe hbe-input-label-content hbe-input-label-content-shrink">%s</span>
+            </label>
+        </div>
+    </div>
+</div>` $tipMessage -}}
+{{- else if eq $theme "flip" -}}
+{{- $enctyptedArcitleElement = printf `
+<div class="hbe hbe-container">
+    <div class="hbe hbe-content">
+        <div class="hbe hbe-input hbe-input-flip">
+            <input class="hbe hbe-input-field hbe-input-field-flip" type="password" id="hbePass">
+            <label class="hbe hbe-input-label hbe-input-label-flip" for="hbePass">
+                <span class="hbe hbe-input-label-content hbe-input-label-content-flip" data-content="%s">%s</span>
+            </label>
+        </div>
+    </div>
+</div>` $tipMessage $tipMessage -}}
+{{- else if eq $theme "up" -}}
+{{- $enctyptedArcitleElement = printf `
+<div class="hbe hbe-container">
+    <div class="hbe hbe-content">
+        <div class="hbe hbe-input hbe-input-up">
+            <input class="hbe hbe-input-field hbe-input-field-up" type="password" id="hbePass">
+            <label class="hbe hbe-input-label hbe-input-label-up" for="hbePass">
+                <span class="hbe hbe-input-label-content hbe-input-label-content-up">%s</span>
+            </label>
+        </div>
+    </div>
+</div>` $tipMessage -}}
+{{- else if eq $theme "surge" -}}
+{{- $enctyptedArcitleElement = printf `
+<div class="hbe hbe-container">
+    <div class="hbe hbe-content">
+        <div class="hbe hbe-input hbe-input-surge">
+            <input class="hbe hbe-input-field hbe-input-field-surge" type="password" id="hbePass">
+            <label class="hbe hbe-input-label hbe-input-label-surge" for="hbePass">
+                <span class="hbe hbe-input-label-content hbe-input-label-content-surge" data-content="%s">%s</span>
+            </label>
+            <svg class="hbe hbe-graphic hbe-graphic-surge" width="300%%" height="100%%" viewBox="0 0 1200 60"
+                preserveAspectRatio="none">
+                <path
+                    d="M1200,9c0,0-305.005,0-401.001,0C733,9,675.327,4.969,598,4.969C514.994,4.969,449.336,9,400.333,9C299.666,9,0,9,0,9v43c0,0,299.666,0,400.333,0c49.002,0,114.66,3.484,197.667,3.484c77.327,0,135-3.484,200.999-3.484C894.995,52,1200,52,1200,52V9z">
+                </path>
+            </svg>
+        </div>
+    </div>
+</div>` $tipMessage $tipMessage -}}
+{{- else if eq $theme "wave" -}}
+{{- $enctyptedArcitleElement = printf `
+<div class="hbe hbe-container">
+    <div class="hbe hbe-content">
+        <div class="hbe hbe-input hbe-input-wave">
+            <input class="hbe hbe-input-field hbe-input-field-wave" type="password" id="hbePass">
+            <label class="hbe hbe-input-label hbe-input-label-wave" for="hbePass">
+                <span class="hbe hbe-input-label-content hbe-input-label-content-wave">%s</span>
+            </label>
+            <svg class="hbe hbe-graphic hbe-graphic-wave" width="300%%" height="100%%" viewBox="0 0 1200 60"
+                preserveAspectRatio="none">
+                <path
+                    d="M0,56.5c0,0,298.666,0,399.333,0C448.336,56.5,513.994,46,597,46c77.327,0,135,10.5,200.999,10.5c95.996,0,402.001,0,402.001,0">
+                </path>
+            </svg>
+        </div>
+    </div>
+</div>` $tipMessage -}}
+{{- else if eq $theme "xray" -}}
+{{- $enctyptedArcitleElement = printf `
+<div class="hbe hbe-container">
+    <div class="hbe hbe-content">
+        <div class="hbe hbe-input hbe-input-xray">
+            <input class="hbe hbe-input-field hbe-input-field-xray" type="password" id="hbePass">
+            <label class="hbe hbe-input-label hbe-input-label-xray" for="hbePass">
+                <span class="hbe hbe-input-label-content hbe-input-label-content-xray">%s</span>
+            </label>
+            <svg class="hbe hbe-graphic hbe-graphic-xray" width="300%%" height="100%%" viewBox="0 0 1200 60"
+                preserveAspectRatio="none">
+                <path
+                    d="M0,56.5c0,0,298.666,0,399.333,0C448.336,56.5,513.994,46,597,46c77.327,0,135,10.5,200.999,10.5c95.996,0,402.001,0,402.001,0">
+                </path>
+                <path
+                    d="M0,2.5c0,0,298.666,0,399.333,0C448.336,2.5,513.994,13,597,13c77.327,0,135-10.5,200.999-10.5c95.996,0,402.001,0,402.001,0">
+                </path>
+            </svg>
+        </div>
+    </div>
+</div>` $tipMessage -}}
+{{- end -}}
+
+{{- partial "helpers/scss.html" (dict "source" "css/hbe.style.scss" "temp" "hbe.style.scss" "target" "css/hbe.style.css"
+"ctx" .) -}}
+
+<style>
+    .encrypted-content {
+        background: var(--color-wrap);
+        border-radius: 10px;
+        display: flow-root;
+        transition: 0.3s;
+        padding: 20px;
+    }
+
+    .encrypted-header {
+        background: var(--red-5-5);
+        border-left: 6px var(--red-4) solid;
+        margin: 1.2em 0;
+        border-radius: 10px;
+        transition: 0.3s;
+        padding: 1px 10px;
+        box-shadow: var(--shadow-meta);
+        padding: 15px 5px;
+        text-align: center;
+    }
+</style>
+
+{{- $localStorage := .Site.Params.encrypt.theme | default false -}}
+{{- if $localStorage -}}
+<script>
+    function getEncryptPassword(uuid) {
+        // 从localStorage中获取密码
+        return localStorage.getItem(uuid) || "";
+    }
+    function setEncryptPassword(uuid, password) {
+        // 将密码存储到localStorage中
+        localStorage.setItem(uuid, password);
+    }
+</script>
+{{- else -}}
+<script>
+    function getEncryptPassword(uuid) {
+        // 从sessionStorage中获取密码
+        return sessionStorage.getItem(uuid) || "";
+    }
+    function setEncryptPassword(uuid, password) {
+        // 将密码存储到sessionStorage中
+        sessionStorage.setItem(uuid, password);
+    }
+</script>
+{{- end -}}
+
+{{- if and .Site.Params.encrypt.enable (isset .Params "encrypt") .Params.encrypt.enable -}}
+{{- if .Params.encrypt.all -}}
+{{- $uuid:= .File.UniqueID -}}
+<style>
+    .sliderbar-encrypt-mask {
+        width: 100%;
+        height: 220px;
+        background: var(--red-5-5);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 10px;
+        border-radius: 10px;
+        backdrop-filter: blur(8px);
+        /* 磨砂模糊效果 */
+        -webkit-backdrop-filter: blur(8px);
+        /* 兼容Safari */
+        box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
+    }
+
+    .sliderbar-encrypt-mask .icon {
+        width: 50px;
+        height: 50px;
+        color: var(--red-1);
+    }
+</style>
+<script>
+    const uuid = "{{ $uuid }}";
+    let mainElement;
+    let sidebarElements;
+    async function encryptPassword(password) {
+        console.log("encryptPassword called");
+        if (!password) {
+            alert("请输入密码");
+            return;
+        }
+        let decryptedArticle, decryptedSidebar;
+
+        try {
+
+            let article = __ENCRYPT_DATA__.article;
+            let sidebar = __ENCRYPT_DATA__.sidebar;
+            if (!article || !sidebar) {
+                throw new Error('源数据不能为空');
+            }
+
+            // 解密article内容
+            decryptedArticle = await encrypt(article, password);
+            // 解密sidebar内容
+            decryptedSidebar = await encrypt(sidebar[0], password);  // 两个内容一样
+        } catch (error) {
+            console.error("解密失败:", error);
+            alert("解密失败，请检查密码是否正确");
+            return;
+        }
+
+        // 显示解密结果
+        mainElement.insertAdjacentHTML("afterbegin", decryptedArticle);
+        document.querySelector('.encrypted-content').remove();
+
+        // 显示解密结果
+        document.querySelectorAll(".toc-div-class").forEach(function (element) {
+            element.insertAdjacentHTML("afterbegin", decryptedSidebar);
+        })
+        document.querySelectorAll('.sliderbar-encrypt-mask').forEach(function (element) {
+            element.remove();
+        });
+
+        // Todo 保存密码到浏览器缓存
+        setEncryptPassword(uuid, password);
+    }
+    document.addEventListener("DOMContentLoaded", function () {
+        // 添加显示加密部分占位元素
+        let enctyptedArcitleElement = `
+        <div class="encrypted-content aos-init aos-animate">
+            <div class="encrypted-header">
+                {{- .Params.encrypt.message | default .Site.Params.encrypt.message | default "🔐 内容已隐藏，输入密码后查看" -}}
+            </div>
+            {{ $enctyptedArcitleElement | safeHTML }}
+        </div>
+        `;
+        let enctyptedSidebarElement = `
+        <div class="sliderbar-encrypt-mask">
+            <svg t="1752306493772" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="6277">
+                <path fill="currentColor" d="M477.76 192a64 64 0 0 1 53.248 28.48L597.344 320H832a64 64 0 0 1 64 64v384a64 64 0 0 1-64 64H192a64 64 0 0 1-64-64V256a64 64 0 0 1 64-64h285.76zM832 384H192v384h640V384z m-465.184 128v33.536l32.064-18.56 17.12 28.16-33.984 19.2L416 596.16l-17.12 27.2-32.064-20.416V640h-31.328v-37.056l-31.36 17.12-16.128-27.2 32.064-18.496L288 555.136l18.336-28.16 29.152 18.56V512h31.36z m160 0v33.536l32.064-18.56 17.12 28.16-33.984 19.2L576 596.16l-17.12 27.2-32.064-20.416V640h-31.328v-37.056l-31.36 17.12-16.128-27.2 32.064-18.496L448 555.136l18.336-28.16 29.152 18.56V512h31.36z m160 0v33.536l32.064-18.56 17.12 28.16-33.984 19.2L736 596.16l-17.12 27.2-32.064-20.416V640h-31.328v-37.056l-31.36 17.12-16.128-27.2 32.064-18.496L608 555.136l18.336-28.16 29.152 18.56V512h31.36zM477.76 256H192v64h328.416L477.76 256z" p-id="6278"></path>
+            </svg>
+        </div>
+        `;
+        mainElement = document.querySelector("#main");
+        if (mainElement) {
+            mainElement.insertAdjacentHTML("afterbegin", enctyptedArcitleElement);
+        }
+        sidebarElements = document.querySelectorAll(".toc-div-class");
+        sidebarElements.forEach(function (element) {
+            element.insertAdjacentHTML("afterbegin", enctyptedSidebarElement);
+        });
+
+        // 监听输入框的回车事件
+        var input = document.querySelector(".hbe-input-field");
+        if (input) {
+            input.addEventListener("keydown", function (event) {
+                if (event.key === "Enter" || event.keyCode === 13) {
+                    encryptPassword(input.value);
+                }
+            });
+        }
+
+        // Todo 处理缓存密码
+        let savedPassword = getEncryptPassword(uuid);
+        if (savedPassword) {
+            encryptPassword(savedPassword);
+        }
+    });
+</script>
+{{- else -}}
+<script>
+    let encryptElements;
+    async function encryptPassword(uuid, index, password) {
+        if (!password) {
+            alert("请输入密码");
+            return;
+        }
+        let decryptedPartialItem;
+
+        try {
+
+            let partialItem = __ENCRYPT_DATA__.partialItems[index];
+            if (!partialItem) {
+                throw new Error('源数据不能为空');
+            }
+
+            // 解密partialItem内容
+            decryptedPartialItem = await encrypt(partialItem, password);
+        } catch (error) {
+            console.error("解密失败:", error);
+            alert("解密失败，请检查密码是否正确");
+            return;
+        }
+
+        encryptElements[index].outerHTML = decryptedPartialItem;
+        // 查找所有包含密码的元素，进行删除
+        document.querySelectorAll(".hugo-encrypt-password").forEach(function (element) {
+            element.remove();
+        });
+
+        // Todo 保存密码到浏览器缓存
+        setEncryptPassword(uuid, password);
+    }
+    document.addEventListener("DOMContentLoaded", function () {
+        // 读取所有hugo-encrypt元素
+        encryptElements = document.querySelectorAll('.hugo-encrypt');
+        // 将这些元素替换为新的元素
+        encryptElements.forEach(function (element, index) {
+            const uuid = element.getAttribute('uuid');
+            const message = element.querySelector('.hugo-encrypt-info').textContent.trim();
+            const defaultMessage = `{{- .Params.encrypt.message | default .Site.Params.encrypt.message | default "🔐 内容已隐藏，输入密码后查看" -}}`;
+
+            // 创建新的元素
+            let enctyptedElement = `
+            <div>
+                <div class="encrypted-header">
+                    ${message || defaultMessage}
+                </div>
+                {{ $enctyptedArcitleElement | safeHTML }}
+            </div>
+            `;
+            element.insertAdjacentHTML("afterbegin", enctyptedElement);
+
+            // 监听输入框的回车事件
+            var input = document.querySelector(".hbe-input-field");
+            if (input) {
+                input.addEventListener("keydown", function (event) {
+                    if (event.key === "Enter" || event.keyCode === 13) {
+                        encryptPassword(uuid, index, input.value);
+                    }
+                });
+            }
+
+            // Todo 处理缓存密码
+            let savedPassword = getEncryptPassword(uuid);
+            if (savedPassword) {
+                encryptPassword(uuid, index, savedPassword);
+            }
+        });
+    });
+</script>
+{{- end -}}
+{{- end -}}
