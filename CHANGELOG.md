@@ -1,3 +1,35 @@
+## 0.15.0
+
+**2026-01-18**
+
+### 特性
+
+- 支持 Utterances 评论系统
+  ```yaml
+  utterances:
+    enable: true
+    repo: "your-github-username/your-repo" # 用于存储评论的 GitHub 仓库
+    issue_term: "title" # 用于匹配文章的 Issue 生成方式
+    theme: "auto"
+  ```
+- 更新默认 banner 图像
+- frontMatter 中的 `outdated` 字段支持传递 `false` 以关闭过期提示
+
+---
+
+### Features
+
+- Added support for the Utterances comment system
+  ```yaml
+  utterances:
+    enable: true
+    repo: "your-github-username/your-repo" # GitHub repository for storing comments
+    issue_term: "title" # Method for matching articles to generate issues
+    theme: "auto"
+  ```
+- Updated the default banner image
+- The `outdated` field in frontMatter now supports passing `false` to disable the outdated notice
+
 ## 0.14.2
 
 **2026-01-01**
