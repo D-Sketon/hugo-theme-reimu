@@ -14,7 +14,7 @@
 
 [简体中文](https://github.com/D-Sketon/hugo-theme-reimu/blob/main/README.md) | English
 
-<img src="https://cdn.jsdelivr.net/gh/D-Sketon/hugo-theme-reimu@main/images/screenshot.png"/>
+<img src="https://cdn.jsdelivr.net/gh/D-Sketon/hugo-theme-reimu/images/screenshot.png"/>
 </div>
 
 A Hakurei Reimu style Hugo theme. Migrated from [hexo-theme-reimu](https://github.com/D-Sketon/hexo-theme-reimu).
