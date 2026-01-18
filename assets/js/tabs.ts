@@ -1,5 +1,12 @@
-var tabsEls = _$$(".nav-tabs li.tab a");
-tabsEls.forEach((tab) => {
+var updateIndicator = (activeTab, navTabs) => {
+  const indicator = navTabs.querySelector(".tab-indicator");
+  const activeRect = activeTab.getBoundingClientRect();
+  const navRect = navTabs.getBoundingClientRect();
+  indicator.style.left = activeRect.left - navRect.left + "px";
+  indicator.style.width = activeRect.width + "px";
+};
+
+_$$(".nav-tabs li.tab a").forEach((tab) => {
   tab.off("click").on("click", function (e) {
     e.preventDefault();
     e.stopPropagation();
@@ -14,26 +21,16 @@ tabsEls.forEach((tab) => {
     tabLinks.forEach((li) => li.classList.remove("active"));
     this.parentElement.classList.add("active");
 
-    const indicator = navTabs.querySelector(".tab-indicator");
-    const activeTab = this.parentElement;
-    const activeRect = activeTab.getBoundingClientRect();
-    const navRect = navTabs.getBoundingClientRect();
-    indicator.style.left = activeRect.left - navRect.left + "px";
-    indicator.style.width = activeRect.width + "px";
+    updateIndicator(this.parentElement, navTabs);
 
     return false;
   });
 });
 
-var tabsContainers = _$$(".tabs");
-tabsContainers.forEach((container) => {
+_$$(".tabs").forEach((container) => {
   const navTabs = container.querySelector(".nav-tabs");
   const activeTab = navTabs.querySelector("li.tab.active");
   if (activeTab) {
-    const indicator = navTabs.querySelector(".tab-indicator") as HTMLDivElement;
-    const activeRect = activeTab.getBoundingClientRect();
-    const navRect = navTabs.getBoundingClientRect();
-    indicator.style.left = activeRect.left - navRect.left + "px";
-    indicator.style.width = activeRect.width + "px";
+    updateIndicator(activeTab, navTabs);
   }
 });

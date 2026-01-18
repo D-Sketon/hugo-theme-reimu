@@ -65,8 +65,7 @@
   // 代码收缩
   _$$(".code-expand").forEach((element) => {
     element.off("click").on("click", () => {
-      const figure = element.closest("div.highlight");
-      figure.classList.toggle("code-closed");
+      element.closest("div.highlight")?.classList.toggle("code-closed");
     });
   });
 
@@ -88,7 +87,6 @@
     }
     const langName = codeLanguage
       .replace("line-numbers", "")
-      .trim()
       .replace("language-", "")
       .trim()
       .toUpperCase();
@@ -106,6 +104,16 @@
     return;
   }
 
+  const getLocalizedText = (config, defaultText) => {
+    if (typeof config === "string") return config;
+    if (typeof config === "object") {
+      const lang = document.documentElement.lang.toLowerCase();
+      const key = Object.keys(config).find((k) => k.toLowerCase() === lang);
+      if (key && config[key]) return config[key];
+    }
+    return defaultText;
+  };
+
   // 代码复制
   const clipboard = new ClipboardJS(".code-copy", {
     text: (trigger) => {
@@ -118,14 +126,13 @@
         td = trigger.parentNode.parentNode.parentNode.querySelector("code");
       }
 
-      let selectedText = td ? td.innerText : "";
+      let selectedText = td?.innerText || "";
 
       if (window.siteConfig.clipboard.copyright?.enable) {
         if (
           selectedText.length >= window.siteConfig.clipboard.copyright?.count
         ) {
-          selectedText =
-            selectedText +
+          selectedText +=
               "\n\n" +
               window.siteConfig.clipboard.copyright?.content || "";
         }
@@ -137,18 +144,10 @@
     e.trigger.classList.add("icon-check");
     e.trigger.classList.remove("icon-copy");
     const successConfig = window.siteConfig.clipboard.success;
-    let successText = "Copy successfully (*^▽^*)";
-    if (typeof successConfig === "string") {
-      successText = successConfig;
-    } else if (typeof successConfig === "object") {
-      const lang = document.documentElement.lang;
-      const key = Object.keys(successConfig).find(
-        (key) => key.toLowerCase() === lang.toLowerCase(),
-      );
-      if (key && successConfig[key]) {
-        successText = successConfig[key];
-      }
-    }
+    const successText = getLocalizedText(
+      successConfig,
+      "Copy successfully (*^▽^*)",
+    );
     _$("#copy-tooltip").innerText = successText;
     _$("#copy-tooltip").style.opacity = "1";
     setTimeout(() => {
@@ -163,25 +162,17 @@
     e.trigger.classList.add("icon-times");
     e.trigger.classList.remove("icon-copy");
     const failConfig = window.siteConfig.clipboard.fail;
-    let failText = "Copy failed (ﾟ⊿ﾟ)ﾂ";
-    if (typeof failConfig === "string") {
-      failText = failConfig;
-    } else if (typeof failConfig === "object") {
-      const lang = document.documentElement.lang;
-      const key = Object.keys(failConfig).find(
-        (key) => key.toLowerCase() === lang.toLowerCase(),
-      );
-      if (key && failConfig[key]) {
-        failText = failConfig[key];
-      }
-    }
+    const failText = getLocalizedText(
+      failConfig,
+      "Copy failed (ﾟ⊿ﾟ)ﾂ",
+    );
     _$("#copy-tooltip").innerText = failText;
     _$("#copy-tooltip").style.opacity = "1";
     setTimeout(() => {
       _$("#copy-tooltip").style.opacity = "0";
       e.trigger.classList.add("icon-copy");
       e.trigger.classList.remove("icon-times");
-    }, 1000);
+    }, 1000); 
   });
 
   // clear clipboard when pjax:send
@@ -196,7 +187,5 @@
   }
 
   // Since we add code-closed class to the figure element, we need to refresh AOS
-  if (window.AOS) {
-    AOS.refresh();
-  }
+  window.AOS?.refresh();
 })();
