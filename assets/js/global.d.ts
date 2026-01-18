@@ -108,10 +108,6 @@ declare global {
     limit: number,
   ) => (...args: any[]) => void;
   /**
-   * Lightbox status
-   */
-  var lightboxStatus: string | undefined;
-  /**
    * Start loading
    */
   var startLoading: (() => void) | undefined;

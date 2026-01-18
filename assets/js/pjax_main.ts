@@ -76,8 +76,6 @@ _$$(".article-entry table").forEach((element) => {
   wrapper.appendChild(element);
 });
 
-window.lightboxStatus = "ready";
-window.dispatchEvent(new Event("lightbox:ready"));
 // Mobile nav
 var isMobileNavAnim = false;
 
