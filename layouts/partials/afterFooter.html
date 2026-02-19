@@ -13,16 +13,28 @@
 {{- partial "helpers/ts.html" (dict "source" "js/main.ts" "ctx" .) -}}
 
 {{- if and .IsHome (reflect.IsMap .Site.Params.subtitle) .Site.Params.subtitle.typing.enable -}}
-<script>
+<script data-pjax>
   function initSubtitleTyping() {
     const subtitleElement = document.querySelector('#subtitle span');
     if (!subtitleElement || !window.Typed || !window.subtitleTypingConfig) {
       return;
     }
-    new Typed('#subtitle span', window.subtitleTypingConfig);
+
+    if (window.__typedInstance) {
+      window.__typedInstance.destroy();
+    }
+
+    window.__typedInstance = new Typed('#subtitle span', window.subtitleTypingConfig);
   }
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initSubtitleTyping);
+  
+  if (!window.__typedInitialized) {
+    window.__typedInitialized = true;
+    
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initSubtitleTyping);
+    } else {
+      initSubtitleTyping();
+    }
   } else {
     initSubtitleTyping();
   }
