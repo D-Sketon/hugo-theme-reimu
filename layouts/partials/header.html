@@ -207,8 +207,15 @@
         </h2>
       {{- else -}}
         {{- $subtitle := "" -}}
+        {{- $useTyping := false -}}
         {{- if .IsHome -}}
-          {{- $subtitle = .Site.Params.subtitle | default .Site.Params.subtitle -}}
+          {{- if and (reflect.IsMap .Site.Params.subtitle) .Site.Params.subtitle.typing.enable -}}
+            {{- $useTyping = true -}}
+          {{- else if and (reflect.IsMap .Site.Params.subtitle) .Site.Params.subtitle.text -}}
+            {{- $subtitle = .Site.Params.subtitle.text -}}
+          {{- else if .Site.Params.subtitle -}}
+            {{- $subtitle = .Site.Params.subtitle -}}
+          {{- end -}}
         {{- else if and (eq .Type "categories") (not (eq .Title "Categories")) -}}
           {{- $subtitle = .Title -}}
         {{- else if and (eq .Type "tags") (not (eq .Title "Tags")) -}}
@@ -219,7 +226,9 @@
           {{- end -}}
         {{- end -}}
         <h2 id="subtitle-wrap" data-aos="{{ .Site.Params.animation.options.header.subTitle }}">
-          {{- if $subtitle -}}
+          {{- if $useTyping -}}
+            <span id="subtitle"><span></span></span>
+          {{- else if $subtitle -}}
             <span id="subtitle">{{ $subtitle }}</span>
           {{- end -}}
         </h2>
