@@ -168,7 +168,7 @@
     {{- if .Site.Params.subtitle.typing.cursorChar -}}
     cursorChar: "{{ .Site.Params.subtitle.typing.cursorChar }}",
     {{- end -}}
-    smartBackspace: {{ .Site.Params.subtitle.typing.smartBackspace | default true }}
+    smartBackspace: {{ .Site.Params.subtitle.typing.smartBackspace | default false }}
   };
 </script>
 {{- end -}}
