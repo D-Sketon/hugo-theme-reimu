@@ -98,6 +98,9 @@ js:
   material_theme:
     src: webcache|material-theme@1.0.0/dist/material-theme.umd.js
     integrity: sha384-vLev0II0HKFaxkcm+/7kX5IGwVFBASkGchU311wmU/veIj2bB0UcBkQbW6yw2asK
+  typed:
+    src: webcache|typed.js@2.1.0/dist/typed.umd.js
+    integrity: sha384-cMrTlShXEGSdSFA359p+3aVUxK/R+0TAfbRZMcTlAn8yqzxEDj05QsS65nTFMMj4
 css:
   photoswipe:
     src: webcache|photoswipe@5.4.4/dist/photoswipe.css

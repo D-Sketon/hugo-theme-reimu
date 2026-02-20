@@ -146,3 +146,29 @@
 {{- if .Site.Params.player.aplayer.enable -}}
   {{- partial "helpers/css.html" (dict "raw" $css.aplayer "src" (index (partial "helpers/vendorCdn.html" (dict "item" $css.aplayer "ctx" $site)) 0) "integrity" (index (partial "helpers/vendorCdnIntegrity.html" (dict "item" $css.aplayer)) 0)) -}}
 {{- end -}}
+
+<!-- Typed.js for subtitle typing effect -->
+{{- if and .IsHome (reflect.IsMap .Site.Params.subtitle) .Site.Params.subtitle.typing.enable -}}
+{{- partial "helpers/js.html" (dict "raw" $js.typed "src" (index (partial "helpers/vendorCdn.html" (dict "item" $js.typed "ctx" $site)) 0) "integrity" (index (partial "helpers/vendorCdnIntegrity.html" (dict "item" $js.typed)) 0)) -}}
+<script>
+  window.subtitleTypingConfig = {
+    strings: [
+      {{- range $index, $string := .Site.Params.subtitle.typing.strings -}}
+        {{- if $index -}},{{- end -}}
+        "{{ $string }}"
+      {{- end -}}
+    ],
+    typeSpeed: {{ .Site.Params.subtitle.typing.typeSpeed | default 100 }},
+    backSpeed: {{ .Site.Params.subtitle.typing.backSpeed | default 50 }},
+    backDelay: {{ .Site.Params.subtitle.typing.backDelay | default 2000 }},
+    startDelay: {{ .Site.Params.subtitle.typing.startDelay | default 300 }},
+    loop: {{ .Site.Params.subtitle.typing.loop | default true }},
+    shuffle: {{ .Site.Params.subtitle.typing.shuffle | default true }},
+    showCursor: {{ .Site.Params.subtitle.typing.showCursor | default true }},
+    {{- if .Site.Params.subtitle.typing.cursorChar -}}
+    cursorChar: "{{ .Site.Params.subtitle.typing.cursorChar }}",
+    {{- end -}}
+    smartBackspace: {{ .Site.Params.subtitle.typing.smartBackspace | default false }}
+  };
+</script>
+{{- end -}}

@@ -29,7 +29,28 @@ timeFormat: "2006-01-02 15:04:05"
 author: D-Sketon
 email: xxx@example.com
 description: "少女祈祷中..."
-subtitle: "少女祈祷中..."
+# subtitle: "少女祈祷中..."
+subtitle:
+  typing:
+    enable: false
+
+    strings:
+      # Sentence 1
+      # Sentence 2
+      # Sentence 3
+      # Sentence 4
+    
+    typeSpeed: 100              # 打字速度（毫秒/字符） 
+    backSpeed: 50               # 删除速度（毫秒/字符）
+    backDelay: 2000             # 打完一句话后，等待时间
+    startDelay: 300             # 页面加载后，等待时间
+    loop: true                  # 是否循环播放
+    shuffle: true              # 是否随机输出句子
+    showCursor: true            # 是否显示闪烁的字符
+    cursorChar: "|"             # 字符
+    smartBackspace: false       # 智能退格，只删除不同的部分
+
+  text: "少女祈祷中..."        # 当 typing.enable = false 时使用
 
 banner: "images/banner.webp"
 # You can also write it in the form of the following url
