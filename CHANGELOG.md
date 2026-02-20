@@ -1,3 +1,57 @@
+## 0.15.1
+
+未发布
+
+### 特性
+
+- 新增副标题打字效果配置，支持动态打字动画和静态文本两种模式，同时兼容旧格式
+  ```yaml
+  subtitle:
+    typing:
+      enable: false
+      strings:
+        # - Sentence 1
+        # - Sentence 2
+        # - Sentence 3
+        # - Sentence 4
+      typeSpeed: 100              # 打字速度（毫秒/字符） 
+      backSpeed: 50               # 删除速度（毫秒/字符）
+      backDelay: 2000             # 打完一句话后，等待时间
+      startDelay: 300             # 页面加载后，等待时间
+      loop: true                  # 是否循环播放
+      shuffle: true              # 是否随机输出句子
+      showCursor: true            # 是否显示闪烁的字符
+      cursorChar: "|"             # 字符
+      smartBackspace: false       # 智能退格，只删除不同的部分
+    text: "少女祈祷中..."        # 当 typing.enable = false 时使用
+  ```
+
+---
+
+### Features
+
+- Added subtitle typing effect configuration, supporting both dynamic typing animation and static text modes, while maintaining compatibility with the old format
+  ```yaml
+  subtitle:
+    typing:
+      enable: false
+      strings:
+        # - Sentence 1
+        # - Sentence 2
+        # - Sentence 3
+        # - Sentence 4
+      typeSpeed: 100              # Typing speed (ms/character) 
+      backSpeed: 50               # Deletion speed (ms/character)
+      backDelay: 2000             # Wait time after completing a sentence
+      startDelay: 300             # Wait time after page load
+      loop: true                  # Whether to loop playback
+      shuffle: true              # Whether to randomly output sentences
+      showCursor: true            # Whether to show the blinking cursor
+      cursorChar: "|"             # Cursor character
+      smartBackspace: false       # Smart backspace, only delete different parts
+    text: "Loading..."           # Used when typing.enable = false
+  ```
+
 ## 0.15.0
 
 **2026-01-18**
