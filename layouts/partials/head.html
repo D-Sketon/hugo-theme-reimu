@@ -164,7 +164,7 @@
     startDelay: {{ .Site.Params.subtitle.typing.startDelay | default 300 }},
     loop: {{ .Site.Params.subtitle.typing.loop | default true }},
     shuffle: {{ .Site.Params.subtitle.typing.shuffle | default false }},
-    showCursor: {{ .Site.Params.subtitle.typing.showCursor | default false }},
+    showCursor: {{ .Site.Params.subtitle.typing.showCursor | default true }},
     {{- if .Site.Params.subtitle.typing.cursorChar -}}
     cursorChar: "{{ .Site.Params.subtitle.typing.cursorChar }}",
     {{- end -}}
