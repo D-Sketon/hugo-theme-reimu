@@ -1,0 +1,20 @@
+{{- $items := . -}}
+{{- $ctx := index $items "ctx" -}}
+{{- $name := index $items "name" -}}
+
+{{- $js := $ctx.Site.Data.vendor.js -}}
+{{- $vendor := index $js $name -}}
+
+{{- $base := dict
+	"raw" $vendor
+	"src" (index (partial "helpers/vendorCdn.html" (dict "item" $vendor "ctx" $ctx.Site)) 0)
+	"integrity" (index (partial "helpers/vendorCdnIntegrity.html" (dict "item" $vendor)) 0)
+-}}
+{{- $extra := dict -}}
+{{- range $key, $value := $items -}}
+	{{- if ne $key "name" -}}
+		{{- $extra = merge $extra (dict $key $value) -}}
+	{{- end -}}
+{{- end -}}
+
+{{- partial "helpers/js.html" (merge $base $extra) -}}

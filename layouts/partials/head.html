@@ -63,10 +63,10 @@
   />
 {{- else -}}
   {{- range $css.fontawesome.high_priority -}}
-    {{- partial "helpers/css.html" (dict "raw" . "src" (index (partial "helpers/vendorCdn.html" (dict "item" . "ctx" $site)) 0) "integrity" (index (partial "helpers/vendorCdnIntegrity.html" (dict "item" .)) 0)) -}}
+    {{- partial "helpers/cdnCss.html" (dict "item" . "ctx" .) -}}
   {{- end -}}
   {{- range $css.fontawesome.low_priority -}}
-    {{- partial "helpers/asyncCss.html" (dict "raw" . "src" (index (partial "helpers/vendorCdn.html" (dict "item" . "ctx" $site)) 0) "integrity" (index (partial "helpers/vendorCdnIntegrity.html" (dict "item" .)) 0)) -}}
+    {{- partial "helpers/cdnCss.html" (dict "item" . "ctx" . "async" true) -}}
   {{- end -}}
 {{- end -}}
 <!-- loader -->
@@ -123,26 +123,26 @@
 <link rel="shortcut icon" href="{{ "favicon.ico" | relURL }}">
 {{- partial "helpers/scss.html" (dict "source" "css/main.scss" "temp" "main.scss" "target" "css/main.css" "ctx" .) -}}
 <!-- photo-swipe -->
-{{- partial "helpers/asyncCss.html" (dict "raw" $css.photoswipe "src" (index (partial "helpers/vendorCdn.html" (dict "item" $css.photoswipe "ctx" $site)) 0) "integrity" (index (partial "helpers/vendorCdnIntegrity.html" (dict "item" $css.photoswipe)) 0)) -}}
+{{- partial "helpers/cdnCss.html" (dict "name" "photoswipe" "ctx" . "async" true) -}}
 <!-- katex -->
-{{- partial "helpers/asyncCss.html" (dict "raw" $css.katex "src" (index (partial "helpers/vendorCdn.html" (dict "item" $css.katex "ctx" $site)) 0) "integrity" (index (partial "helpers/vendorCdnIntegrity.html" (dict "item" $css.katex)) 0)) -}}
+{{- partial "helpers/cdnCss.html" (dict "name" "katex" "ctx" . "async" true) -}}
 <!-- waline -->
 {{- if and .Site.Params.waline.enable .Site.Params.waline.serverURL -}}
-  {{- partial "helpers/css.html" (dict "raw" $css.waline "src" (index (partial "helpers/vendorCdn.html" (dict "item" $css.waline "ctx" $site)) 0) "integrity" (index (partial "helpers/vendorCdnIntegrity.html" (dict "item" $css.waline)) 0)) -}}
+  {{- partial "helpers/cdnCss.html" (dict "name" "waline" "ctx" .) -}}
 {{- end -}}
 <!-- gitalk -->
 {{- if and .Site.Params.gitalk.enable .Site.Params.gitalk.clientID .Site.Params.gitalk.clientSecret -}}
-  {{- partial "helpers/css.html" (dict "raw" $css.gitalk "src" (index (partial "helpers/vendorCdn.html" (dict "item" $css.gitalk "ctx" $site)) 0) "integrity" (index (partial "helpers/vendorCdnIntegrity.html" (dict "item" $css.gitalk)) 0)) -}}
+  {{- partial "helpers/cdnCss.html" (dict "name" "gitalk" "ctx" .) -}}
 {{- end -}}
 <!-- pace -->
 {{- if .Site.Params.pace.enable -}}
-  {{- partial "helpers/js.html" (dict "raw" $js.pace "src" (index (partial "helpers/vendorCdn.html" (dict "item" $js.pace "ctx" $site)) 0) "integrity" (index (partial "helpers/vendorCdnIntegrity.html" (dict "item" $js.pace)) 0)) -}}
+  {{- partial "helpers/cdnJs.html" (dict "name" "pace" "ctx" .) -}}
 {{- end -}}
 <!-- aos -->
 {{- if .Site.Params.animation.enable -}}
-  {{- partial "helpers/css.html" (dict "raw" $css.aos "src" (index (partial "helpers/vendorCdn.html" (dict "item" $css.aos "ctx" $site)) 0) "integrity" (index (partial "helpers/vendorCdnIntegrity.html" (dict "item" $css.aos)) 0)) -}}
+  {{- partial "helpers/cdnCss.html" (dict "name" "aos" "ctx" .) -}}
 {{- end -}}
 
 {{- if .Site.Params.player.aplayer.enable -}}
-  {{- partial "helpers/css.html" (dict "raw" $css.aplayer "src" (index (partial "helpers/vendorCdn.html" (dict "item" $css.aplayer "ctx" $site)) 0) "integrity" (index (partial "helpers/vendorCdnIntegrity.html" (dict "item" $css.aplayer)) 0)) -}}
+  {{- partial "helpers/cdnCss.html" (dict "name" "aplayer" "ctx" .) -}}
 {{- end -}}
