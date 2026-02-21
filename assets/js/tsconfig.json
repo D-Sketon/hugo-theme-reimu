@@ -4,6 +4,7 @@
     "target": "ES2018",
     "declaration": true,
     "esModuleInterop": true,
+    "strict": false,
     "lib": ["dom", "ESNext", "DOM.Iterable", "WebWorker"]
   },
   "include": ["./**/*"],
