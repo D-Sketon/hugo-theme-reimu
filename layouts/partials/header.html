@@ -46,7 +46,7 @@
         </div>
         <ul class="select-items" id="select-items" role="listbox" aria-label="Languages">
           {{- range .Site.Languages -}}
-            <li data-value="{{ .Lang }}" role="option" {{ if eq $.Language.Lang .Lang }}class="selected" arial-selected="true"{{ else }}arial-selected="false"{{ end }} >{{ .LanguageName }}</li>
+            <li data-value="{{ .Lang }}" role="option" {{ if eq $.Language.Lang .Lang }}class="selected" aria-selected="true"{{ else }}aria-selected="false"{{ end }} >{{ .LanguageName }}</li>
           {{- end -}}
         </ul>
       </div>
