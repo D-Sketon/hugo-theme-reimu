@@ -106,13 +106,14 @@
   {{- end -}}
 </div>
 <header id="header" aria-label="Site header">
-  {{- if and .Params.cover (strings.HasPrefix .Params.cover "rgb") -}}
+  {{- $headerImage := .Params.banner | default .Params.cover -}}
+  {{- if and $headerImage (strings.HasPrefix $headerImage "rgb") -}}
     <picture></picture>
-    <img style="position: absolute;top: 0;left: 0;width: 100%;height: 180%;z-index: -2;display: block;background: {{ .Params.cover | safeCSS }};mask: linear-gradient(to top, transparent, #fff 50%);"></img>
-  {{- else if .Params.cover -}}
+    <img style="position: absolute;top: 0;left: 0;width: 100%;height: 180%;z-index: -2;display: block;background: {{ $headerImage | safeCSS }};mask: linear-gradient(to top, transparent, #fff 50%);"></img>
+  {{- else if $headerImage -}}
     <picture></picture>
-    <img {{ if .Site.Params.material_theme.enable }}crossorigin="anonymous"{{ end }} fetchpriority="high" src="{{ .Params.cover | relURL }}" alt="{{ .Title }}">
-  {{- else if eq .Params.cover false -}}
+    <img {{ if .Site.Params.material_theme.enable }}crossorigin="anonymous"{{ end }} fetchpriority="high" src="{{ $headerImage | relURL }}" alt="{{ .Title }}">
+  {{- else if or (eq .Params.banner false) (eq .Params.cover false) -}}
     <picture></picture>
     <img style="visibility:hidden"></img>
   {{- else -}}

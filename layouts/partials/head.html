@@ -79,6 +79,8 @@
   {{- $ogImage := "" -}}
   {{- if and .Params.cover (not (strings.HasPrefix .Params.cover "rgb")) -}}
     {{- $ogImage = .Params.cover | absURL -}}
+  {{- else if and .Params.banner (not (strings.HasPrefix .Params.banner "rgb")) -}}
+    {{- $ogImage = .Params.banner | absURL -}}
   {{- else -}}
     {{- $ogImage = .Site.Params.banner | absURL -}}
   {{- end -}}
