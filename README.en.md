@@ -603,7 +603,7 @@ math: true
 
 > Note: Do not enable both KaTeX and MathJax3 at the same time.
 
-#### KaTex
+#### KaTeX
 
 If using [KaTeX](https://github.com/KaTeX/KaTeX), set `math.katex.enable` to `true` in `params.yml`:
 

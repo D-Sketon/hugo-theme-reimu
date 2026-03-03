@@ -404,7 +404,7 @@ guessSyntax = true
 noClasses = false
 ```
 
-代码块同时提供了代码粘贴功能，点击代码块右上角的复制按钮即可复制代码。在 `params.yml` 中可以对复制功能进行配置。  
+代码块同时提供了代码复制功能，点击代码块右上角的复制按钮即可复制代码。在 `params.yml` 中可以对复制功能进行配置。  
 `success` 为复制成功时的提示，`fail` 为复制失败时的提示。此外，可以配置版权声明，当复制的字符数大于 `count` 时会在复制的内容后面添加版权声明。
 
 ```yaml
@@ -619,7 +619,7 @@ math: true
 
 #### KaTeX
 
-若基于 [Katex](https://github.com/KaTeX/KaTeX)，请在 `params.yml` 中将 `math.katex.enable` 改为 `true`
+若基于 [KaTeX](https://github.com/KaTeX/KaTeX)，请在 `params.yml` 中将 `math.katex.enable` 改为 `true`
 
 ```yaml
 math:
@@ -899,8 +899,8 @@ sponsor:
     rotate: true # 是否旋转图标
     mask: true # 是否将图片作为遮罩（即只显示 png 图片的轮廓）
   qr:
-    - name: 支付宝 # 二维码名称
-      src: "sponsor/alipay.jpg" # 示例二维码路径，位于 static/sponsor/aliapy.jpg
+      - name: 支付宝 # 二维码名称
+      src: "sponsor/alipay.jpg" # 示例二维码路径，位于 static/sponsor/alipay.jpg
 ```
 
 此外，也可以通过文章的 front-matter 控制，其优先级高于全局配置
@@ -1361,7 +1361,7 @@ sponsor:
 
 ##### 加载图标
 
-v0.1.0 的 `preloader` 配置增加了 `icon` 配置用于自定义图标。icon 为空时默认使用内链的 svg（保证首屏加载速度），你可以填入一个链接来自定义加载图标。
+v0.1.0 的 `preloader` 配置增加了 `icon` 配置用于自定义图标。icon 为空时默认使用内联的 svg（保证首屏加载速度），你可以填入一个链接来自定义加载图标。
 
 不建议使用过大的图标，以免影响加载速度。
 
