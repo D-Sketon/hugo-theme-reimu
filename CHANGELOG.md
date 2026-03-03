@@ -1,3 +1,37 @@
+## 0.15.2
+
+未发布
+
+### 修复
+
+- 修复语言选择下拉 `aria-selected` 属性拼写
+- 修复 `article:tag` meta 输出格式，使用逗号分隔标签
+
+### 特性
+
+- 支持区分文章背景图与卡片封面：front-matter 新增 `banner` 用于文章头图，`cover` 用于卡片封面/OG 图片，兼容旧格式
+- 增强 Open Graph / Twitter meta：使用绝对链接，并支持通过 `open_graph.options.twitter_image` 覆盖默认图片
+
+### 重构
+
+- 新增 CDN 辅助 partial，统一 JS/CSS 引用方式，减少重复逻辑
+
+---
+
+### Fixes
+
+- Fix language selector `aria-selected` attribute
+- Fix `article:tag` meta formatting with comma-delimited tags
+
+### Features
+
+- Separate article banner and card cover: add `banner` front-matter for article headers, keep `cover` for card/OG images, with backward compatibility
+- Improve Open Graph/Twitter meta tags: use absolute URLs and allow `open_graph.options.twitter_image` to override the default image
+
+### Refactor
+
+- Add CDN helper partials to unify JS/CSS includes and reduce duplication
+
 ## 0.15.1
 
 **2026-02-23**

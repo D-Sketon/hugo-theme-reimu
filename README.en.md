@@ -1450,28 +1450,30 @@ Both formats are supported. It's recommended to use SRI verification for externa
 
 ### Front-matter Fields
 
-| meta        | Description                                                                | Type                         | Value Logic                               | Version       |
-| ----------- | -------------------------------------------------------------------------- | ---------------------------- | ----------------------------------------- | ------------- |
-| title       | Title                                                                      | `string`                     | -                                         | Hugo Built-in |
-| date        | Article creation time                                                      | `datetime`                   | -                                         | Hugo Built-in |
-| lastmod     | Article last modified time                                                 | `datetime`                   | -                                         | Hugo Built-in |
-| summary     | Article summary                                                            | `string`                     | -                                         | Hugo Built-in |
-| weight      | Article weight, used for sorting/pinning                                   | `int`                        | -                                         | Hugo Built-in |
-| categories  | Article categories                                                         | `string[]`                   | -                                         | 0.0.1         |
-| tags        | Article tags                                                               | `string[]`                   | -                                         | 0.0.1         |
-| description | Article description                                                        | `string`                     | -                                         | 0.0.1         |
-| mermaid     | Whether to enable mermaid (requires configuration with `mermaid` settings) | `boolean`                    | `false`                                   | 0.0.1         |
-| math        | Whether to enable LaTeX (requires configuration with `math` settings)      | `boolean`                    | `false`                                   | 0.0.1         |
-| link        | Directs the article to an external link                                    | `string`                     | -                                         | 0.0.1         |
-| copyright   | Whether to enable article copyright notice                                 | `boolean`                    | Defaults to global config if not provided | 0.0.1         |
-| sponsor     | Whether to enable article sponsorship                                      | `boolean`                    | Defaults to global config if not provided | 0.0.1         |
-| comments    | Whether to enable article comments                                         | `boolean`                    | Defaults to global config if not provided | 0.0.1         |
-| photos      | Article photo gallery                                                      | `string[]`                   | -                                         | 0.0.1         |
-| sidebar     | Article sidebar position                                                   | `false \| 'left' \| 'right'` | Defaults to global config if not provided | 0.5.0         |
-| toc         | Whether to enable article table of contents                                | `boolean`                    | Defaults to global config if not provided | 0.7.0         |
-| outdated    | Whether the article is outdated                                            | `boolean`                    | Defaults to global config if not provided | 0.13.1        |
-| author      | Article author (used for article copyright and sharing cards)              | `string`                     | Defaults to global config if not provided | 0.13.2        |
-| keywords    | Article keywords for SEO                                                   | `string[] \| string`         | Defaults to global config if not provided | 0.13.4        |
+| meta        | Description                                                                | Type                                               | Value Logic                               | Version       |
+| ----------- | -------------------------------------------------------------------------- | -------------------------------------------------- | ----------------------------------------- | ------------- |
+| title       | Title                                                                      | `string`                                           | -                                         | Hugo Built-in |
+| date        | Article creation time                                                      | `datetime`                                         | -                                         | Hugo Built-in |
+| lastmod     | Article last modified time                                                 | `datetime`                                         | -                                         | Hugo Built-in |
+| summary     | Article summary                                                            | `string`                                           | -                                         | Hugo Built-in |
+| weight      | Article weight, used for sorting/pinning                                   | `int`                                              | -                                         | Hugo Built-in |
+| cover       | Article cover                                                              | `https://example.com \| false \| rgb(255,117,117)` | -                                         | 0.0.1         |
+| categories  | Article categories                                                         | `string[]`                                         | -                                         | 0.0.1         |
+| tags        | Article tags                                                               | `string[]`                                         | -                                         | 0.0.1         |
+| description | Article description                                                        | `string`                                           | -                                         | 0.0.1         |
+| mermaid     | Whether to enable mermaid (requires configuration with `mermaid` settings) | `boolean`                                          | `false`                                   | 0.0.1         |
+| math        | Whether to enable LaTeX (requires configuration with `math` settings)      | `boolean`                                          | `false`                                   | 0.0.1         |
+| link        | Directs the article to an external link                                    | `string`                                           | -                                         | 0.0.1         |
+| copyright   | Whether to enable article copyright notice                                 | `boolean`                                          | Defaults to global config if not provided | 0.0.1         |
+| sponsor     | Whether to enable article sponsorship                                      | `boolean`                                          | Defaults to global config if not provided | 0.0.1         |
+| comments    | Whether to enable article comments                                         | `boolean`                                          | Defaults to global config if not provided | 0.0.1         |
+| photos      | Article photo gallery                                                      | `string[]`                                         | -                                         | 0.0.1         |
+| sidebar     | Article sidebar position                                                   | `false \| 'left' \| 'right'`                     | Defaults to global config if not provided | 0.5.0         |
+| toc         | Whether to enable article table of contents                                | `boolean`                                          | Defaults to global config if not provided | 0.7.0         |
+| outdated    | Whether the article is outdated                                            | `boolean`                                          | Defaults to global config if not provided | 0.13.1        |
+| author      | Article author (used for article copyright and sharing cards)              | `string`                                           | Defaults to global config if not provided | 0.13.2        |
+| keywords    | Article keywords for SEO                                                   | `string[] \| string`                               | Defaults to global config if not provided | 0.13.4        |
+| banner      | Article banner                                                             | `https://example.com \| false \| rgb(255,117,117)` | -                                         | 0.15.2        |
 </details>
 
 ## Contributors

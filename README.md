@@ -1473,28 +1473,30 @@ js:
 
 ### Front-matter 字段
 
-| meta        | 描述                                            | 类型                         | 取值逻辑           | 版本      |
-| ----------- | ----------------------------------------------- | ---------------------------- | ------------------ | --------- |
-| title       | 标题                                            | `string`                     | -                  | Hugo 内置 |
-| date        | 文章创建时间                                    | `datetime`                   | -                  | Hugo 内置 |
-| lastmod     | 文章最后修改时间                                | `datetime`                   | -                  | Hugo 内置 |
-| summary     | 文章摘要                                        | `string`                     | -                  | Hugo 内置 |
-| weight      | 文章权重，用于排序/置顶                         | `int`                        | -                  | Hugo 内置 |
-| categories  | 文章分类                                        | `string[]`                   | -                  | 0.0.1     |
-| tags        | 文章标签                                        | `string[]`                   | -                  | 0.0.1     |
-| description | 文章描述                                        | `string`                     | -                  | 0.0.1     |
-| mermaid     | 是否开启 mermaid，需配合 `mermaid` 配置一起使用 | `boolean`                    | `false`            | 0.0.1     |
-| math        | 是否开启 LaTeX，需配合 `math` 配置一起使用      | `boolean`                    | `false`            | 0.0.1     |
-| link        | 用于文章直接指向外部链接                        | `string`                     | -                  | 0.0.1     |
-| copyright   | 是否开启文章版权声明                            | `boolean`                    | 不传默认走全局配置 | 0.0.1     |
-| sponsor     | 是否开启文章赞助                                | `boolean`                    | 不传默认走全局配置 | 0.0.1     |
-| comments    | 是否开启文章评论                                | `boolean`                    | 不传默认走全局配置 | 0.0.1     |
-| photos      | 文章照片墙                                      | `string[]`                   | -                  | 0.0.1     |
-| sidebar     | 文章侧边栏位置                                  | `false \| 'left' \| 'right'` | 不传默认走全局配置 | 0.5.0     |
-| toc         | 是否开启文章目录                                | `boolean`                    | 不传默认走全局配置 | 0.7.0     |
-| outdated    | 文章是否过期                                    | `boolean`                    | 不传默认走全局配置 | 0.13.1    |
-| author      | 文章作者，用于文章版权和分享卡片                | `string`                     | 不传默认走全局配置 | 0.13.2    |
-| keywords    | 文章关键词                                      | `string[] \| string`         | 不传默认走全局配置 | 0.13.4    |
+| meta        | 描述                                            | 类型                                               | 取值逻辑           | 版本      |
+| ----------- | ----------------------------------------------- | -------------------------------------------------- | ------------------ | --------- |
+| title       | 标题                                            | `string`                                           | -                  | Hugo 内置 |
+| date        | 文章创建时间                                    | `datetime`                                         | -                  | Hugo 内置 |
+| lastmod     | 文章最后修改时间                                | `datetime`                                         | -                  | Hugo 内置 |
+| summary     | 文章摘要                                        | `string`                                           | -                  | Hugo 内置 |
+| weight      | 文章权重，用于排序/置顶                         | `int`                                              | -                  | Hugo 内置 |
+| cover       | 文章封面                                        | `https://example.com \| false \| rgb(255,117,117)` | -                  | 0.0.1     |
+| categories  | 文章分类                                        | `string[]`                                         | -                  | 0.0.1     |
+| tags        | 文章标签                                        | `string[]`                                         | -                  | 0.0.1     |
+| description | 文章描述                                        | `string`                                           | -                  | 0.0.1     |
+| mermaid     | 是否开启 mermaid，需配合 `mermaid` 配置一起使用 | `boolean`                                          | `false`            | 0.0.1     |
+| math        | 是否开启 LaTeX，需配合 `math` 配置一起使用      | `boolean`                                          | `false`            | 0.0.1     |
+| link        | 用于文章直接指向外部链接                        | `string`                                           | -                  | 0.0.1     |
+| copyright   | 是否开启文章版权声明                            | `boolean`                                          | 不传默认走全局配置 | 0.0.1     |
+| sponsor     | 是否开启文章赞助                                | `boolean`                                          | 不传默认走全局配置 | 0.0.1     |
+| comments    | 是否开启文章评论                                | `boolean`                                          | 不传默认走全局配置 | 0.0.1     |
+| photos      | 文章照片墙                                      | `string[]`                                         | -                  | 0.0.1     |
+| sidebar     | 文章侧边栏位置                                  | `false \| 'left' \| 'right'`                       | 不传默认走全局配置 | 0.5.0     |
+| toc         | 是否开启文章目录                                | `boolean`                                          | 不传默认走全局配置 | 0.7.0     |
+| outdated    | 文章是否过期                                    | `boolean`                                          | 不传默认走全局配置 | 0.13.1    |
+| author      | 文章作者，用于文章版权和分享卡片                | `string`                                           | 不传默认走全局配置 | 0.13.2    |
+| keywords    | 文章关键词                                      | `string[] \| string`                               | 不传默认走全局配置 | 0.13.4    |
+| banner      | 文章头图                                        | `https://example.com \| false \| rgb(255,117,117)` | -                  | 0.15.2    |
 </details>
 
 ## 贡献者
