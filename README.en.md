@@ -153,7 +153,7 @@ Copy all files from the theme's `config/data/` folder to the outer `data` folder
 
 #### Static Resource Configuration
 
-The theme's static resources (favicon, header images, etc.) are located in the `static` folder. You can create corresponding folders in the outer `static` folder and copy the files from inside the theme to the outer folders to override the theme's default files.
+The theme's static resources (Favicon, header images, etc.) are located in the `static` folder. You can create corresponding folders in the outer `static` folder and copy the files from inside the theme to the outer folders to override the theme's default files.
 
 > In summary, it's not recommended to modify files directly inside the theme. Instead, create corresponding folders in the outer directory and copy the theme's files there to override the default files. This approach makes theme upgrades easier.
 
@@ -187,7 +187,7 @@ Friend link page
 </details>
 
 <details>
-<summary>Avatar, Cover, Banner, and favicon</summary>
+<summary>Avatar, Cover, Banner, and Favicon</summary>
 
 ### Avatar, Cover, Banner, and Favicon
 
@@ -250,7 +250,7 @@ banner: "images/banner.webp"
 
 #### Favicon
 
-The favicon is saved at `themes/hugo-theme-reimu/static/favicon.ico`. You can replace it with your own file.
+The Favicon is saved at `themes/hugo-theme-reimu/static/favicon.ico`. You can replace it with your own file.
 
 #### Article Summary
 
@@ -667,7 +667,7 @@ rss:
 
 ### Icon
 
-Icons default to using the iconfont provided by this project:
+Icons default to using the Iconfont provided by this project:
 
 ```yml
 icon_font: 4552607_0khxww3tj3q9
@@ -1413,7 +1413,7 @@ layout:
 <details>
 <summary>Vendor</summary>
 
-`vendor` is used to store third-party resources such as fontawesome, iconfont, katex, mathjax, etc.
+`vendor` is used to store third-party resources such as FontAwesome, Iconfont, katex, mathjax, etc.
 
 The `vendor` structure in hugo-theme-reimu is very flexible and supports the following formats:
 

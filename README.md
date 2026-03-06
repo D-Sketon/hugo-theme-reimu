@@ -153,7 +153,7 @@ hugo server
 
 #### 静态资源配置
 
-主题的静态资源（favicon，头图等）位于 `static` 文件夹内，你可以在外层 `static` 文件夹下创建相应的文件夹，然后将主题内的文件复制到外层文件夹下，以覆盖主题内的默认文件
+主题的静态资源（Favicon，头图等）位于 `static` 文件夹内，你可以在外层 `static` 文件夹下创建相应的文件夹，然后将主题内的文件复制到外层文件夹下，以覆盖主题内的默认文件
 
 > 总之一句话，不建议直接修改主题内的文件，而是在外层创建相应的文件夹，然后将主题内的文件复制到外层文件夹下，以覆盖主题内的默认文件，这样便于主题升级
 
@@ -202,7 +202,7 @@ hasCJKLanguage = true
 <details>
 <summary>头像、封面、头图和图标</summary>
 
-### 头像、封面、头图和favicon
+### 头像、封面、头图和Favicon
 
 #### 头像
 
@@ -263,7 +263,7 @@ banner: "images/banner.webp"
 
 #### Favicon
 
-favicon 保存于 `themes/hugo-theme-reimu/static/favicon.ico`，可自行覆盖替换
+Favicon 保存于 `themes/hugo-theme-reimu/static/favicon.ico`，可自行覆盖替换
 
 #### 文章总结
 
@@ -681,13 +681,13 @@ rss:
 
 ### Icon
 
-Icon 默认使用本项目提供的 iconfont
+Icon 默认使用本项目提供的 Iconfont
 
 ```yml
 icon_font: 4552607_0khxww3tj3q9
 ```
 
-如果想要继续使用 fontawesome 图标，请将 `icon_font` 设置为 `false`，此时会使用 `vendor.yml` 中对应的 fontawesome
+如果想要继续使用 FontAwesome 图标，请将 `icon_font` 设置为 `false`，此时会使用 `vendor.yml` 中对应的 FontAwesome
 
 ```yml
 fontawesome:
@@ -913,7 +913,7 @@ sponsor: true # 是否展示赞助二维码？
 
 #### 音乐播放器（v0.4.0+）
 
-> 使用前建议先打开 Pjax，否则会出现播放器自动暂停的问题
+> 使用前建议先打开 PJAX，否则会出现播放器自动暂停的问题
 
 使用Aplayer + Meting（可选）默认关闭
 
@@ -1311,7 +1311,7 @@ custom_font:
 
 ##### 头部 / 侧边栏图标
 
-v0.1.0 的 `menu` 配置的结构发生了变化，允许用户自定义 icon。icon 为空时默认使用太极图标，你可以填写一个十六进制的数字来自定义 icon，同时支持 fontawesome，icon font 和 `false`。
+v0.1.0 的 `menu` 配置的结构发生了变化，允许用户自定义 icon。icon 为空时默认使用太极图标，你可以填写一个十六进制的数字来自定义 icon，同时支持 FontAwesome，icon font 和 `false`。
 
 v0.10.2 icon 支持图片路径，如 `/avatar/avatar.webp`。
 
@@ -1322,7 +1322,7 @@ menu:
     icon: # 不填默认使用太极图标
   - name: archives
     url: /archives
-    icon: f0c1 # 你可以填写一个十六进制的数字来自定义 icon，支持 fontawesome 和 icon font，如果填写 false 则不显示图标
+    icon: f0c1 # 你可以填写一个十六进制的数字来自定义 icon，支持 FontAwesome 和 icon font，如果填写 false 则不显示图标
   - name: about
     url: /about
     icon:
@@ -1379,7 +1379,7 @@ preloader:
 
 ##### 锚点图标
 
-v0.1.0 增加了 `anchor_icon` 配置用于自定义锚点图标，默认使用 `#` 图标，你可以填写一个十六进制的数字来自定义 icon，同时支持 fontawesome 和 icon font。
+v0.1.0 增加了 `anchor_icon` 配置用于自定义锚点图标，默认使用 `#` 图标，你可以填写一个十六进制的数字来自定义 icon，同时支持 FontAwesome 和 icon font。
 
 ```yaml
 anchor_icon: # 不填默认使用 # 图标
@@ -1437,7 +1437,7 @@ layout:
 
 ### Vendor
 
-`vendor` 用于存放一些第三方资源，如 fontawesome、iconfont、katex、mathjax 等。
+`vendor` 用于存放一些第三方资源，如 FontAwesome、Iconfont、katex、mathjax 等。
 
 hugo-theme-reimu 的 `vendor` 结构非常灵活，其支持以下几种形式：
 
