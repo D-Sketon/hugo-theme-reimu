@@ -214,10 +214,12 @@
         const domMode = document.documentElement.getAttribute("data-theme");
         const defaultTheme = { dark: 'dark', light: 'light' };
         const customTheme = {
-          light: new URL('{{- partial "helpers/scss.html" (dict "source" "css/giscus_reimu_light.scss" "temp" "giscus_reimu_light.scss" "target" "css/giscus_reimu_light.css" "ctx" . "permalinkOnly" true) -}}', window.location.origin).href,
-          dark: new URL('{{- partial "helpers/scss.html" (dict "source" "css/giscus_reimu_dark.scss" "temp" "giscus_reimu_dark.scss" "target" "css/giscus_reimu_dark.css" "ctx" . "permalinkOnly" true) -}}', window.location.origin).href
+          light: '{{ $params.giscus.theme.light }}' ? '{{ $params.giscus.theme.light }}' : new URL('{{- partial "helpers/scss.html" (dict "source" "css/giscus_reimu_light.scss" "temp" "giscus_reimu_light.scss" "target" "css/giscus_reimu_light.css" "ctx" . "permalinkOnly" true) -}}', window.location.origin).href,
+          dark: '{{ $params.giscus.theme.dark }}' ? '{{ $params.giscus.theme.dark }}' : new URL('{{- partial "helpers/scss.html" (dict "source" "css/giscus_reimu_dark.scss" "temp" "giscus_reimu_dark.scss" "target" "css/giscus_reimu_dark.css" "ctx" . "permalinkOnly" true) -}}', window.location.origin).href
         };
         const hasGiscusCorsHeader = async (url) => {
+          if (!url) return false;
+          if (!url.startsWith('http')) return true; // not a url, maybe a name of built-in theme
           try {
             let response = await fetch(url, { method: 'HEAD', cache: 'no-store' });
             if (response.status === 405) {
