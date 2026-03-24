@@ -360,6 +360,27 @@
   }
 }
 
+@if index($social-keys, "tiktok") {
+  .icon-tiktok {
+    filter: drop-shadow(-1px -1px 0 #69c9d0) drop-shadow(1px 1px 0 #fe2c55);
+    color: #000000;
+  }
+}
+
+.sidebar-social {
+  @if index($social-keys, "weixin") {
+    .icon-weixin {
+      color: #09b83e;
+    }
+  }
+
+  @if index($social-keys, "qq") {
+    .icon-qq {
+      color: #12b7f5;
+    }
+  }
+}
+
 @mixin menu-link {
   color: var(--color-link);
   opacity: 0.8;

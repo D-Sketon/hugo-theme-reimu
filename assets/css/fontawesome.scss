@@ -345,6 +345,12 @@
   }
 }
 
+@if index($social-keys, "tiktok") or $triangle-badge-icon == "tiktok" {
+  .icon-tiktok:before {
+    content: "\e07b";
+  }
+}
+
 .sidebar-toc-btn:before {
   font-family: var(--font-icon);
   content: "\f0e8";
