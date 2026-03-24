@@ -43,8 +43,16 @@ $cursor-text: {{ if reflect.IsMap $params.reimu_cursor }}"{{ $params.reimu_curso
 
 {{ $social := $params.social }}
 {{ $social_keys := slice }}
-{{ range $key, $value := $social }}
-  {{ $social_keys = $social_keys | append $key }}
+{{ if reflect.IsSlice $social }}
+  {{ range $social_item := $social }}
+    {{ if and (reflect.IsMap $social_item) (isset $social_item "name") }}
+      {{ $social_keys = $social_keys | append (index $social_item "name") }}
+    {{ end }}
+  {{ end }}
+{{ else }}
+  {{ range $key, $value := $social }}
+    {{ $social_keys = $social_keys | append $key }}
+  {{ end }}
 {{ end }}
 {{ $social_keys = $social_keys | append "__dummy__" }}
 $social-keys: {{ delimit (apply $social_keys "printf" "'%s'" "." ) "," }};

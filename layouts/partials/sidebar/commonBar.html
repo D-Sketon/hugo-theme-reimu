@@ -33,16 +33,30 @@
   </a>
 </div>
 <div class="sidebar-social" {{ if not (or $showMenu $mobile) }}style="margin-bottom: 20px;"{{ end }}>
-  {{- range $name, $url := $params.social -}}
-    <div class="icon-{{ $name }} sidebar-social-icon">
-      <a
-        href="{{ $url }}"
-        itemprop="url"
-        target="_blank"
-        aria-label="{{ $name }}"
-        rel="noopener nofollow noreferrer"
-      ></a>
-    </div>
+  {{- if reflect.IsSlice $params.social -}}
+    {{- range $social := $params.social -}}
+      <div class="icon-{{ $social.name }} sidebar-social-icon">
+        <a
+          href="{{ $social.url }}"
+          itemprop="url"
+          target="_blank"
+          aria-label="{{ $social.name }}"
+          rel="noopener nofollow noreferrer"
+        ></a>
+      </div>
+    {{- end -}}
+  {{- else -}}
+    {{- range $name, $url := $params.social -}}
+      <div class="icon-{{ $name }} sidebar-social-icon">
+        <a
+          href="{{ $url }}"
+          itemprop="url"
+          target="_blank"
+          aria-label="{{ $name }}"
+          rel="noopener nofollow noreferrer"
+        ></a>
+      </div>
+    {{- end -}}
   {{- end -}}
 </div>
 {{- if or $showMenu $mobile -}}
