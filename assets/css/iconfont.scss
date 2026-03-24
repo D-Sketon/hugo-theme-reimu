@@ -371,14 +371,14 @@ $icon-url: "//at.alicdn.com/t/c/font_#{$icon_font}.woff2";
   content: "\e62b";
 }
 
-@if index($share-keys, "weixin") {
+@if index($share-keys, "weixin") or index($social-keys, "weixin") or $triangle-badge-icon == "weixin" {
   .icon-weixin:before {
     font-family: $font-icon;
     content: "\e640";
   }
 }
 
-@if index($share-keys, "qq") {
+@if index($share-keys, "qq") or index($social-keys, "qq") or $triangle-badge-icon == "qq" {
   .icon-qq:before {
     font-family: $font-icon;
     content: "\e63e";

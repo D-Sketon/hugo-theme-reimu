@@ -381,14 +381,14 @@
   content: "\f6ad";
 }
 
-@if index($share-keys, "weixin") {
+@if index($share-keys, "weixin") or index($social-keys, "weixin") or $triangle-badge-icon == "weixin" {
   .icon-weixin:before {
     font-family: var(--font-icon);
     content: "\f1d7";
   }
 }
 
-@if index($share-keys, "qq") {
+@if index($share-keys, "qq") or index($social-keys, "qq") or $triangle-badge-icon == "qq" {
   .icon-qq:before {
     font-family: var(--font-icon);
     content: "\f1d6";
