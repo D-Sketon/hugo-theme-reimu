@@ -1,3 +1,17 @@
+## 0.15.4
+
+**2026-03-30**
+
+### 修复
+
+- 修复 fontawesome css加载失败
+
+---
+
+### Fixes
+
+- Fixed fontawesome css loading failure
+
 ## 0.15.3
 
 **2026-03-29**
