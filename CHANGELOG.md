@@ -1,3 +1,79 @@
+## 0.15.3
+
+**2026-03-29**
+
+### 特性
+
+- 增强 Giscus 主题能力：新增 `giscus.theme.light` 与 `giscus.theme.dark`，并内置 Reimu 风格 light/dark 主题作为兜底。由于 Giscus 基于 iframe 渲染，无法继承站点全局样式，内置主题用于尽可能保持与全站一致（鼠标样式、字体、静态主题 token；`material_theme` 等动态 token 暂不支持）。
+  ```yaml
+  giscus:
+    enable: true
+    repo: owner/repo
+    repoId:
+    category:
+    categoryId:
+    theme:
+      light: https://example.com/giscus-light.css
+      dark: https://example.com/giscus-dark.css
+  ```
+  - 自定义主题为 URL 时，会校验是否允许 `https://giscus.app` 跨域访问
+  - 校验失败时自动回退到内置 `light` / `dark` 主题，避免评论样式失效
+  - 注意：本地 `hugo server`（HTTP 且通常无 CORS 头）与 `github.io` 默认静态资源场景通常无法直接通过校验，建议使用可配置 CORS 的资源域名（例如 jsDelivr 代理）
+- 侧边栏社交链接渲染兼容两种 `social` 数据结构（对象与数组）
+  ```yaml
+  # 写法 1：对象（兼容旧格式）
+  social:
+    github: https://github.com/yourname
+    weixin:
+    qq:
+    tiktok: https://www.tiktok.com/@yourname
+
+  # 写法 2：数组（新支持）
+  social:
+    - name: github
+      url: https://github.com/yourname
+    - name: tiktok
+      url: https://www.tiktok.com/@yourname
+  ```
+- 新增 TikTok 社交图标支持，并补充 Weixin/QQ 在社交与三角徽章场景下的图标渲染支持
+
+---
+
+### Features
+
+- Enhanced Giscus theming: added `giscus.theme.light` and `giscus.theme.dark`, with built-in Reimu-style light/dark fallback themes. Since Giscus is rendered in an iframe and cannot inherit global site styles, the built-in themes keep behavior as consistent as possible with the site (cursor style, fonts, and static theme tokens; dynamic tokens like `material_theme` are not supported yet).
+  ```yaml
+  giscus:
+    enable: true
+    repo: owner/repo
+    repoId:
+    category:
+    categoryId:
+    theme:
+      light: https://example.com/giscus-light.css
+      dark: https://example.com/giscus-dark.css
+  ```
+  - For URL-based custom themes, it verifies whether CORS allows `https://giscus.app`
+  - If validation fails, it automatically falls back to built-in `light` / `dark` themes
+  - Note: local `hugo server` (HTTP, usually without CORS headers) and default `github.io` static hosting commonly fail this check; use a CORS-configured asset host (e.g., jsDelivr proxy)
+- Updated sidebar social rendering to support both `social` data structures (map and array)
+  ```yaml
+  # Style 1: map (legacy-compatible)
+  social:
+    github: https://github.com/yourname
+    weixin:
+    qq:
+    tiktok: https://www.tiktok.com/@yourname
+
+  # Style 2: array (newly supported)
+  social:
+    - name: github
+      url: https://github.com/yourname
+    - name: tiktok
+      url: https://www.tiktok.com/@yourname
+  ```
+- Added TikTok social icon support and improved Weixin/QQ icon rendering in social and triangle badge scenarios
+
 ## 0.15.2
 
 **2026-03-06**

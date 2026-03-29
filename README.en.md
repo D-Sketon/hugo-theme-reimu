@@ -208,37 +208,30 @@ For random cover images, refer to the file structure in the theme's `data/covers
 - https://example.com/2.jpg
 ```
 
-Cover display logic is as follows:
+`banner` and `cover` behave as follows:
 
-- If the article's Front matter contains a cover url, both the article header and homepage thumbnail will display that url
+- Article header image prefers Front matter `banner`; if `banner` is not set, it falls back to `cover` for backward compatibility
+- List card cover prefers Front matter `cover` (URL only); when `cover` is unset, `false`, or `rgb(...)`, it falls back to random images from `data/covers.yml`
+- If random covers are unavailable, it falls back to the global `banner`
 
-```yaml
----
-title: Hello World
-cover: https://example.com
----
-```
-
-- If the article's Front matter contains cover set to `false`, the article won't display a header image (homepage thumbnail will still show random images)
+Recommended (separate header and card images):
 
 ```yaml
 ---
 title: Hello World
-cover: false
+banner: https://example.com/post-header.webp
+cover: https://example.com/post-card.webp
 ---
 ```
 
-- If the article's Front matter contains cover set to `rgb(xxx,xxx,xxx)`, the article header will be a gradient of that solid color (homepage thumbnail will still show random images)
+Legacy-compatible (cover only):
 
 ```yaml
 ---
 title: Hello World
-cover: rgb(255,117,117)
+cover: https://example.com/cover.webp
 ---
 ```
-
-- Otherwise, the homepage thumbnail will look for `covers.yml` in the `data` folder and randomly select an image; the in-article header image will look for the `cover` configuration in `params.yml`
-- If none of the above files/configurations exist, it will display the `banner` header image as a fallback
 
 #### Banner
 
@@ -310,13 +303,27 @@ toc: true # true | false
 
 #### Social Links
 
-You can configure the social links in the sidebar in `params.yml`.
+You can configure sidebar social links in `params.yml`, supporting both map and array formats (choose one).
+
+Style 1: map (legacy-compatible)
 
 ```yaml
 social:
-  # github: https://github.com/yourname
-  # bilibili: https://space.bilibili.com/yourname
-  # ...
+  github: https://github.com/yourname
+  bilibili: https://space.bilibili.com/yourname
+  # weixin: https://example.com/your-weixin-link
+  # qq: https://example.com/your-qq-link
+  tiktok: https://www.tiktok.com/@yourname
+```
+
+Style 2: array (newly supported)
+
+```yaml
+social:
+  - name: github
+    url: https://github.com/yourname
+  - name: tiktok
+    url: https://www.tiktok.com/@yourname
 ```
 
 #### Widgets
@@ -514,7 +521,17 @@ giscus:
   reactionsEnabled: 1
   emitMetadata: 0
   inputPosition: bottom
+  theme:
+    light: # optional, supports built-in giscus theme names or custom CSS URL
+    dark: # optional, supports built-in giscus theme names or custom CSS URL
 ```
+
+Notes:
+
+- Giscus is rendered in an iframe and cannot directly inherit global site styles, so it must be themed via `data-theme`.
+- If `theme.light` / `theme.dark` uses URL values, the theme checks whether the URL allows CORS access from `https://giscus.app`; if validation fails, it falls back to built-in `light` / `dark`.
+- If both `theme` values are empty, it will try to use the built-in Reimu-style CSS themes (to align cursor style, fonts, and static tokens with the site; dynamic tokens like `material_theme` are not supported).
+- Local `hugo server` (HTTP, usually without CORS headers) and default `github.io` static hosting commonly fail URL-theme validation; use a CORS-configured asset host (e.g., jsDelivr proxy).
 
 If using [gitalk](https://gitalk.github.io/)  
 Please refer to their [official documentation](https://github.com/gitalk/gitalk?tab=readme-ov-file#usage) to complete repository configuration, then set `gitalk.enable` to `true` in `params.yml` and fill in the corresponding data
@@ -540,7 +557,7 @@ disqus:
   count: true # Whether to enable comment count statistics
 ```
 
-If using utterance [utterances](https://utteranc.es/)  
+If using [utterances](https://utteranc.es/)  
 Please set `utterances.enable` to `true` in `params.yml` and fill in your own `repo`
 
 ```yml
@@ -670,7 +687,7 @@ rss:
 Icons default to using the Iconfont provided by this project:
 
 ```yml
-icon_font: 4552607_0khxww3tj3q9
+icon_font: 4552607_a0oqhord1y
 ```
 
 If you want to continue using FontAwesome icons, set `icon_font` to `false`. This will use the corresponding FontAwesome configuration from `vendor.yml`:
@@ -979,7 +996,7 @@ share:
   # - weixin
 ```
 
-For `weixin`, it generates a share card with QR code that can be saved locally and shared to WeChat Moments (Note: when the article cover has cross-origin issues, html-to-image cannot correctly generate cards with images!)
+For `weixin`, it generates a share card with QR code that can be saved locally and shared to WeChat Moments (Note: if the article cover has cross-origin issues, the screenshot tool may fail to generate cards with images correctly.)
 
 #### Homepage Category Cards (v0.6.0+)
 
@@ -1017,7 +1034,7 @@ Disabled by default. When enabled, it will display a triangle badge in the upper
 triangle_badge:
   enable: false
   icon: github # Same as the icon in the social config
-  link: https://github.com/D-Sketon/hexo-theme-reimu
+  link: https://github.com/D-Sketon/hugo-theme-reimu
 ```
 
 </details>
@@ -1027,7 +1044,7 @@ triangle_badge:
 
 ### Built-in Shortcodes
 
-#### friendLink Card
+#### friendsLink Card
 
 ```markdown
 {{< friendsLink >}}
@@ -1079,7 +1096,7 @@ tagRoulette is an interactive element that provides a random tag display feature
 ```markdown
 {{< alertBlockquote type="?" >}}
 Your content here
-{{</alertBlockquote>}}
+{{< /alertBlockquote >}}
 ```
 
 It is applicable to scenarios where Hugo v0.132.0 or lower cannot use Hugo Blockquote render hooks.
@@ -1126,7 +1143,8 @@ Adapted from the next, volantis, and stellar themes, this feature supports creat
 ![alt text](image_url1)
 ![alt text](image_url2)
 ...
-{{</gallery>}}
+{{< /gallery >}}
+```
 
 Display multiple images in a photo wall format, supporting automatic arrangement and responsive layout.
 
