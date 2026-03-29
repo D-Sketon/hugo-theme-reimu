@@ -1,15 +1,18 @@
 {{- $items := . -}}
 {{- $ctx := index $items "ctx" -}}
 {{- $name := index $items "name" -}}
+{{- $item := index $items "item" -}}
 {{- $async := index $items "async" -}}
 
-{{- $css := $ctx.Site.Data.vendor.css -}}
-{{- $vendor := index $css $name -}}
+{{- if not $item -}}
+  {{- $css := $ctx.Site.Data.vendor.css -}}
+  {{- $item = index $css $name -}}
+{{- end -}}
 
 {{- $base := dict
-	"raw" $vendor
-	"src" (index (partial "helpers/vendorCdn.html" (dict "item" $vendor "ctx" $ctx.Site)) 0)
-	"integrity" (index (partial "helpers/vendorCdnIntegrity.html" (dict "item" $vendor)) 0)
+	"raw" $item
+	"src" (index (partial "helpers/vendorCdn.html" (dict "item" $item "ctx" $ctx.Site)) 0)
+	"integrity" (index (partial "helpers/vendorCdnIntegrity.html" (dict "item" $item)) 0)
 -}}
 
 {{- if $async -}}

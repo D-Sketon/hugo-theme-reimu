@@ -63,10 +63,10 @@
   />
 {{- else -}}
   {{- range $css.fontawesome.high_priority -}}
-    {{- partial "helpers/cdnCss.html" (dict "item" . "ctx" .) -}}
+    {{- partial "helpers/cdnCss.html" (dict "item" . "ctx" $) -}}
   {{- end -}}
   {{- range $css.fontawesome.low_priority -}}
-    {{- partial "helpers/cdnCss.html" (dict "item" . "ctx" . "async" true) -}}
+    {{- partial "helpers/cdnCss.html" (dict "item" . "ctx" $ "async" true) -}}
   {{- end -}}
 {{- end -}}
 <!-- loader -->
