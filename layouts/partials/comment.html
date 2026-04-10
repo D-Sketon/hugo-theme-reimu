@@ -8,10 +8,14 @@
   "giscus" (cond $params.giscus.enable true false)
   "disqus" (cond (and $params.disqus.enable $params.disqus.shortname) true false)
   "utterances" (cond (and $params.utterances.enable $params.utterances.repo) true false)
+  "beaudar" (cond (and $params.beaudar.enable $params.beaudar.repo) true false)
 -}}
 
+{{- $commentSystemOrder := slice "valine" "waline" "twikoo" "gitalk" "giscus" "utterances" "beaudar" "disqus" -}}
+
 {{- $activeSystems := slice -}}
-{{- range $key, $value := $commentSystems -}}
+{{- range $key := $commentSystemOrder -}}
+  {{- $value := index $commentSystems $key -}}
   {{- if $value -}}
     {{- $activeSystems = $activeSystems | append $key -}}
   {{- end -}}
@@ -34,7 +38,8 @@
   <h2 class="comment-title">{{ $realTitle }}</h2>
   <div class="comment-selector">
     <div class="comment-selector-wrap">
-      {{- range $name, $enabled := $commentSystems -}}
+      {{- range $name := $commentSystemOrder -}}
+        {{- $enabled := index $commentSystems $name -}}
         {{- if $enabled -}}
         <div class="selector-item" data-selector="{{ $name }}">
           <span>{{ $name }}</span>
@@ -46,7 +51,8 @@
 </div>
 
 <div class="comment-content">
-  {{- range $name, $enabled := $commentSystems -}}
+  {{- range $name := $commentSystemOrder -}}
+    {{- $enabled := index $commentSystems $name -}}
     {{- if and $enabled (ne $name "disqus") -}}
     <div class="comment {{ $name }}-comment" data-aos="{{ $params.animation.options.article.whole }}"
      {{ if eq $name "gitalk" }}id="gitalk-comment"{{ end }}>

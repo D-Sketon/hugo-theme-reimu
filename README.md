@@ -56,6 +56,7 @@ A Hakurei Reimu style Hugo theme. Migrated from [hexo-theme-reimu](https://githu
   - Giscus
   - Disqus
   - Utterances
+  - Beaudar
 
 ### 统计与分析
 
@@ -578,6 +579,23 @@ utterances:
   repo: owner/repo # 这里需要修改为 你的 GitHub 用户名/刚刚创建的，用户保存博客评论的 GitHub 仓库名
   issue_term: title
   theme: github-light # 你可以使用 auto 来自动适配深色和浅色主题
+```
+
+若基于 [beaudar](https://beaudar.lipk.org/)  
+请在内层 `_config.yml` 中将 `beaudar.enable` 改为 `true`，并填入自己的 `repo` 和 `branch`。之后需要在仓库中创建一个[域白名单](https://github.com/beaudar/beaudar/blob/master/beaudar.json) (Hexo 主题请把该文件直接放在 `source` 目录下)，并[授权安装](https://github.com/apps/beaudar)即可
+```yml
+beaudar:
+  enable: true
+  repo: owner/repo # 这里需要修改为 你的 GitHub 用户名/刚刚创建的，用户保存博客评论的 GitHub 仓库名
+  branch: main # 这里修改为你的仓库分支名
+  issue_term: title # 博客文章 与 Issue 的映射
+  issue_number:
+  theme: auto # 你可以使用 auto 来自动适配深色和浅色主题
+  label:
+  input_position: top # top/bottom 评论框的位置，默认顶部 top
+  comment_order: desc # asc/desc 评论排序，默认降序 desc (新评论在顶部)
+  keep_theme: # true/false 主题设置保存到页面的 sessionStorage，默认 true
+  loading: # true/false 点击加载图标可跳转至官方页面
 ```
 
 </details>

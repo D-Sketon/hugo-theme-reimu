@@ -10,6 +10,7 @@
   "giscus" (cond $params.giscus.enable true false)
   "disqus" (cond (and $params.disqus.enable $params.disqus.shortname) true false)
   "utterances" (cond (and $params.utterances.enable $params.utterances.repo) true false)
+  "beaudar" (cond (and $params.beaudar.enable $params.beaudar.repo) true false)
 -}}
 
 {{- $activeSystems := slice -}}
@@ -28,7 +29,7 @@
     script.crossOrigin = 'anonymous';
     return script;
   };
-  var commentConfigKeys = ['valine', 'waline', 'twikoo', 'gitalk', 'giscus', 'disqus', 'utterances'];
+  var commentConfigKeys = ['valine', 'waline', 'twikoo', 'gitalk', 'giscus', 'utterances', 'beaudar', 'disqus'];
   var commentConfig = {
     {{- if $commentSystems.valine -}}
     valine: {
@@ -416,6 +417,49 @@
           document.body.addEventListener('reimu:theme-set', themeHandler);
         }
       }
+    },
+    {{- end -}}
+    {{- if $commentSystems.beaudar -}}
+    beaudar: {
+      enable: {{ if and $params.beaudar.enable $params.beaudar.repo }}true{{ else }}false{{ end }},
+      load: () => {
+        const container = document.querySelector('.beaudar-comment');
+        if (!container) return;
+        container.style.display = 'block';
+
+        let theme = '{{ $params.beaudar.theme | default "github-light" }}';
+        const parsedTheme = theme === 'auto' ? (document.documentElement.getAttribute('data-theme') === 'dark' ? 'github-dark' : 'github-light') : theme;
+
+        const script = document.createElement('script');
+        script.src = 'https://beaudar.lipk.org/client.js';
+        script.setAttribute('repo', '{{ $params.beaudar.repo }}');
+        script.setAttribute('branch', '{{ $params.beaudar.branch | default "main" }}');
+        script.setAttribute('theme', parsedTheme);
+        script.setAttribute('crossorigin', 'anonymous');
+        script.async = true;
+
+        {{- with $params.beaudar.issue_term }}script.setAttribute('issue-term', '{{ . }}');{{- end }}
+        {{- with $params.beaudar.issue_number }}script.setAttribute('issue-number', '{{ . }}');{{- end }}
+        {{- with $params.beaudar.label }}script.setAttribute('label', '{{ . }}');{{- end }}
+        {{- with $params.beaudar.input_position }}script.setAttribute('input-position', '{{ . }}');{{- end }}
+        {{- with $params.beaudar.comment_order }}script.setAttribute('comment-order', '{{ . }}');{{- end }}
+        {{- with $params.beaudar.keep_theme }}script.setAttribute('keep-theme', '{{ . }}');{{- end }}
+        {{- with $params.beaudar.loading }}script.setAttribute('loading', '{{ . }}');{{- end }}
+
+        container.innerHTML = '';
+        container.appendChild(script);
+        if (theme === 'auto') {
+          const themeHandler = (e) => {
+            const iframe = container.querySelector('iframe.beaudar-frame');
+            if (!iframe || !iframe.contentWindow) {
+              document.body.removeEventListener('reimu:theme-set', themeHandler);
+              return;
+            }
+            iframe.contentWindow.postMessage({ type: 'set-theme', theme: e.detail.isDark ? 'github-dark' : 'github-light' }, 'https://beaudar.lipk.org');
+          };
+          document.body.addEventListener('reimu:theme-set', themeHandler);
+        }
+      }
     }
     {{- end -}}
   };
@@ -455,7 +499,10 @@
       waline: false,
       twikoo: false,
       gitalk: false,
-      giscus: false
+      giscus: false,
+      disqus: false,
+      utterances: false,
+      beaudar: false,
     };
 
     // 隐藏所有评论容器
