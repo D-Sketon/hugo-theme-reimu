@@ -5,7 +5,8 @@
 {{- $code_block := .Site.Params.code_block -}}
 {{- $i18n_languages := .Site.Languages -}}
 {{- $base_url := .Site.BaseURL -}}
-{{- $siteConfig := dict "icon_font" $icon_font "clipboard" $clipboard "outdate" $outdate "anchor_icon" $anchor_icon "code_block" $code_block "base" $base_url -}}
+{{- $anchor := .Site.Params.anchor -}}
+{{- $siteConfig := dict "icon_font" $icon_font "clipboard" $clipboard "outdate" $outdate "anchor_icon" $anchor_icon "code_block" $code_block "base" $base_url "anchor" $anchor -}}
 {{- if hugo.IsMultilingual -}}
 {{- $siteConfig = merge $siteConfig (dict "i18n_languages" $i18n_languages) -}}
 {{- end -}}

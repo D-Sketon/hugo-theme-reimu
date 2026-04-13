@@ -118,6 +118,46 @@
     margin-bottom: 40px;
   }
 
+  // Paragraph anchor — matches header-anchor style
+  p:has(.paragraph-anchor) {
+    position: relative;
+  }
+
+  .paragraph-anchor {
+    opacity: 0;
+    // 隐藏浏览器或全局样式为 <a> 添加的 ::after 伪元素
+    &::after {
+      display: none;
+    }
+    @if $icon_font {
+      font-family: $font-icon;
+    } @else {
+      font-family: var(--font-icon);
+    }
+    font-size: 0.7em;
+    vertical-align: middle;
+    text-decoration: none !important;
+    margin-left: 4px;
+    transition: 0.3s;
+
+    &:hover {
+      opacity: 0.8;
+      text-decoration: none !important;
+    }
+
+    &::before {
+      @if $icon_font {
+        content: "\e62b";
+      } @else {
+        content: "\f292";
+      }
+    }
+  }
+
+  p:hover > .paragraph-anchor {
+    opacity: 0.5;
+  }
+
   a {
     color: var(--color-link);
     text-decoration: none;
