@@ -119,8 +119,21 @@
   }
 
   // Paragraph anchor — matches header-anchor style
-  p:has(.paragraph-anchor) {
-    position: relative;
+  // 修复 #5：position: relative 覆盖所有可能包含锚点图标的块级元素，
+  // 而不是只在 p:has(...) 时才设置；hover 效果也同理。
+  p,
+  li,
+  dd,
+  dt,
+  td,
+  th,
+  blockquote,
+  details,
+  figure,
+  figcaption {
+    &:has(.paragraph-anchor) {
+      position: relative;
+    }
   }
 
   .paragraph-anchor {
@@ -154,7 +167,17 @@
     }
   }
 
-  p:hover > .paragraph-anchor {
+  // 修复 #5：hover 效果覆盖所有包含锚点图标的块级元素，而不仅限于 p
+  p:hover > .paragraph-anchor,
+  li:hover > .paragraph-anchor,
+  dd:hover > .paragraph-anchor,
+  dt:hover > .paragraph-anchor,
+  td:hover > .paragraph-anchor,
+  th:hover > .paragraph-anchor,
+  blockquote:hover > .paragraph-anchor,
+  details:hover > .paragraph-anchor,
+  figure:hover > .paragraph-anchor,
+  figcaption:hover > .paragraph-anchor {
     opacity: 0.5;
   }
 

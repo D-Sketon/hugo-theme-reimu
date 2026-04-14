@@ -26,16 +26,19 @@
   // anchor.explicit.marker  - 锚点占位符前缀，默认 "{#anchor-"
   //                         完整模式 = marker + id + "}"
   //                         例如 marker = "{#anchor-" → 匹配 "{#anchor-ref1}"
+  // anchor.explicit.prefix  - 自动锚点 id 前缀，默认 "anchor-"
+  //                         仅在显式锚点时使用，auto 锚点不受此影响
   // anchor.auto.enable      - 是否启用自动锚点，默认 false
   // anchor.auto.length      - 自动锚点 id 最大长度，默认 60
   const anchorConfig = (window as unknown as { siteConfig: { anchor?: {
-    explicit?: { enable?: boolean; marker?: string };
+    explicit?: { enable?: boolean; marker?: string; prefix?: string };
     auto?: { enable?: boolean; length?: number };
   }}}).siteConfig?.anchor ?? {};
   const enableExplicit = anchorConfig.explicit?.enable ?? false;
   const enableAuto = anchorConfig.auto?.enable ?? false;
   const autoLength = Math.max(1, Math.min(anchorConfig.auto?.length ?? 60, 200));
   const marker = anchorConfig.explicit?.marker ?? "{#anchor-";
+  const explicitPrefix = anchorConfig.explicit?.prefix ?? "anchor-";
 
   // 构造完整的锚点正则表达式
   // 匹配 {marker-xxx}，如 marker = "{#anchor-" → 匹配 "{#anchor-ref1}"
@@ -45,7 +48,19 @@
     "g"
   );
 
-  const articleEntry = _$(".article-entry");
+  // ---------------------------------------------------------------
+  // 定位文章正文容器（修复 #1：防止锚点注入到摘要/blockquote 等非正文容器）
+  //
+  // 优先查找带 itemprop="articleBody" 的 .e-content.article-entry
+  //（summary/blockquote 模式中正文有此属性，摘要没有）。
+  // 若未命中则降级为包含 .Content 的 .article-entry。
+  // ---------------------------------------------------------------
+  const articleEntry = (
+    document.querySelector(".e-content.article-entry[itemprop=\"articleBody\"]") ??
+    document.querySelector(".e-content .article-entry:has(.Content)") ??
+    document.querySelector(".article-entry:has(.Content)") ??
+    document.querySelector(".article-entry")
+  );
   if (!articleEntry) return;
 
   // 支持显式锚点语法的块级元素类型列表
@@ -72,39 +87,76 @@
   if (enableExplicit) {
     blockSelectors.forEach((selector) => {
       articleEntry.querySelectorAll<HTMLElement>(selector).forEach((el) => {
-        // 限定在 .article-entry 内，避免误匹配页眉、页脚、导航中的元素
+        // 限定在 articleEntry 内，避免误匹配页眉、页脚、导航中的元素
         if (!el.closest(".article-entry") || el.closest("header, footer, nav")) return;
 
         const html = el.innerHTML;
-        let match: RegExpExecArray | null;
-        // 重置正则状态，避免 lastIndex 残留导致匹配遗漏
+        anchorPattern.lastIndex = 0;
+
+        // 先快速检测：若无匹配则直接跳过，完全避免 innerHTML round-trip
+        if (!anchorPattern.test(html)) return;
+        // 重置 lastIndex（test 会推进到末尾）
         anchorPattern.lastIndex = 0;
 
         // 遍历所有匹配的 {marker}xxx}（一个元素中可能出现多个）
+        let match: RegExpExecArray | null;
+        let hasExplicitAnchor = false;
         while ((match = anchorPattern.exec(html)) !== null) {
           const anchorId = match[1].trim();
           if (!anchorId) continue; // 忽略空 id
 
-          // 若元素尚未有 id，则注入 id="anchor-{xxx}"
-          // 若已有 id（如手动指定或前面已注入），保留原 id 不覆盖
-          if (!el.id) {
-            el.id = `anchor-${anchorId}`;
+          const targetId = `${explicitPrefix}${anchorId}`;
+
+          // 若元素已有 id，进行冲突检测
+          if (el.id && el.id !== targetId) {
+            console.warn(
+              `[anchor] id="${el.id}" conflicts with explicit marker "${match[0]}" ` +
+              `→ icon will link to "${el.id}", not "${targetId}"`,
+            );
+            continue; // 以原有 id 为准，不覆盖
           }
 
-          // 追加锚点图标，仅在尚无锚点图标时添加
-          // （同一元素内多个 {marker}xxx} 只加一个图标）
-          if (!el.querySelector(".paragraph-anchor")) {
-            const anchor = document.createElement("a");
-            anchor.className = "paragraph-anchor";
-            anchor.href = `#${el.id}`;
-            anchor.setAttribute("aria-label", "anchor");
-            el.appendChild(anchor);
+          // 注入 id（已有 id === targetId 时跳过）
+          if (!el.id) {
+            el.id = targetId;
           }
+
+          hasExplicitAnchor = true;
         }
 
-        // 将所有 {marker}xxx} 文本占位符从 DOM 中移除，
-        // 不影响元素内其他内容的渲染（如链接、图片等）
-        el.innerHTML = el.innerHTML.replace(anchorPattern, "");
+        // 仅在存在显式锚点时才添加图标（同一元素多个 marker 只加一个）
+        if (hasExplicitAnchor && !el.querySelector(".paragraph-anchor")) {
+          const anchor = document.createElement("a");
+          anchor.className = "paragraph-anchor";
+          anchor.href = `#${el.id}`;
+          anchor.setAttribute("aria-label", "anchor");
+          el.appendChild(anchor);
+        }
+
+        // ---------------------------------------------------------------
+        // 修复 #2：使用 TextNode 遍历替代无条件 innerHTML replace，
+        // 避免 HTML 重解析导致子节点状态（details open、事件监听器）丢失。
+        // ---------------------------------------------------------------
+        const walker = document.createTreeWalker(
+          el,
+          NodeFilter.SHOW_TEXT,
+          null,
+        );
+        const textNodes: Text[] = [];
+        let textNode: Text | null;
+        while ((textNode = walker.nextNode() as Text | null)) {
+          textNodes.push(textNode);
+        }
+        anchorPattern.lastIndex = 0;
+        for (const node of textNodes) {
+          const original = node.textContent ?? "";
+          const replaced = original.replace(anchorPattern, "");
+          if (replaced !== original) {
+            node.textContent = replaced;
+            // 只在第一个匹配节点处重置 lastIndex，后续节点重新遍历
+            anchorPattern.lastIndex = 0;
+          }
+        }
       });
     });
   }
