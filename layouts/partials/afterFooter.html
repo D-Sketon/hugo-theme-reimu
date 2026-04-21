@@ -406,7 +406,8 @@
     <script>
     var setupAPlayer = () => {
       if (!{{ $params.player.disable_on_mobile | default false }} || !window.matchMedia('(max-width: 768px)').matches) {
-        if (window.matchMedia('(max-width: 959px)').matches) {
+        const isMobile = window.matchMedia('(max-width: 959px)').matches;
+        if (isMobile) {
         const aplayer = _$('#aplayer');
           if (aplayer) {
             const aside = aplayer.parentNode?.parentNode;
