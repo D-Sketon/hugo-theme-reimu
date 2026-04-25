@@ -18,7 +18,7 @@
   {{- else -}}
     {{- $paginator = .Paginate .Pages -}}
   {{- end -}}
-  
+
   {{- $sortedPages := $paginator.Pages.GroupByDate .Site.Params.yearFormat "desc" -}}
   {{- if eq $sort_config "weight" -}}
     {{- $sortedPages = $paginator.Pages.ByWeight -}}
@@ -34,7 +34,7 @@
     data-aos="{{ .Site.Params.animation.options.archive.whole }}"
   >
     {{- if .Site.Params.only_show_capsule_in_index -}}
-      {{- if eq .Paginator.PageNumber 1 -}}
+      {{- if eq .Kind "taxonomy" -}}
         {{- partialCached "archives.html" . -}}
       {{- end -}}
     {{- else -}}
