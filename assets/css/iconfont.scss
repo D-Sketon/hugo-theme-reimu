@@ -195,6 +195,12 @@ $icon-url: "//at.alicdn.com/t/c/font_#{$icon_font}.woff2";
   }
 }
 
+@if index($social-keys, "bluesky") or $triangle-badge-icon == "bluesky" {
+  .icon-bluesky:before {
+    content: "\e64b";
+  }
+}
+
 @if index($social-keys, "instagram") or $triangle-badge-icon == "instagram" {
   .icon-instagram:before {
     content: "\e615";

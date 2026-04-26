@@ -203,6 +203,12 @@
   }
 }
 
+@if index($social-keys, "bluesky") or $triangle-badge-icon == "bluesky" {
+  .icon-bluesky:before {
+    content: "\e671";
+  }
+}
+
 @if index($social-keys, "instagram") or $triangle-badge-icon == "instagram" {
   .icon-instagram:before {
     content: "\f16d";

@@ -236,6 +236,12 @@
   }
 }
 
+@if index($social-keys, "bluesky") {
+  .icon-bluesky {
+    color: #1185fe;
+  }
+}
+
 @if index($social-keys, "instagram") {
   .icon-instagram {
     color: #e1306c;
