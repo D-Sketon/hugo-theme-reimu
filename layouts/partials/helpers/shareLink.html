@@ -14,6 +14,7 @@
   "weibo" (printf "https://service.weibo.com/share/share.php?url=%s&appkey=&title=%s&pic=&ralateUid=" $url $title)
   "facebook" (printf "https://www.facebook.com/sharer/sharer.php?u=%s" $url)
   "twitter" (printf "https://twitter.com/intent/tweet?url=%s&text=%s&via=%s" $url $title $source)
+  "bluesky" (printf "https://bsky.app/intent/compose?text=%s" (printf "%s %s" $title $url))
   "linkedin" (printf "https://www.linkedin.com/shareArticle?url=%s&title=%s&summary=%s&mini=true&ro=true" $url $title $desc)
   "reddit" (printf "https://www.reddit.com/submit?url=%s&title=%s" $url $title)
   "qq" (printf "https://connect.qq.com/widget/shareqq/index.html?url=%s&title=%s&desc=%s&source=%s" $url $title $desc $source)

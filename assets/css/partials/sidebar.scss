@@ -373,17 +373,15 @@
   }
 }
 
-.sidebar-social {
-  @if index($social-keys, "weixin") {
-    .icon-weixin {
-      color: #09b83e;
-    }
+@if index($social-keys, "weixin") {
+  .icon-weixin {
+    color: #09b83e;
   }
+}
 
-  @if index($social-keys, "qq") {
-    .icon-qq {
-      color: #12b7f5;
-    }
+@if index($social-keys, "qq") {
+  .icon-qq {
+    color: #12b7f5;
   }
 }
 

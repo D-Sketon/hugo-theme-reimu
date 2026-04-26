@@ -203,7 +203,11 @@
   }
 }
 
-@if index($social-keys, "bluesky") or $triangle-badge-icon == "bluesky" {
+@if index($social-keys, "bluesky") or
+  index($share-keys, "bluesky") or
+  $triangle-badge-icon ==
+  "bluesky"
+{
   .icon-bluesky:before {
     content: "\e671";
   }
