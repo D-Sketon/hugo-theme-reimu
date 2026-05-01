@@ -1013,7 +1013,7 @@ player:
 
 #### 分享链接/卡片（v0.5.0+）
 
-默认关闭，目前支持 `facebook`、`twitter`、`bluesky`、`linkedin`、`reddit`、`weibo`、`qq`、`weixin`。
+默认关闭，目前支持 `facebook`、`twitter`、`bluesky`、`linkedin`、`reddit`、`weibo`、`qq`、`weixin`、`bluesky`。
 
 ```yml
 share:
@@ -1025,6 +1025,7 @@ share:
   # - weibo
   # - qq
   # - weixin
+  # - bluesky
 ```
 
 `weixin` 状态下会生成带有二维码的分享卡片，可保存到本地后分享到微信朋友圈（注意：当文章封面存在跨域问题时，截图工具无法正确生成含图片的卡片）

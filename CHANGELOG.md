@@ -1,3 +1,61 @@
+## 0.15.5
+
+**2026-04-26**
+
+### 修复
+
+- 修复 `only_show_capsule_in_index` 开启时 taxonomy/term 页面仍显示胶囊列表的问题
+- 修复播放器初始化流程中 `isMobile` 变量缺失导致的异常
+
+### 特性
+
+- 新增 [Beaudar](https://beaudar.lipk.org/) 评论系统支持
+  ```yaml
+  beaudar:
+    enable: true
+    repo: owner/repo
+    branch: main
+    issue_term: pathname
+    issue_number:
+    theme: github-light
+  ```
+- 新增 Bluesky 社交图标与分享链接支持
+  ```yaml
+  social:
+    bluesky: https://bsky.app/profile/yourname
+
+  share:
+    - bluesky
+  ```
+
+---
+
+### Fixes
+
+- Fix capsule lists still showing on taxonomy/term pages when `only_show_capsule_in_index` is enabled
+- Fix missing `isMobile` variable in player initialization flow
+
+### Features
+
+- Added support for the [Beaudar](https://beaudar.lipk.org/) comment system
+  ```yaml
+  beaudar:
+    enable: true
+    repo: owner/repo
+    branch: main
+    issue_term: pathname
+    issue_number:
+    theme: github-light
+  ```
+- Added Bluesky social icon and share link support
+  ```yaml
+  social:
+    bluesky: https://bsky.app/profile/yourname
+
+  share:
+    - bluesky
+  ```
+
 ## 0.15.4
 
 **2026-03-30**
