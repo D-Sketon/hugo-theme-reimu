@@ -1001,7 +1001,7 @@ player:
 
 #### Share Link / Card (v0.5.0+)
 
-Disabled by default, currently supports `facebook`, `twitter`, `bluesky`, `linkedin`, `reddit`, `weibo`, `qq`, `weixin`, `bluesky`.
+Disabled by default, currently supports `facebook`, `twitter`, `bluesky`, `linkedin`, `reddit`, `weibo`, `qq`, `weixin`.
 
 ```yaml
 share:
@@ -1013,7 +1013,6 @@ share:
   # - weibo
   # - qq
   # - weixin
-  # - bluesky
 ```
 
 For `weixin`, it generates a share card with QR code that can be saved locally and shared to WeChat Moments (Note: if the article cover has cross-origin issues, the screenshot tool may fail to generate cards with images correctly.)
