@@ -118,6 +118,69 @@
     margin-bottom: 40px;
   }
 
+  // Paragraph anchor — matches header-anchor style
+  // 修复 #5：position: relative 覆盖所有可能包含锚点图标的块级元素，
+  // 而不是只在 p:has(...) 时才设置；hover 效果也同理。
+  p,
+  li,
+  dd,
+  dt,
+  td,
+  th,
+  blockquote,
+  details,
+  figure,
+  figcaption {
+    &:has(.paragraph-anchor) {
+      position: relative;
+    }
+  }
+
+  .paragraph-anchor {
+    opacity: 0;
+    // 隐藏浏览器或全局样式为 <a> 添加的 ::after 伪元素
+    &::after {
+      display: none;
+    }
+    @if $icon_font {
+      font-family: $font-icon;
+    } @else {
+      font-family: var(--font-icon);
+    }
+    font-size: 0.7em;
+    vertical-align: middle;
+    text-decoration: none !important;
+    margin-left: 4px;
+    transition: 0.3s;
+
+    &:hover {
+      opacity: 0.8;
+      text-decoration: none !important;
+    }
+
+    &::before {
+      @if $icon_font {
+        content: "\e62b";
+      } @else {
+        content: "\f292";
+      }
+    }
+  }
+
+  // 修复 #5：hover 效果覆盖所有包含锚点图标的块级元素，而不仅限于 p
+  p:hover > .paragraph-anchor,
+  li:hover > .paragraph-anchor,
+  dd:hover > .paragraph-anchor,
+  dt:hover > .paragraph-anchor,
+  td:hover > .paragraph-anchor,
+  th:hover > .paragraph-anchor,
+  blockquote:hover > .paragraph-anchor,
+  details:hover > .paragraph-anchor,
+  figure:hover > .paragraph-anchor,
+  figcaption:hover > .paragraph-anchor {
+    opacity: 0.5;
+  }
+
   a {
     color: var(--color-link);
     text-decoration: none;
