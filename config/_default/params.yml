@@ -90,25 +90,6 @@ open_graph:
 # Content
 excerpt_link: Read More
 
-# Paragraph anchor
-# Injects linkable anchor icons into paragraphs and list items in article body
-# Usage: write {#anchor-xxx} in Markdown; the matching element gets id="anchor-xxx" and an anchor icon
-anchor:
-  # Explicit anchors
-  explicit:
-    # Whether to enable explicit anchors: parse {#anchor-xxx} syntax in Markdown (default false)
-    enable: false
-    # Anchor placeholder: the pattern used to match explicit anchors (no need to change unless it conflicts with article content)
-    marker: "{#anchor-"
-    # Anchor id prefix: generated id = prefix + the xxx part inside the marker (default "anchor-")
-    prefix: "anchor-"
-  # Auto anchors
-  auto:
-    # Whether to enable auto anchors: automatically generate ids for direct child paragraphs, derived from text content (default false)
-    enable: false
-    # Maximum length of auto-generated anchor ids; longer ids will be truncated (only effective when auto.enable = true)
-    length: 60
-
 # Footer copyright
 # Inject code snippet right in the footer copyright
 # Make sure your code snippet is safeHTML
@@ -354,6 +335,25 @@ math:
           loader: { load: ["input/asciimath", "[tex]/noerrors"] },
         },
       ]
+
+# Paragraph anchor
+# Injects linkable anchor icons into paragraphs and list items in article body
+# Usage: write {#anchor-xxx} in Markdown; the matching element gets id="anchor-xxx" and an anchor icon
+anchor:
+  # Explicit anchors
+  explicit:
+    # Whether to enable explicit anchors: parse {#anchor-xxx} syntax in Markdown (default false)
+    enable: false
+    # Anchor placeholder: the pattern used to match explicit anchors (no need to change unless it conflicts with article content)
+    marker: "{#anchor-"
+    # Anchor id prefix: generated id = prefix + the xxx part inside the marker (default "anchor-")
+    prefix: "anchor-"
+  # Auto anchors
+  auto:
+    # Whether to enable auto anchors: automatically generate ids for direct child paragraphs, derived from text content (default false)
+    enable: false
+    # Maximum length of auto-generated anchor ids; longer ids will be truncated (only effective when auto.enable = true)
+    length: 60
 
 ########################################
 # Comment system

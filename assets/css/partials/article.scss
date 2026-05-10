@@ -118,24 +118,6 @@
     margin-bottom: 40px;
   }
 
-  // Paragraph anchor — matches header-anchor style
-  // 修复 #5：position: relative 覆盖所有可能包含锚点图标的块级元素，
-  // 而不是只在 p:has(...) 时才设置；hover 效果也同理。
-  p,
-  li,
-  dd,
-  dt,
-  td,
-  th,
-  blockquote,
-  details,
-  figure,
-  figcaption {
-    &:has(.paragraph-anchor) {
-      position: relative;
-    }
-  }
-
   .paragraph-anchor {
     opacity: 0;
     text-decoration: none !important;
