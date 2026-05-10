@@ -217,7 +217,9 @@
     {{- end -}}
     {{- if not .IsHome -}}
       {{- partial "helpers/ts.html" (dict "source" "js/insert_highlight.ts" "pjax" true "ctx" .) -}}
-      {{- partial "helpers/ts.html" (dict "source" "js/anchor.ts" "pjax" true "ctx" .) -}}
+      {{- if or $params.anchor.explicit.enable $params.anchor.auto.enable -}}
+        {{- partial "helpers/ts.html" (dict "source" "js/anchor.ts" "pjax" true "ctx" .) -}}
+      {{- end -}}
       {{- partial "helpers/ts.html" (dict "source" "js/tabs.ts" "pjax" true "ctx" . "defer" true) -}}
       {{- $photoswipe_lightbox := index (partial "helpers/vendorCdn.html" (dict "item" $js.photoswipe_lightbox "ctx" $site)) 0 -}}
       {{- $photoswipe_lightbox_integrity := index (partial "helpers/vendorCdnIntegrity.html" (dict "item" $js.photoswipe_lightbox)) 0 -}}

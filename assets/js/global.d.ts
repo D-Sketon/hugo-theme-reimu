@@ -1,4 +1,4 @@
-export {};
+export { };
 
 declare global {
   function _$<K extends keyof HTMLElementTagNameMap>(
@@ -146,6 +146,17 @@ declare global {
       LanguageName: string;
     }[];
     base?: string;
+    anchor?: {
+      explicit?: {
+        enable?: boolean;
+        marker?: string;
+        prefix?: string;
+      };
+      auto?: {
+        enable?: boolean;
+        length?: number;
+      };
+    };
   };
 
   var REIMU_POST: {

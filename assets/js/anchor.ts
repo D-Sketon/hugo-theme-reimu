@@ -15,9 +15,6 @@
  *    格式为将文本转为小写、中文/非字母数字字符替换为连字符、
  *    截断至 anchor.auto_length 指定的长度（默认 60）。
  *    例如：「Hello World！你好」 → id="hello-world"
- *
- * 3. URL Hash 滚动：页面加载时检测 URL 中的 hash，
- *    若存在对应 id 的元素则平滑滚动到视口中央。
  */
 
 (() => {
@@ -30,10 +27,7 @@
   //                         仅在显式锚点时使用，auto 锚点不受此影响
   // anchor.auto.enable      - 是否启用自动锚点，默认 false
   // anchor.auto.length      - 自动锚点 id 最大长度，默认 60
-  const anchorConfig = (window as unknown as { siteConfig: { anchor?: {
-    explicit?: { enable?: boolean; marker?: string; prefix?: string };
-    auto?: { enable?: boolean; length?: number };
-  }}}).siteConfig?.anchor ?? {};
+  const anchorConfig = window.siteConfig?.anchor ?? {};
   const enableExplicit = anchorConfig.explicit?.enable ?? false;
   const enableAuto = anchorConfig.auto?.enable ?? false;
   const autoLength = Math.max(1, Math.min(anchorConfig.auto?.length ?? 60, 200));
@@ -48,19 +42,58 @@
     "g"
   );
 
+  const collectTextNodes = (el: HTMLElement) => {
+    const walker = document.createTreeWalker(
+      el,
+      NodeFilter.SHOW_TEXT,
+      null,
+    );
+    const textNodes: Text[] = [];
+    let textNode: Text | null;
+    while ((textNode = walker.nextNode() as Text | null)) {
+      textNodes.push(textNode);
+    }
+    return textNodes;
+  };
+
+  const extractExplicitAnchorIds = (textNodes: Text[]) => {
+    const anchorIds: string[] = [];
+
+    for (const node of textNodes) {
+      const text = node.textContent ?? "";
+      anchorPattern.lastIndex = 0;
+
+      let match: RegExpExecArray | null;
+      while ((match = anchorPattern.exec(text)) !== null) {
+        const anchorId = match[1].trim();
+        if (anchorId) {
+          anchorIds.push(anchorId);
+        }
+      }
+    }
+
+    anchorPattern.lastIndex = 0;
+    return anchorIds;
+  };
+
+  const stripExplicitAnchorMarkers = (textNodes: Text[]) => {
+    for (const node of textNodes) {
+      const original = node.textContent ?? "";
+      const replaced = original.replace(anchorPattern, "");
+      if (replaced !== original) {
+        node.textContent = replaced;
+      }
+      anchorPattern.lastIndex = 0;
+    }
+  };
+
   // ---------------------------------------------------------------
   // 定位文章正文容器（修复 #1：防止锚点注入到摘要/blockquote 等非正文容器）
   //
   // 优先查找带 itemprop="articleBody" 的 .e-content.article-entry
   //（summary/blockquote 模式中正文有此属性，摘要没有）。
-  // 若未命中则降级为包含 .Content 的 .article-entry。
   // ---------------------------------------------------------------
-  const articleEntry = (
-    document.querySelector(".e-content.article-entry[itemprop=\"articleBody\"]") ??
-    document.querySelector(".e-content .article-entry:has(.Content)") ??
-    document.querySelector(".article-entry:has(.Content)") ??
-    document.querySelector(".article-entry")
-  );
+  const articleEntry = document.querySelector('.e-content.article-entry[itemprop="articleBody"]');
   if (!articleEntry) return;
 
   // 支持显式锚点语法的块级元素类型列表
@@ -90,27 +123,21 @@
         // 限定在 articleEntry 内，避免误匹配页眉、页脚、导航中的元素
         if (!el.closest(".article-entry") || el.closest("header, footer, nav")) return;
 
-        const html = el.innerHTML;
-        anchorPattern.lastIndex = 0;
+        const textNodes = collectTextNodes(el);
+        const explicitAnchorIds = extractExplicitAnchorIds(textNodes);
 
-        // 先快速检测：若无匹配则直接跳过，完全避免 innerHTML round-trip
-        if (!anchorPattern.test(html)) return;
-        // 重置 lastIndex（test 会推进到末尾）
-        anchorPattern.lastIndex = 0;
+        if (!explicitAnchorIds.length) return;
 
-        // 遍历所有匹配的 {marker}xxx}（一个元素中可能出现多个）
-        let match: RegExpExecArray | null;
         let hasExplicitAnchor = false;
-        while ((match = anchorPattern.exec(html)) !== null) {
-          const anchorId = match[1].trim();
-          if (!anchorId) continue; // 忽略空 id
 
+        for (const anchorId of explicitAnchorIds) {
+          hasExplicitAnchor = true;
           const targetId = `${explicitPrefix}${anchorId}`;
 
           // 若元素已有 id，进行冲突检测
           if (el.id && el.id !== targetId) {
             console.warn(
-              `[anchor] id="${el.id}" conflicts with explicit marker "${match[0]}" ` +
+              `[anchor] id="${el.id}" conflicts with explicit marker "${marker}${anchorId}}" ` +
               `→ icon will link to "${el.id}", not "${targetId}"`,
             );
             continue; // 以原有 id 为准，不覆盖
@@ -120,8 +147,6 @@
           if (!el.id) {
             el.id = targetId;
           }
-
-          hasExplicitAnchor = true;
         }
 
         // 仅在存在显式锚点时才添加图标（同一元素多个 marker 只加一个）
@@ -137,26 +162,7 @@
         // 修复 #2：使用 TextNode 遍历替代无条件 innerHTML replace，
         // 避免 HTML 重解析导致子节点状态（details open、事件监听器）丢失。
         // ---------------------------------------------------------------
-        const walker = document.createTreeWalker(
-          el,
-          NodeFilter.SHOW_TEXT,
-          null,
-        );
-        const textNodes: Text[] = [];
-        let textNode: Text | null;
-        while ((textNode = walker.nextNode() as Text | null)) {
-          textNodes.push(textNode);
-        }
-        anchorPattern.lastIndex = 0;
-        for (const node of textNodes) {
-          const original = node.textContent ?? "";
-          const replaced = original.replace(anchorPattern, "");
-          if (replaced !== original) {
-            node.textContent = replaced;
-            // 只在第一个匹配节点处重置 lastIndex，后续节点重新遍历
-            anchorPattern.lastIndex = 0;
-          }
-        }
+        stripExplicitAnchorMarkers(textNodes);
       });
     });
   }
@@ -179,9 +185,8 @@
       if (p.id) return;
 
       // 若段落文本本身包含 {marker}xxx}，说明这是纯标记段落，跳过自动生成
-      const html = p.innerHTML;
-      anchorPattern.lastIndex = 0;
-      if (anchorPattern.test(html)) return;
+      const textNodes = collectTextNodes(p);
+      if (extractExplicitAnchorIds(textNodes).length) return;
 
       const text = p.textContent?.trim() ?? "";
       if (!text) return; // 空段落不生成锚点
@@ -191,14 +196,24 @@
       // 2. 所有非字母数字、中文字符替换为连字符 -
       // 3. 去除首尾连字符
       // 4. 截断至 autoLength 字符（防止超长 id）
+      // 5. 确保 id 唯一（若重复，添加数字后缀）
       // 例如：「Hello World！你好」 → "hello-world"
-      const id = text
+      let id = text
         .toLowerCase()
-        .replace(/[^a-z0-9\u4e00-\u9fa5]+/g, "-")
-        .replace(/^-+|-+$/g, "")
-        .slice(0, autoLength);
+        .replace(/[^\p{L}\p{N}]+/gu, "-")
+        .slice(0, autoLength)
+        .replace(/^-+|-+$/g, "");
 
       if (!id) return;
+
+      // 去重：若 id 已存在，添加数字后缀直到唯一
+      let uniqueId = id;
+      let counter = 1;
+      while (document.getElementById(uniqueId)) {
+        uniqueId = `${id}-${counter}`;
+        counter++;
+      }
+      id = uniqueId;
 
       p.id = id;
 
@@ -209,23 +224,5 @@
       anchor.setAttribute("aria-label", "anchor");
       p.appendChild(anchor);
     });
-  }
-
-  // ---------------------------------------------------------------
-  // 第 3 部分：页面加载时平滑滚动到 URL hash 对应元素
-  //
-  // 读取页面加载时的 URL hash（如 #anchor-ref1），
-  // 若存在对应 id 的元素则使用 smooth 行为滚动至视口中央。
-  // decodeURIComponent 处理含中文或特殊字符的 hash。
-  // ---------------------------------------------------------------
-  const hash = window.location.hash;
-  if (hash) {
-    const target = document.getElementById(decodeURIComponent(hash.slice(1)));
-    if (target) {
-      // requestAnimationFrame 确保 DOM 完全就绪后再执行滚动
-      requestAnimationFrame(() => {
-        target.scrollIntoView({ behavior: "smooth", block: "center" });
-      });
-    }
   }
 })();
