@@ -91,22 +91,22 @@ open_graph:
 excerpt_link: Read More
 
 # Paragraph anchor
-# 为文章正文中的段落和列表项注入可跳转的锚点链接
-# 使用方式：在 Markdown 中写 {#anchor-xxx}，对应元素会获得 id="anchor-xxx" 并显示锚点图标
+# Injects linkable anchor icons into paragraphs and list items in article body
+# Usage: write {#anchor-xxx} in Markdown; the matching element gets id="anchor-xxx" and an anchor icon
 anchor:
-  # 显式锚点
-  explicit: 
-    # 是否启用显式锚点：解析 Markdown 中 {#anchor-xxx} 语法（默认 false）
+  # Explicit anchors
+  explicit:
+    # Whether to enable explicit anchors: parse {#anchor-xxx} syntax in Markdown (default false)
     enable: false
-    # 锚点占位符：显式锚点匹配的模式（无需修改，除非与正文内容冲突）
+    # Anchor placeholder: the pattern used to match explicit anchors (no need to change unless it conflicts with article content)
     marker: "{#anchor-"
-    # 自动锚点 id 前缀，生成的 id = prefix + marker 中的 xxx 部分（默认 "anchor-"）
+    # Anchor id prefix: generated id = prefix + the xxx part inside the marker (default "anchor-")
     prefix: "anchor-"
-  # 自动锚点
+  # Auto anchors
   auto:
-    # 是否启用自动锚点：为直接子段落自动生成 id（从文本内容派生，默认 false）
+    # Whether to enable auto anchors: automatically generate ids for direct child paragraphs, derived from text content (default false)
     enable: false
-    # 自动锚点的 id 最大长度，超出则截断（仅 auto=true 时生效）
+    # Maximum length of auto-generated anchor ids; longer ids will be truncated (only effective when auto.enable = true)
     length: 60
 
 # Footer copyright

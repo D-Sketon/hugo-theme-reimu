@@ -902,6 +902,45 @@ copyright: true # 是否展示版权卡片？
 ---
 ```
 
+#### 段落锚点
+
+默认关闭
+
+为文章正文的段落、列表项等块级元素注入可跳转的锚点链接，支持显式锚点与自动锚点两种模式。
+
+##### 显式锚点
+
+在 Markdown 中写 `{#anchor-xxx}`，对应块级元素会获得 `id="anchor-xxx"` 并在末尾追加一个可点击的锚点图标。
+
+```yaml
+anchor:
+  explicit:
+    enable: false # 是否启用显式锚点
+    marker: "{#anchor-" # 锚点占位符前缀，通常无需修改
+    prefix: "anchor-" # 生成的 id 前缀，实际 id = prefix + xxx
+```
+
+示例：
+
+```markdown
+- [参考文献1](https://example.com) {#anchor-ref1}
+```
+
+渲染后，该 `<li>` 会获得 `id="anchor-ref1"`，URL 中加上 `#anchor-ref1` 即可直接跳转。
+
+##### 自动锚点
+
+无需手动标注，自动为文章中的直接子段落（`.article-entry > p`）从文本内容派生 `id`：全小写、特殊字符替换为连字符，并按 `length` 截断。
+
+```yaml
+anchor:
+  auto:
+    enable: false # 是否启用自动锚点
+    length: 60    # 自动生成的 id 最大长度
+```
+
+> 若某段落已通过显式锚点注入了 `id`，自动锚点会跳过该段落，不会重复注入。
+
 #### 文章过期提醒
 
 默认关闭

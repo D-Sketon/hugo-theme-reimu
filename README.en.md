@@ -890,6 +890,45 @@ quicklink:
   ignores: [] # Ignore the specified link, only support string array
 ```
 
+#### Paragraph Anchor
+
+Disabled by default
+
+Injects linkable anchor icons into paragraphs, list items, and other block-level elements in the article body. Supports two modes: explicit anchors and auto anchors.
+
+##### Explicit Anchors
+
+Write `{#anchor-xxx}` anywhere inside a Markdown block. The matching element receives `id="anchor-xxx"` and an anchor icon is appended at the end.
+
+```yaml
+anchor:
+  explicit:
+    enable: false    # Whether to enable explicit anchors
+    marker: "{#anchor-" # Anchor placeholder prefix; usually no need to change
+    prefix: "anchor-"   # Prefix of the generated id; final id = prefix + xxx
+```
+
+Example:
+
+```markdown
+- [Reference 1](https://example.com) {#anchor-ref1}
+```
+
+After rendering, the `<li>` element gets `id="anchor-ref1"`, and adding `#anchor-ref1` to the URL navigates directly to it.
+
+##### Auto Anchors
+
+No manual annotation needed. Automatically derives `id` values for direct child paragraphs (`.article-entry > p`) from their text content: lowercased, special characters replaced with hyphens, and truncated to `length`.
+
+```yaml
+anchor:
+  auto:
+    enable: false # Whether to enable auto anchors
+    length: 60    # Maximum length of auto-generated anchor ids
+```
+
+> If a paragraph already has an `id` injected by an explicit anchor, the auto anchor will skip it to avoid duplication.
+
 #### Outdated Notice
 
 Disabled by default
