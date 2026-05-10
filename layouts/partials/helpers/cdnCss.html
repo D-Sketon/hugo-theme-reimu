@@ -5,7 +5,7 @@
 {{- $async := index $items "async" -}}
 
 {{- if not $item -}}
-  {{- $css := $ctx.Site.Data.vendor.css -}}
+  {{- $css := hugo.Data.vendor.css -}}
   {{- $item = index $css $name -}}
 {{- end -}}
 

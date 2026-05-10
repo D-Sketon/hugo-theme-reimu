@@ -1,6 +1,6 @@
 {{- $site := .Site -}}
 {{- $params := .Site.Params -}}
-{{- $js := .Site.Data.vendor.js -}}
+{{- $js := hugo.Data.vendor.js -}}
 
 {{- $commentSystems := dict 
   "valine" (cond (and $params.valine.enable $params.valine.appId $params.valine.appKey) true false)

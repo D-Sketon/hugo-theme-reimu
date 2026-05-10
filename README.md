@@ -34,7 +34,7 @@ A Hakurei Reimu style Hugo theme. Migrated from [hexo-theme-reimu](https://githu
 ### 基础功能
 
 - ✨ 完整的博客功能
-- 🔄 兼容 Hugo 0.124.0 及以上版本
+- 🔄 兼容 Hugo 0.158.0 及以上版本
 - 📱 响应式布局
 - 🌙 暗黑模式支持
 - 🅰️ i18n 支持

@@ -34,7 +34,7 @@ A Hakurei Reimu style Hugo theme. Migrated from [hexo-theme-reimu](https://githu
 ### Basic Functions
 
 - ✨ Full blog functionality
-- 🔄 Compatible with Hugo 0.124.0+
+- 🔄 Compatible with Hugo 0.158.0+
 - 📱 Responsive layout
 - 🌙 Dark mode support
 - 🅰️ i18n support

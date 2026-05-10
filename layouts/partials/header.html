@@ -35,8 +35,10 @@
   </nav>
   {{- if and hugo.IsMultilingual (ne "404" .Type) -}}
     {{- $i18nMap := dict -}}
-    {{- range .Site.Languages -}}
-      {{- $i18nMap = merge $i18nMap (dict .Lang .LanguageName) -}}
+    {{- with .Rotate "language" -}}
+      {{- range . -}}
+        {{- $i18nMap = merge $i18nMap (dict .Lang .Site.Language.Label) -}}
+      {{- end -}}
     {{- end -}}
     <nav id="i18n-nav" aria-label="Language selection">
       <div class="custom-dropdown">
@@ -45,8 +47,10 @@
           <span id="selected-lang">{{ index $i18nMap $.Language.Lang }}</span>
         </div>
         <ul class="select-items" id="select-items" role="listbox" aria-label="Languages">
-          {{- range .Site.Languages -}}
-            <li data-value="{{ .Lang }}" role="option" {{ if eq $.Language.Lang .Lang }}class="selected" aria-selected="true"{{ else }}aria-selected="false"{{ end }} >{{ .LanguageName }}</li>
+          {{- with .Rotate "language" -}}
+            {{- range . -}}
+              <li data-value="{{ .Lang }}" role="option" {{ if eq $.Language .Site.Language }}class="selected" aria-selected="true"{{ else }}aria-selected="false"{{ end }} >{{ .Site.Language.Label }}</li>
+            {{- end -}}
           {{- end -}}
         </ul>
       </div>

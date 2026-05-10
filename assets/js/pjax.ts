@@ -87,12 +87,12 @@ if (window.Pjax) {
         continue;
       }
       const currentLangIndex = i18nLanguages.findIndex((lang) =>
-        currentPathname.startsWith(lang.Lang),
+        currentPathname.startsWith(lang.lang),
       );
       if (currentLangIndex > -1) {
         // 当前属于多语言站点
         const absoluteLangIndex = i18nLanguages.findIndex((lang) =>
-          absolutePathname.startsWith(lang.Lang),
+          absolutePathname.startsWith(lang.lang),
         );
         if (absoluteLangIndex === currentLangIndex) {
           // 同一语言站点，可以使用 pjax
@@ -101,7 +101,7 @@ if (window.Pjax) {
       } else {
         // 当前属于默认语言站点
         const absoluteLangIndex = i18nLanguages.findIndex((lang) =>
-          absolutePathname.startsWith(lang.Lang),
+          absolutePathname.startsWith(lang.lang),
         );
         if (absoluteLangIndex === -1) {
           // 同一语言站点，可以使用 pjax

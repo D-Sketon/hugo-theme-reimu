@@ -18,7 +18,7 @@
     {{- $cdn := index $contentToken 0 -}}
     {{- $path := index $contentToken 1 -}}
 
-    {{- $vendorConfig := index $site.Data.vendor $cdn -}}
+    {{- $vendorConfig := index hugo.Data.vendor $cdn -}}
     {{- if not $vendorConfig -}}
       {{- errorf "invalid cdn: %s" $src -}}
     {{- end -}}

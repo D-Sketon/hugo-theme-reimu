@@ -1,4 +1,4 @@
-{{- $covers := .Site.Data.covers -}}
+{{- $covers := hugo.Data.covers -}}
 {{- /* Maintain a shuffled queue so covers only repeat after a full cycle. */ -}}
 {{- $scratchKey := "helpers/randomCover/queue" -}}
 {{- $queue := .Scratch.Get $scratchKey | default (slice) -}}

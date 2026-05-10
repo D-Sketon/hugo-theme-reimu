@@ -50,8 +50,8 @@
   {{- partialCached "helpers/vendorGoogleFont.html" . -}}
 {{- end -}}
 
-{{- $js := .Site.Data.vendor.js -}}
-{{- $css := .Site.Data.vendor.css -}}
+{{- $js := hugo.Data.vendor.js -}}
+{{- $css := hugo.Data.vendor.css -}}
 <!-- icon -->
 {{- if .Site.Params.icon_font -}}
   <link

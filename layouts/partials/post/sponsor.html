@@ -12,7 +12,7 @@
       <div class="sponsor-icon {{ if .Site.Params.sponsor.icon.rotate }}rotate{{ end }}"></div>
     {{- end -}}
   </div>
-  {{- $languageCode := .Site.Language.LanguageCode -}}
+  {{- $languageCode := .Site.Language.Locale -}}
   {{- $tip := .Site.Params.sponsor.tip -}}
   {{- $realTip := "" -}}
   {{- if reflect.IsMap $tip -}}

@@ -142,8 +142,8 @@ declare global {
       expand?: boolean;
     };
     i18n_languages?: {
-      Lang: string;
-      LanguageName: string;
+      lang: string;
+      label: string;
     }[];
     base?: string;
     anchor?: {

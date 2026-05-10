@@ -14,7 +14,7 @@
           </svg>
         {{- end -}}
       </div>
-      {{- $languageCode := .Site.Language.LanguageCode -}}
+      {{- $languageCode := .Site.Language.Locale -}}
       {{- $text := .Site.Params.preloader.text -}}
       {{- $realText := "" -}}
       {{- if reflect.IsMap $text -}}

@@ -24,7 +24,7 @@
 {{- if and (not (eq .Params.comments false)) (len $activeSystems) -}}
 <section id="comments" data-aos="{{ $params.animation.options.article.whole }}">
 <div class="comment-header">
-  {{- $languageCode := .Site.Language.LanguageCode -}}
+  {{- $languageCode := .Site.Language.Locale -}}
   {{- $commentTitle := $params.comment.title -}}
   {{- $realTitle := "" -}}
   {{- if reflect.IsMap $commentTitle -}}

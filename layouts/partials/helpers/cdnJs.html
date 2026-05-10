@@ -2,7 +2,7 @@
 {{- $ctx := index $items "ctx" -}}
 {{- $name := index $items "name" -}}
 
-{{- $js := $ctx.Site.Data.vendor.js -}}
+{{- $js := hugo.Data.vendor.js -}}
 {{- $vendor := index $js $name -}}
 
 {{- $base := dict

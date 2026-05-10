@@ -1,7 +1,7 @@
 {{- $site := .Site -}}
 {{- $params := .Site.Params -}}
-{{- $js := .Site.Data.vendor.js -}}
-{{- $css := .Site.Data.vendor.css -}}
+{{- $js := hugo.Data.vendor.js -}}
+{{- $css := hugo.Data.vendor.css -}}
 
 {{- partial "helpers/cdnJs.html" (dict "name" "lazysizes" "ctx" .) }}
 {{- partial "helpers/cdnJs.html" (dict "name" "clipboard" "ctx" .) }}

@@ -1,7 +1,7 @@
 {{- $version := int (index (split hugo.Version ".") 1) -}}
-{{- if lt $version 124 -}}
-  {{- warnf "当前 Hugo 版本小于 0.124.0，请到官方地址下载 Hugo 最新版本：https://github.com/gohugoio/hugo/releases" -}}  
-  {{- warnf "Current Hugo version is less then 0.124.0, Please download Hugo latest version on offical site: https://github.com/gohugoio/hugo/releases" -}}  
+{{- if lt $version 158 -}}
+  {{- warnf "当前 Hugo 版本小于 0.158.0，请到官方地址下载 Hugo 最新版本：https://github.com/gohugoio/hugo/releases" -}}  
+  {{- warnf "Current Hugo version is less then 0.158.0, Please download Hugo latest version on offical site: https://github.com/gohugoio/hugo/releases" -}}  
 {{- end -}}
 
 {{- if not hugo.IsExtended -}}
