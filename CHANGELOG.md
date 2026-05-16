@@ -1,3 +1,51 @@
+## 0.16.0
+
+**2026-05-16**
+
+### 重大修改
+
+- Hugo 最低版本要求升级至 v0.158.0 及以上
+
+### 特性
+
+- 新增文章段落锚点能力（Paragraph Anchor），支持为段落与列表项生成可跳转锚点
+  ```yaml
+  anchor:
+    explicit:
+      enable: false
+      marker: "{#anchor-"
+      prefix: "anchor-"
+    auto:
+      enable: false
+      length: 60
+  ```
+  - `explicit` 模式支持在 Markdown 中通过 `{#anchor-xxx}` 显式声明锚点
+  - `auto` 模式支持为段落自动生成唯一 ID
+- 调整多语言与数据引用相关逻辑，提升新版本兼容性
+
+---
+
+### Major Changes
+
+- Minimum Hugo version requirement upgraded to v0.158.0 or higher
+
+### Features
+
+- Added paragraph anchor support for article content, enabling jumpable anchors for paragraphs and list items
+  ```yaml
+  anchor:
+    explicit:
+      enable: false
+      marker: "{#anchor-"
+      prefix: "anchor-"
+    auto:
+      enable: false
+      length: 60
+  ```
+  - `explicit` mode supports manually declaring anchors in Markdown via `{#anchor-xxx}`
+  - `auto` mode supports auto-generating unique IDs for paragraphs
+- Adjusted multilingual/data reference logic for better compatibility
+
 ## 0.15.5
 
 **2026-05-03**
