@@ -1,6 +1,6 @@
 .spoiler {
-  background: var(--color-default);
-  color: var(--color-default);
+  background: #666;
+  color: #666;
   cursor: pointer;
   padding: 2px 6px;
   border-radius: 4px;
@@ -14,12 +14,12 @@
 
 [data-theme="dark"] {
   .spoiler {
-    background: var(--color-wrap);
-    color: var(--color-wrap);
+    background: #555;
+    color: #555;
 
     &:hover,
     &:active {
-      color: var(--color-default);
+      color: #fff;
     }
   }
 }
