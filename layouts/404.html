@@ -1,12 +1,7 @@
 <!DOCTYPE html>
 <html lang="{{ .Site.Language.Locale }}" 
-{{ if eq .Site.Params.dark_mode.enable true -}}
-  data-theme-mode="true"
-{{ else if eq .Site.Params.dark_mode.enable false -}}
-  data-theme-mode="false"
-{{ else if eq .Site.Params.dark_mode.enable "auto" -}}
-  data-theme-mode="auto"
-{{ end }}>
+{{- $dm := partial "helpers/darkMode.html" . -}}
+data-theme-mode="{{ $dm.mode }}">
 <head>
   {{- if .Site.Params.injector.head_begin -}}
     {{- .Site.Params.injector.head_begin | safeHTML -}}

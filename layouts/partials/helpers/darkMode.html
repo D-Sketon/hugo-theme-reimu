@@ -1,0 +1,14 @@
+{{- $dm := .Site.Params.dark_mode -}}
+{{- $result := dict "button" true "mode" "auto" -}}
+{{- if reflect.IsMap $dm -}}
+  {{- if isset $dm "enable" -}}
+    {{- /* old format: {enable: true|false|auto}, button always visible */ -}}
+    {{- $result = dict "button" true "mode" $dm.enable -}}
+  {{- else -}}
+    {{- /* new format: {button: bool, type: true|false|auto} */ -}}
+    {{- $button := $dm.button -}}
+    {{- if not (isset $dm "button") -}}{{- $button = true -}}{{- end -}}
+    {{- $result = dict "button" $button "mode" $dm.type -}}
+  {{- end -}}
+{{- end -}}
+{{- return $result -}}
