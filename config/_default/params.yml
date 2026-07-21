@@ -18,6 +18,10 @@ menu:
     url: "friend"
     icon:
 
+# friend links
+friends:
+  shuffle: false  # whether to shuffle the friend links
+
 mainSections: ["post"]
 # 年，月，日及时间的格式化样式
 # Format style for year,month,date & time

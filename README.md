@@ -1134,7 +1134,7 @@ triangle_badge:
 {{< friendsLink >}}
 ```
 
-无参数，直接读取 `data/friends.yml` 文件
+无参数，直接读取 `data/friends.yml` 文件。可通过 `params.yml` 中的 `friends.shuffle` 控制是否随机排列友链顺序
 
 #### postLinkCard 内链卡片 (不推荐，建议使用 link)
 

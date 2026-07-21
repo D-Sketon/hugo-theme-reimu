@@ -1113,7 +1113,7 @@ triangle_badge:
 {{< friendsLink >}}
 ```
 
-No parameters, directly reads from the `data/friends.yml` file
+No parameters, directly reads from the `data/friends.yml` file. Use `friends.shuffle` in `params.yml` to randomize the order.
 
 #### postLinkCard - Internal Link Card (Not recommended, use Link Card instead)
 
