@@ -1,0 +1,25 @@
+.spoiler {
+  background: #666;
+  color: #666;
+  cursor: pointer;
+  padding: 2px 6px;
+  border-radius: 4px;
+  transition: 0.2s;
+
+  &:hover,
+  &:active {
+    color: #fff;
+  }
+}
+
+[data-theme="dark"] {
+  .spoiler {
+    background: #555;
+    color: #555;
+
+    &:hover,
+    &:active {
+      color: #fff;
+    }
+  }
+}
