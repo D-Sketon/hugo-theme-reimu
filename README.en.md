@@ -246,7 +246,7 @@ banner: "images/banner.webp"
 
 #### Favicon
 
-The Favicon is saved at `themes/hugo-theme-reimu/static/favicon.ico`. You can replace it with your own file.
+The Favicon is saved at `themes/hugo-theme-reimu/static/favicon.ico`. You can replace it with your own file. Updates may be affected by Hugo and browser caching. Clear Hugo cache (`hugo --cleanDestinationDir`) and browser cache, then hard refresh to confirm changes.
 
 #### Article Summary
 

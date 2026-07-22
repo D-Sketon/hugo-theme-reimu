@@ -260,7 +260,7 @@ banner: "images/banner.webp"
 
 #### Favicon
 
-Favicon 保存于 `themes/hugo-theme-reimu/static/favicon.ico`，可自行覆盖替换；图片的更新可能受到Hugo和浏览器缓存的影响，请在彻底删除两边原有的缓存后刷新确认更改，同时避免使用此问题十分顽固的VS Code内置浏览器
+Favicon 保存于 `themes/hugo-theme-reimu/static/favicon.ico`，可自行覆盖替换；图片的更新可能受到 Hugo 和浏览器缓存的影响，请清理 Hugo 缓存（`hugo --cleanDestinationDir`）和浏览器缓存后刷新确认更改，建议使用其他浏览器预览效果
 
 #### 文章总结
 
