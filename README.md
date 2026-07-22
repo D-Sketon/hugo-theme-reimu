@@ -9,7 +9,7 @@
   💘 博麗 霊夢 💘
   </p>
 
-[演示网站](https://d-sketon.github.io/hugo-theme-reimu) | [迁移指南](https://d-sketon.github.io/20241110/hexo-to-hugo-guide/) | [Change Log](https://github.com/D-Sketon/hugo-theme-reimu/blob/main/CHANGELOG.md)
+[演示网站](https://d-sketon.github.io/hugo-theme-reimu) | [Change Log](https://github.com/D-Sketon/hugo-theme-reimu/blob/main/CHANGELOG.md)
 
 简体中文 | [English](https://github.com/D-Sketon/hugo-theme-reimu/blob/main/README.en.md)
 
@@ -66,7 +66,7 @@ A Hakurei Reimu style Hugo theme. Migrated from [hexo-theme-reimu](https://githu
 ### 媒体与交互功能
 
 - 🎵 音乐播放器支持：
-  - Aplayer
+  - APlayer
   - Meting
 - 🖼️ 图片懒加载
 - ⚡ 加载动画
@@ -79,14 +79,14 @@ A Hakurei Reimu style Hugo theme. Migrated from [hexo-theme-reimu](https://githu
 
 - 📑 目录导航
 - 🔄 PJAX 支持
-- 🔧 ServiceWorker 实现
+- 🔧 Service Worker 实现
 - 📰 RSS 订阅
 
 ### 设计与自定义
 
 - 🎨 图标支持：
   - Iconfont
-  - FontAwesome7
+  - Font Awesome
 - 🔗 内置短代码：
   - 内部链接
   - 外部链接
@@ -96,6 +96,9 @@ A Hakurei Reimu style Hugo theme. Migrated from [hexo-theme-reimu](https://githu
   - Alert块引用
   - 标签页
   - 照片墙
+  - 网格布局
+  - 折叠面板
+  - 遮罩/剧透
 - 🎨 动态适配主题色
 - ©️ 文章版权声明
 - 🌐 自定义 CDN 源 / 本地配置
@@ -224,8 +227,8 @@ avatar: "avatar.webp"
 
 `banner` 和 `cover` 的显示逻辑如下：
 
-- 文章页头图优先使用 Front matter 的 `banner`；若未设置 `banner`，则兼容使用 `cover`
-- 列表卡片封面优先使用 Front matter 的 `cover`（仅 URL 生效）；当 `cover` 未设置、为 `false` 或 `rgb(...)` 时，会回退到 `data/covers.yml` 随机图
+- 文章页头图优先使用 front matter 的 `banner`；若未设置 `banner`，则兼容使用 `cover`
+- 列表卡片封面优先使用 front matter 的 `cover`（仅 URL 生效）；当 `cover` 未设置、为 `false` 或 `rgb(...)` 时，会回退到 `data/covers.yml` 随机图
 - 若随机封面不可用，则回退到全局 `banner`
 
 推荐写法（头图与卡片封面分离）：
@@ -288,7 +291,7 @@ sidebar:
     show_common: true # 文章页是否显示通用侧边栏，移动端忽略
 ```
 
-此外，也可以通过文章的 front-matter 控制，其优先级高于全局配置
+此外，也可以通过文章的 front matter 控制，其优先级高于全局配置
 
 ```yaml
 ---
@@ -296,7 +299,7 @@ sidebar: left # left | right | false
 ---
 ```
 
-> 当 sidebar 设置为 false 时，侧边栏将被隐藏，此时 aplayer 播放器和 widgets 小部件将同时无法显示
+> 当 sidebar 设置为 false 时，侧边栏将被隐藏，此时 APlayer 播放器和 widgets 小部件将同时无法显示
 
 #### TOC
 
@@ -306,7 +309,7 @@ sidebar: left # left | right | false
 toc: true # true | false
 ```
 
-此外，也可以通过文章的 front-matter 控制，其优先级高于全局配置
+此外，也可以通过文章的 front matter 控制，其优先级高于全局配置
 
 ```yaml
 ---
@@ -446,7 +449,7 @@ code_block:
 
 ### 站内评论
 
-> 站内评论可以使用 Front matter 中的 `comments` 独立控制每篇文章是否显示评论。  
+> 站内评论可以使用 front matter 中的 `comments` 独立控制每篇文章是否显示评论。  
 > 当 `comments` 为 `false` 时不显示评论，`true` 或不填时根据 `params.yml` 的配置决定是否显示。
 
 > 0.8.0+ 后支持多评论系统同时使用
@@ -557,7 +560,7 @@ gitalk:
   repo: "your repo"
   owner: "repo owner"
   admin: "repo owner and collaborators"
-  md5: false # 是否使用 md5 加密路径
+  md5: false # 是否使用 MD5 加密路径
 ```
 
 若基于 [Disqus](https://disqus.com/)  
@@ -582,7 +585,7 @@ utterances:
 ```
 
 若基于 [beaudar](https://beaudar.lipk.org/)  
-请在内层 `_config.yml` 中将 `beaudar.enable` 改为 `true`，并填入自己的 `repo` 和 `branch`。之后需要在仓库中创建一个[域白名单](https://github.com/beaudar/beaudar/blob/master/beaudar.json) (Hexo 主题请把该文件直接放在 `source` 目录下)，并[授权安装](https://github.com/apps/beaudar)即可
+请在 `params.yml` 中将 `beaudar.enable` 改为 `true`，并填入自己的 `repo` 和 `branch`。之后需要在仓库中创建一个[域白名单](https://github.com/beaudar/beaudar/blob/master/beaudar.json) (Hexo 主题请把该文件直接放在 `source` 目录下)，并[授权安装](https://github.com/apps/beaudar)即可
 ```yml
 beaudar:
   enable: true
@@ -642,7 +645,7 @@ delimiters.block = [["\\[", "\\]"], ["$$", "$$"]]
 delimiters.inline = [["\\(", "\\)"], ["$", "$"]]
 ```
 
-并在需要使用数学公式的文章的 Front matter 中添加 `math` 为 `true`
+并在需要使用数学公式的文章的 front matter 中添加 `math` 为 `true`
 
 ```yaml
 ---
@@ -679,7 +682,7 @@ math:
 
 ### Mermaid
 
-流程图基于 [Mermaid](https://mermaid.js.org/#/)，请在需要使用流程图的文章的 Front matter 中添加 `mermaid` 为 `true`
+流程图基于 [Mermaid](https://mermaid.js.org/#/)，请在需要使用流程图的文章的 front matter 中添加 `mermaid` 为 `true`
 
 ```yaml
 ---
@@ -722,7 +725,7 @@ Icon 默认使用本项目提供的 Iconfont
 icon_font: 4552607_a0oqhord1y
 ```
 
-如果想要继续使用 FontAwesome 图标，请将 `icon_font` 设置为 `false`，此时会使用 `vendor.yml` 中对应的 FontAwesome
+如果想要继续使用 Font Awesome 图标，请将 `icon_font` 设置为 `false`，此时会使用 `vendor.yml` 中对应的 Font Awesome
 
 ```yml
 fontawesome:
@@ -815,7 +818,7 @@ pjax:
   enable: false
 ```
 
-#### ServiceWorker
+#### Service Worker
 
 默认关闭
 
@@ -858,16 +861,16 @@ reimu_cursor: true
 
 ```yml
 banner_srcset:
-enable: false
-srcset:
-  - src: "images/banner-600w.webp"
-    media: "(max-width: 479px)"
-  - src: "images/banner-800w.webp"
-    media: "(max-width: 799px)"
-  - src: 
-    - "/images/banner.avif"
-    - "/images/banner.webp" #  支持数组形式的 fallback
-    media: "(min-width: 800px)"
+  enable: false
+  srcset:
+    - src: "images/banner-600w.webp"
+      media: "(max-width: 479px)"
+    - src: "images/banner-800w.webp"
+      media: "(max-width: 799px)"
+    - src: 
+        - "/images/banner.avif"
+        - "/images/banner.webp" #  支持数组形式的 fallback
+      media: "(min-width: 800px)"
 ```
 
 #### Quicklink
@@ -899,7 +902,7 @@ article_copyright:
     license_type: by-nc-sa # https://creativecommons.org/licenses
 ```
 
-此外，也可以通过文章的 front-matter 控制，其优先级高于全局配置
+此外，也可以通过文章的 front matter 控制，其优先级高于全局配置
 
 ```yaml
 ---
@@ -978,11 +981,11 @@ sponsor:
     rotate: true # 是否旋转图标
     mask: true # 是否将图片作为遮罩（即只显示 png 图片的轮廓）
   qr:
-      - name: 支付宝 # 二维码名称
+    - name: 支付宝 # 二维码名称
       src: "sponsor/alipay.jpg" # 示例二维码路径，位于 static/sponsor/alipay.jpg
 ```
 
-此外，也可以通过文章的 front-matter 控制，其优先级高于全局配置
+此外，也可以通过文章的 front matter 控制，其优先级高于全局配置
 
 ```yaml
 ---
@@ -994,7 +997,7 @@ sponsor: true # 是否展示赞助二维码？
 
 > 使用前建议先打开 PJAX，否则会出现播放器自动暂停的问题
 
-使用Aplayer + Meting（可选）默认关闭
+使用APlayer + Meting（可选）默认关闭
 
 ##### 音乐播放器位置（v0.12.1+）
 
@@ -1005,9 +1008,9 @@ player:
   position: before_sidebar # before_sidebar / after_sidebar / after_widget
 ```
 
-##### 纯Aplayer
+##### 纯APlayer
 
-将 `player.aplayer.enable` 设置为 `true`，并在 `player.aplayer.options` 中参考 [Aplayer Docs](https://aplayer.js.org/#/home?id=options) 进行配置
+将 `player.aplayer.enable` 设置为 `true`，并在 `player.aplayer.options` 中参考 [APlayer Docs](https://aplayer.js.org/#/home?id=options) 进行配置
 
 ```yml
 player:
@@ -1026,9 +1029,9 @@ player:
       lrcType:
 ```
 
-##### Aplayer + Meting
+##### APlayer + Meting
 
-同时将 `player.aplayer.enable` 和 `player.meting.enable` 设置为 `true`，并在 `player.meting.options` 中参考 [Meting Docs](https://github.com/metowolf/MetingJS?tab=readme-ov-file#option) 进行配置，`player.aplayer.options` 为 Aplayer 配置
+同时将 `player.aplayer.enable` 和 `player.meting.enable` 设置为 `true`，并在 `player.meting.options` 中参考 [Meting Docs](https://github.com/metowolf/MetingJS?tab=readme-ov-file#option) 进行配置，`player.aplayer.options` 为 APlayer 配置
 
 ```yml
 player:
@@ -1263,6 +1266,16 @@ Tab content
 
 - summary：可选参数，设置折叠面板的标题
 
+#### spoiler 遮罩/剧透 (v0.16.1+)
+
+```markdown
+{{< spoiler >}}
+被隐藏的内容
+{{< /spoiler >}}
+```
+
+将内容以遮罩形式隐藏，鼠标悬停或点击时显示。
+
 </details>
 
 <details>
@@ -1391,7 +1404,7 @@ custom_font:
 
 ##### 头部 / 侧边栏图标
 
-v0.1.0 的 `menu` 配置的结构发生了变化，允许用户自定义 icon。icon 为空时默认使用太极图标，你可以填写一个十六进制的数字来自定义 icon，同时支持 FontAwesome，icon font 和 `false`。
+v0.1.0 的 `menu` 配置的结构发生了变化，允许用户自定义 icon。icon 为空时默认使用太极图标，你可以填写一个十六进制的数字来自定义 icon，同时支持 Font Awesome，icon font 和 `false`。
 
 v0.10.2 icon 支持图片路径，如 `/avatar/avatar.webp`。
 
@@ -1402,7 +1415,7 @@ menu:
     icon: # 不填默认使用太极图标
   - name: archives
     url: /archives
-    icon: f0c1 # 你可以填写一个十六进制的数字来自定义 icon，支持 FontAwesome 和 icon font，如果填写 false 则不显示图标
+    icon: f0c1 # 你可以填写一个十六进制的数字来自定义 icon，支持 Font Awesome 和 icon font，如果填写 false 则不显示图标
   - name: about
     url: /about
     icon:
@@ -1459,7 +1472,7 @@ preloader:
 
 ##### 锚点图标
 
-v0.1.0 增加了 `anchor_icon` 配置用于自定义锚点图标，默认使用 `#` 图标，你可以填写一个十六进制的数字来自定义 icon，同时支持 FontAwesome 和 icon font。
+v0.1.0 增加了 `anchor_icon` 配置用于自定义锚点图标，默认使用 `#` 图标，你可以填写一个十六进制的数字来自定义 icon，同时支持 Font Awesome 和 icon font。
 
 ```yaml
 anchor_icon: # 不填默认使用 # 图标
@@ -1517,18 +1530,18 @@ layout:
 
 ### Vendor
 
-`vendor` 用于存放一些第三方资源，如 FontAwesome、Iconfont、katex、mathjax 等。
+`vendor` 用于存放一些第三方资源，如 Font Awesome、Iconfont、katex、mathjax 等。
 
 hugo-theme-reimu 的 `vendor` 结构非常灵活，其支持以下几种形式：
 
 - `:cdn|:package@:version/:file`：使用 CDN 加速，如 `cdn_jsdelivr_gh|katex@0.13.11/dist/katex.min.css`，`:cdn`可在 `vendor` 中自行配置。目前自带以下 CDN 源：
   ```yaml
-  cdn_jsdelivr_gh: https://cdn.jsdelivr.net/gh/ # 仅针对github加速
-  cdn_jsdelivr_npm: https://cdn.jsdelivr.net/npm/ # 仅针对npm加速
-  fastly_jsdelivr_gh: https://fastly.jsdelivr.net/gh/ # 仅针对github加速
-  fastly_jsdelivr_npm: https://fastly.jsdelivr.net/npm/ # 仅针对npm加速
-  unpkg: https://unpkg.com/ # 仅针对npm加速
-  webcache: https://npm.webcache.cn/ # 仅针对npm加速
+  cdn_jsdelivr_gh: https://cdn.jsdelivr.net/gh/ # 仅针对 GitHub 加速
+  cdn_jsdelivr_npm: https://cdn.jsdelivr.net/npm/ # 仅针对 NPM 加速
+  fastly_jsdelivr_gh: https://fastly.jsdelivr.net/gh/ # 仅针对 GitHub 加速
+  fastly_jsdelivr_npm: https://fastly.jsdelivr.net/npm/ # 仅针对 NPM 加速
+  unpkg: https://unpkg.com/ # 仅针对 NPM 加速
+  webcache: https://npm.webcache.cn/ # 仅针对 NPM 加速
   local: /resources/ # 本地资源
   ```
   用户可根据网络状况自行切换 CDN 源。
