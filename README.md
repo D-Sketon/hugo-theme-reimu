@@ -1600,10 +1600,6 @@ js:
 
 [爱发电-afdian](https://afdian.com/a/dsketon)
 
-## Star History
-
-[![Star History Chart](https://api.star-history.com/svg?repos=D-Sketon/hugo-theme-reimu&type=date&legend=top-left)](https://www.star-history.com/#D-Sketon/hugo-theme-reimu&type=date&legend=top-left)
-
 ## 许可
 
 MIT

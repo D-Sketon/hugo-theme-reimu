@@ -1573,10 +1573,6 @@ Both formats are supported. It's recommended to use SRI verification for externa
 
 [![](https://contributors-img.web.app/image?repo=D-Sketon/hugo-theme-reimu)](https://github.com/D-Sketon/hugo-theme-reimu/graphs/contributors)
 
-## Star History
-
-[![Star History Chart](https://api.star-history.com/svg?repos=D-Sketon/hugo-theme-reimu&type=date&legend=top-left)](https://www.star-history.com/#D-Sketon/hugo-theme-reimu&type=date&legend=top-left)
-
 ## License
 
 MIT
