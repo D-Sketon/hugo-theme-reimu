@@ -271,6 +271,7 @@
                 { left: "\\(", right: "\\)", display: false },
               ],
             });
+            window.katexTagOverflowHandler?.();
           };
           if (document.readyState === "loading") {
             document.addEventListener("DOMContentLoaded", renderMath, { once: true });

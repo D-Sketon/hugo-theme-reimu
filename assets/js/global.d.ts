@@ -167,6 +167,8 @@ declare global {
     cover: string;
   };
 
+  var katexTagOverflowHandler: () => void;
+
   var safeImport: (url: string, integrity?: string) => Promise<any>;
 
   interface Window {

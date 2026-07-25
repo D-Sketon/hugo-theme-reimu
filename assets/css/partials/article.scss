@@ -563,14 +563,14 @@
   }
 }
 
-.katex-html:has(span.tag) {
-  display: flex !important;
+.katex-display > .katex > .katex-html > .katex-tag {
+  position: absolute;
+  padding-left: 0.5rem;
 }
 
-.katex-display > .katex > .katex-html > .tag {
+.tag-overflowed {
+  display: inline-block;
   position: relative !important;
-  float: right;
-  margin-left: 0.25rem;
 }
 
 mjx-container {
