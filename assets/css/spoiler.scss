@@ -1,25 +1,27 @@
 .spoiler {
   background: #666;
-  color: #666;
+  filter: blur(10px) brightness(0.3);
   cursor: pointer;
   padding: 2px 6px;
   border-radius: 4px;
-  transition: 0.2s;
+  transition: filter 0.2s, background 0.2s;
+  user-select: none;
 
   &:hover,
   &:active {
-    color: #fff;
+    background: transparent;
+    filter: none;
+    user-select: auto;
   }
 }
 
 [data-theme="dark"] {
   .spoiler {
-    background: #555;
-    color: #555;
+    background: #fff;
 
     &:hover,
     &:active {
-      color: #fff;
+      background: transparent;
     }
   }
 }
