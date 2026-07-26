@@ -22,7 +22,7 @@
 
 ### 重构
 
-- 更新 `mermaid` 至 v11.16.0、`katex` 至 v0.18.1、`meting` 至 v2.0.2、`@fortawesome/fontawesome-free` 至 v7.3.1、`@reimujs/aos` 至 v0.1.3
+- 更新 `mermaid` 至 v11.16.0、`meting` 至 v2.0.2、`@fortawesome/fontawesome-free` 至 v7.3.1、`@reimujs/aos` 至 v0.1.3、`katex` 至 v0.16.47
 
 ---
 
@@ -46,7 +46,7 @@
 
 ### Refactor
 
-- Updated `mermaid` to v11.16.0, `katex` to v0.18.1, `meting` to v2.0.2, `@fortawesome/fontawesome-free` to v7.3.1, `@reimujs/aos` to v0.1.3
+- Updated `mermaid` to v11.16.0, `meting` to v2.0.2, `@fortawesome/fontawesome-free` to v7.3.1, `@reimujs/aos` to v0.1.3、`katex` to v0.16.47
 
 ## 0.16.0
 

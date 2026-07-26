@@ -468,8 +468,8 @@ if (__katexTagOverflowHandler) {
 // https://github.com/KaTeX/KaTeX/issues/1983
 __katexTagOverflowHandler = () => {
   _$$(".katex-display").forEach((elem) => {
-    const ts = elem.querySelectorAll(".katex-tag");
-    const eqns = elem.querySelectorAll(".katex-base");
+    const ts = elem.querySelectorAll(".tag");
+    const eqns = elem.querySelectorAll(".base");
     if (ts.length === 0 || eqns.length === 0) return;
     const t = ts[0] as HTMLElement;
     const lastEqn = eqns[eqns.length - 1] as HTMLElement;
