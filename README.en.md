@@ -1113,9 +1113,22 @@ triangle_badge:
 
 ```markdown
 {{< friendsLink >}}
+{{< friendsLink compact >}}
+{{< friendsLink detailed >}}
 ```
 
-No parameters, directly reads from the `data/friends.yml` file. Use `friends.shuffle` in `params.yml` to randomize the order.
+The first parameter `style` (optional) controls the display style: `standard` (default), `compact`, or `detailed`. Directly reads from the `data/friends.yml` file. Use `friends.shuffle` in `params.yml` to randomize the order.
+
+Friend link data format (`data/friends.yml`):
+
+```yaml
+- name: D-Sketon
+  url: https://d-sketon.top/
+  desc: A brief description
+  image: https://d-sketon.top/img/icon.png
+  badge: Friend # optional, colored badge on the card
+  remark: Met via GitHub # optional, extra note below desc
+```
 
 #### postLinkCard - Internal Link Card (Not recommended, use Link Card instead)
 
