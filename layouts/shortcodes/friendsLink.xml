@@ -1,7 +1,10 @@
 {{- $friends := hugo.Data.friends -}}
+{{- if site.Params.friends.shuffle -}}
+  {{- $friends = shuffle $friends -}}
+{{- end -}}
 
 <div class="friend-wrap" data-aos="zoom-in">
   {{- range $friends -}}
-    <a href="{{ .url }}" target="_blank">{{ .name }}</a>
+    <a href="{{ .url }}" target="_blank">{{ .name }}{{ if .badge }} [{{ .badge }}]{{ end }}{{ if .remark }} — {{ .remark }}{{ end }}</a>
   {{- end -}}
 </div>

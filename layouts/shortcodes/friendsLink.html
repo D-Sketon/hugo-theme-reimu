@@ -1,27 +1,64 @@
 {{- $friends := hugo.Data.friends -}}
+{{- $style := .Get 0 | default "standard" -}}
 {{- if .Site.Params.friends.shuffle -}}
   {{- $friends = shuffle $friends -}}
 {{- end -}}
 
-<div class="friend-wrap" data-aos="zoom-in">
-  {{- range $friends -}}
-    <div class="friend-item-wrap">
-      <a href="{{ .url }}" rel="noopener nofollow noreferrer" target="_blank"></a>
-      <div class="friend-icon-wrap">
-       <img
-          class="no-lightbox"
-          src="{{ .image }}"
-          alt="{{ .name }}"
-        />
-      </div>
-      <div class="friend-info-wrap">
-        <div class="friend-name">
-          {{ .name }}
-        </div>
-        <div class="friend-desc">
-          {{ .desc }}
-        </div>
-      </div>
+{{- define "friend-standard" -}}
+  <div class="friend-item-wrap">
+    <a href="{{ .url }}" rel="noopener nofollow noreferrer" target="_blank"></a>
+    <div class="friend-icon-wrap">
+      <img class="no-lightbox" src="{{ .image }}" alt="{{ .name }}" />
     </div>
+    <div class="friend-info-wrap">
+      <div class="friend-name-row">
+        <div class="friend-name">{{ .name }}</div>
+        {{- if .badge }}<span class="friend-badge">{{ .badge }}</span>{{- end }}
+      </div>
+      <div class="friend-desc">{{ .desc }}</div>
+      {{- if .remark }}<div class="friend-remark">{{ .remark }}</div>{{ end }}
+    </div>
+  </div>
+{{- end -}}
+
+{{- define "friend-compact" -}}
+  <div class="friend-item-wrap compact">
+    <a href="{{ .url }}" rel="noopener nofollow noreferrer" target="_blank"></a>
+    <div class="friend-icon-wrap compact">
+      <img class="no-lightbox" src="{{ .image }}" alt="{{ .name }}" />
+    </div>
+    <div class="friend-info-wrap compact">
+      <div class="friend-name compact">{{ .name }}</div>
+      <div class="friend-desc compact">{{ .desc }}</div>
+    </div>
+  </div>
+{{- end -}}
+
+{{- define "friend-detailed" -}}
+  <div class="friend-item-wrap detailed">
+    <a href="{{ .url }}" rel="noopener nofollow noreferrer" target="_blank"></a>
+    <div class="friend-icon-wrap detailed">
+      <img class="no-lightbox" src="{{ .image }}" alt="{{ .name }}" />
+    </div>
+    <div class="friend-info-wrap detailed">
+      <div class="friend-name-row">
+        <div class="friend-name detailed">{{ .name }}</div>
+        {{- if .badge }}<span class="friend-badge detailed">{{ .badge }}</span>{{ end }}
+      </div>
+      <div class="friend-desc detailed">{{ .desc }}</div>
+      {{- if .remark }}<div class="friend-remark detailed">{{ .remark }}</div>{{ end }}
+    </div>
+  </div>
+{{- end -}}
+
+<div class="friend-wrap{{ if eq $style "compact" }} compact{{ end }}{{ if eq $style "detailed" }} detailed{{ end }}" data-aos="zoom-in">
+  {{- range $friends -}}
+    {{- if eq $style "compact" -}}
+      {{- template "friend-compact" . -}}
+    {{- else if eq $style "detailed" -}}
+      {{- template "friend-detailed" . -}}
+    {{- else -}}
+      {{- template "friend-standard" . -}}
+    {{- end -}}
   {{- end -}}
 </div>
