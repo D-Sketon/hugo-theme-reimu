@@ -81,7 +81,11 @@ window.throttle = (func: (...args: any[]) => void, limit: number) => {
     const isAuto = config === "auto";
     const isDark = config === "true" || (isAuto && osMode);
 
-    document.documentElement.setAttribute("data-theme", isDark ? "dark" : null);
+    if (isDark) {
+      document.documentElement.setAttribute("data-theme", "dark");
+    } else {
+      document.documentElement.removeAttribute("data-theme");
+    }
     localStorage.setItem("dark_mode", config);
 
     if (themeButton) {

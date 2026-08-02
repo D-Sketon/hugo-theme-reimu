@@ -2,9 +2,15 @@
 
 未发布
 
+### 修复
+
+- 修复主题切换逻辑，确保在非暗黑模式下正确移除 `data-theme` 属性
+- 修复 Giscus 评论 `data-mapping` 误绑定 `strict` 配置的问题，现在正确使用 `mapping` 配置
+- 修复 KaTeX 带 `\tag` 的公式在窄屏下与左侧公式重叠的问题，现在会自动判断并切换到可滚动布局
+
 ### 特性
 
-- 新增 spoiler（剧透/遮罩）短代码，支持亮色与暗黑模式
+- 新增 spoiler（剧透/遮罩）短代码，支持亮色与暗黑模式，可遮罩文本、图片与 Emoji
   ```markdown
   {{</* spoiler */>}}这是被遮罩的内容{{</* /spoiler */>}}
   ```
@@ -19,6 +25,11 @@
   friends:
     shuffle: false  # whether to shuffle the friend links
   ```
+- friendsLink 友链卡片新增展示风格选项，支持 `standard`（默认）、`compact`（紧凑）、`detailed`（详细），并支持徽章与备注字段
+  ```markdown
+  {{</* friendsLink compact */>}}
+  {{</* friendsLink detailed */>}}
+  ```
 
 ### 重构
 
@@ -26,9 +37,15 @@
 
 ---
 
+### Fixes
+
+- Fixed theme switching logic to properly remove the `data-theme` attribute in non-dark mode
+- Fixed the Giscus `data-mapping` being incorrectly bound to the `strict` config; it now correctly uses the `mapping` config
+- Fixed the KaTeX `\tag` formula overlapping the left formula on narrow screens; now it auto-detects and switches to a scrollable layout
+
 ### Features
 
-- Added spoiler shortcode with light/dark mode support
+- Added spoiler shortcode with light/dark mode support, can mask text, images, and Emoji
   ```markdown
   {{</* spoiler */>}}This is the masked content{{</* /spoiler */>}}
   ```
@@ -42,6 +59,11 @@
   ```yaml
   friends:
     shuffle: false  # whether to shuffle the friend links
+  ```
+- Added display style options to the friendsLink friend card, supporting `standard` (default), `compact`, and `detailed`, along with badge and remark fields
+  ```markdown
+  {{</* friendsLink compact */>}}
+  {{</* friendsLink detailed */>}}
   ```
 
 ### Refactor
