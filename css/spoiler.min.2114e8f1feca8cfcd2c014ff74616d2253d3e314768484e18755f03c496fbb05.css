@@ -1,0 +1,1 @@
+.spoiler{background:#666;filter:blur(10px)brightness(.3);cursor:pointer;padding:2px 6px;border-radius:4px;transition:filter .2s,background .2s;user-select:none}.spoiler:hover,.spoiler:active{background:0 0;filter:none;user-select:auto}[data-theme=dark] .spoiler{background:#fff}[data-theme=dark] .spoiler:hover,[data-theme=dark] .spoiler:active{background:0 0}
