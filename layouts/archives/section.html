@@ -1,14 +1,24 @@
 {{- define "main" -}}
   {{- $sort_config := .Site.Params.sort_order.archive -}}
+  {{- $posts := where .Page.Site.RegularPages "Section" "in" .Site.Params.mainSections -}}
+  {{- if eq $sort_config "weight" -}}
+    {{- $posts = $posts.ByWeight -}}
+  {{- else if eq $sort_config "weight-reverse" -}}
+    {{- $posts = $posts.ByWeight.Reverse -}}
+  {{- else if eq $sort_config "date" -}}
+    {{- $posts = $posts.ByDate -}}
+  {{- else if eq $sort_config "date-reverse" -}}
+    {{- $posts = $posts.ByDate.Reverse -}}
+  {{- end -}}
   {{- $pageSize := 0 -}}
   {{- with $.Site.Params.paginate.archive -}}
     {{- $pageSize = . -}}
   {{- end -}}
   {{- $paginator := "" -}}
   {{- if gt $pageSize 0 -}}
-    {{- $paginator = .Paginate (where .Page.Site.RegularPages "Section" "in" .Site.Params.mainSections) $pageSize -}}
+    {{- $paginator = .Paginate $posts $pageSize -}}
   {{- else -}}
-    {{- $paginator = .Paginate (where .Page.Site.RegularPages "Section" "in" .Site.Params.mainSections) -}}
+    {{- $paginator = .Paginate $posts -}}
   {{- end -}}
   
   {{- $sortedPages := $paginator.Pages.GroupByDate .Site.Params.yearFormat "desc" -}}
