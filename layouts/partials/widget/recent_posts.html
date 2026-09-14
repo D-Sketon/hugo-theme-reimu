@@ -1,14 +1,14 @@
-{{- if len .Site.Pages -}}
-  {{- $recentPosts := (where .Page.Site.RegularPages "Section" "in" .Site.Params.mainSections) | first .Site.Params.recent_posts_limits -}}
+{{- $recentPosts := (partialCached "helpers/posts.html" (dict "ctx" . "surface" "widget") "widget" .Site.Language.Lang) | first .Site.Params.recent_posts_limits -}}
+{{- with $recentPosts -}}
   <div class="widget-wrapper">
     <div
       class="widget-wrap"
-      data-aos="{{ .Site.Params.animation.options.home.widget }}"
+      data-aos="{{ $.Site.Params.animation.options.home.widget }}"
     >
       <h3 class="widget-title">{{ i18n "recent_posts" }}</h3>
       <div class="widget">
         <ul>
-          {{- range $recentPosts -}}
+          {{- range . -}}
             <li>
               <a href="{{ .Permalink | relURL }}" title="{{ .Title }}">{{ .Title }}</a>
             </li>

@@ -1,23 +1,23 @@
 <div class="tag-wrap">
-  {{- range .Site.Taxonomies.tags -}}
+  {{- range partialCached "helpers/taxonomy.html" (dict "ctx" . "kind" "tags" "surface" "archive") "tags" "archive" .Site.Language.Lang -}}
     <div
       class="archives-tag-list-item"
       data-aos="{{ $.Site.Params.animation.options.archive.tag }}"
     >
-      <a class="archives-tag-list-link" href="{{ .Page.RelPermalink }}"
-        >{{ .Page.Title }}</a
+      <a class="archives-tag-list-link" href="{{ .page.RelPermalink }}"
+        >{{ .page.Title }}</a
       >
     </div>
   {{- end -}}
 </div>
 <div class="category-wrap">
-  {{- range .Site.Taxonomies.categories -}}
+  {{- range partialCached "helpers/taxonomy.html" (dict "ctx" . "kind" "categories" "surface" "archive") "categories" "archive" .Site.Language.Lang -}}
     <div
       class="archives-category-list-item"
       data-aos="{{ $.Site.Params.animation.options.archive.category }}"
     >
-      <a class="archives-category-list-link" href="{{ .Page.RelPermalink }}"
-        >{{ .Page.Title }}</a
+      <a class="archives-category-list-link" href="{{ .page.RelPermalink }}"
+        >{{ .page.Title }}</a
       >
     </div>
   {{- end -}}

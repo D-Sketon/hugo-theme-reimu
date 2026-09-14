@@ -1,0 +1,35 @@
+{{- /*
+  Returns the terms of a taxonomy for a surface, with excluded posts discounted.
+  Terms left without a single visible post are dropped, so a category whose
+  posts are all hidden disappears instead of showing a count of zero.
+
+  The intersect runs only when the surface actually excludes something, so an
+  unconfigured site pays one length comparison per taxonomy.
+
+  @param {page} ctx The page context.
+  @param {string} kind The taxonomy name, e.g. categories or tags.
+  @param {string} surface One of home, archive, taxonomy, categories, tags, widget, search, rss, sitemap.
+
+  @returns {slice} Slice of dicts, each with a `page` (the term page) and a `count`.
+
+  @example {{ $terms := partialCached "helpers/taxonomy.html" (dict "ctx" . "kind" "tags" "surface" "widget") "tags" "widget" .Language.Lang }}
+*/ -}}
+
+{{- $ctx := .ctx -}}
+{{- $surface := .surface -}}
+{{- $visible := partialCached "helpers/posts.html" (dict "ctx" $ctx "surface" $surface) $surface $ctx.Site.Language.Lang -}}
+{{- $all := where $ctx.Site.RegularPages "Section" "in" $ctx.Site.Params.mainSections -}}
+{{- $isFiltered := lt (len $visible) (len $all) -}}
+
+{{- $result := slice -}}
+{{- range index $ctx.Site.Taxonomies .kind -}}
+  {{- $count := .Count -}}
+  {{- if $isFiltered -}}
+    {{- $count = len (intersect .Pages $visible) -}}
+  {{- end -}}
+  {{- if gt $count 0 -}}
+    {{- $result = $result | append (dict "page" .Page "count" $count) -}}
+  {{- end -}}
+{{- end -}}
+
+{{- return $result -}}

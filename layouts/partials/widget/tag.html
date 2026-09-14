@@ -1,28 +1,29 @@
-{{- if len .Site.Taxonomies.tags -}}
+{{- $terms := partialCached "helpers/taxonomy.html" (dict "ctx" . "kind" "tags" "surface" "widget") "tags" "widget" .Site.Language.Lang -}}
+{{- with $terms -}}
   <div class="widget-wrapper">
     <div
       class="widget-wrap"
-      data-aos="{{ .Site.Params.animation.options.home.widget }}"
+      data-aos="{{ $.Site.Params.animation.options.home.widget }}"
     >
       <div style="display: flex; justify-content: space-between;">
         <h3 class="widget-title">{{ i18n "tags" }}</h3>
-        {{- if gt (len .Site.Taxonomies.tags) .Site.Params.tag_limits -}}
+        {{- if gt (len .) $.Site.Params.tag_limits -}}
           <a class="widget-link" href="{{ "tags/" | relLangURL }}">{{ i18n "more" }}</a>
         {{- end -}}
       </div>
       <div class="widget">
         <ul class="tag-list" itemprop="keywords">
           {{- $counter := 0 -}}
-          {{- range .Site.Taxonomies.tags -}}
+          {{- range . -}}
             {{- if lt $counter $.Site.Params.tag_limits -}}
             <li class="tag-item">
                 <a
                   class="tag-link"
-                  href="{{ .Page.RelPermalink }}"
-                  aria-label="{{ i18n "tag" }}: {{ .Page.Title }}"
-                  title="{{ .Page.Title }}"
+                  href="{{ .page.RelPermalink }}"
+                  aria-label="{{ i18n "tag" }}: {{ .page.Title }}"
+                  title="{{ .page.Title }}"
                 >
-                  {{ .Page.Title }}
+                  {{ .page.Title }}
                 </a>
               </li>
               {{- $counter = add $counter 1 -}}

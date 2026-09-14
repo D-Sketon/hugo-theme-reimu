@@ -183,6 +183,26 @@ rss:
   showFullContent: false # output full content or description
   showCopyright: false   # If true, add copyright to the end of article.
 
+# Hide posts from individual surfaces
+# Each key takes a list of content path prefixes, matched against the page's
+# logical path, so it keeps working when `permalinks` remaps the URL.
+# A single post can opt out through its front matter instead:
+#   exclude: [home, rss]   # a list of surface names
+#   exclude: all           # every surface
+# To hide a post everywhere, prefer Hugo's own `_build.list`; this option is for
+# posts that should stay visible on some surfaces and not others.
+exclude:
+  home:                 # the post list on the home page
+    # - /post/repost/
+  archive:              # the archive page
+  taxonomy:             # category and tag term pages
+  categories:           # category term pages only (adds to taxonomy)
+  tags:                 # tag term pages only (adds to taxonomy)
+  widget:               # sidebar widgets, sidebar counters and footer counters
+  search:               # the Algolia index
+  rss:                  # the RSS feed
+  sitemap:              # the sitemap (only hides posts; other pages stay)
+
 # Sort order configuration
 # Available values: default, date, date-reverse, weight, weight-reverse
 # default: hugo's default sort order for page collections, see https://gohugo.io/quick-reference/page-collections/#sort

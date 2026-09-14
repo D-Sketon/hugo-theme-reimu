@@ -1,0 +1,26 @@
+{{- /* posts hidden from the sitemap surface are dropped; every other page
+     (sections, terms, about, ...) keeps its place */ -}}
+{{- $keep := slice -}}
+{{- range partialCached "helpers/posts.html" (dict "ctx" . "surface" "sitemap") "sitemap" .Site.Language.Lang -}}
+  {{- $keep = $keep | append .RelPermalink -}}
+{{- end -}}
+{{ printf "<?xml version=\"1.0\" encoding=\"utf-8\" standalone=\"yes\"?>" | safeHTML }}
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+  xmlns:xhtml="http://www.w3.org/1999/xhtml">
+  {{ range where .Pages "Sitemap.Disable" "ne" true }}
+    {{- $isPost := and (eq .Kind "page") (in .Site.Params.mainSections .Section) -}}
+    {{- if and .Permalink (or (not $isPost) (in $keep .RelPermalink)) -}}
+  <url>
+    <loc>{{ .Permalink }}</loc>{{ if not .Lastmod.IsZero }}
+    <lastmod>{{ safeHTML ( .Lastmod.Format "2006-01-02T15:04:05-07:00" ) }}</lastmod>{{ end }}{{ with .Sitemap.ChangeFreq }}
+    <changefreq>{{ . }}</changefreq>{{ end }}{{ if ge .Sitemap.Priority 0.0 }}
+    <priority>{{ .Sitemap.Priority }}</priority>{{ end }}{{ if .IsTranslated }}{{ range .AllTranslations }}
+    <xhtml:link
+                rel="alternate"
+                hreflang="{{ .Language.Locale }}"
+                href="{{ .Permalink }}"
+                />{{ end }}{{ end }}
+  </url>
+    {{- end -}}
+  {{ end }}
+</urlset>
