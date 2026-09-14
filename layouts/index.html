@@ -1,17 +1,26 @@
 {{- define "main" -}}
   {{- $ctx := . -}}
+  {{- $sort_config := .Site.Params.sort_order.home -}}
+  {{- $posts := partialCached "helpers/posts.html" (dict "ctx" . "surface" "home") "home" .Site.Language.Lang -}}
+  {{- if eq $sort_config "weight" -}}
+    {{- $posts = $posts.ByWeight -}}
+  {{- else if eq $sort_config "weight-reverse" -}}
+    {{- $posts = $posts.ByWeight.Reverse -}}
+  {{- else if eq $sort_config "date" -}}
+    {{- $posts = $posts.ByDate -}}
+  {{- else if eq $sort_config "date-reverse" -}}
+    {{- $posts = $posts.ByDate.Reverse -}}
+  {{- end -}}
   {{- $pageSize := 0 -}}
   {{- with $.Site.Params.paginate.post -}}
     {{- $pageSize = . -}}
   {{- end -}}
-  {{- $posts := partialCached "helpers/posts.html" (dict "ctx" . "surface" "home") "home" .Site.Language.Lang -}}
   {{- $paginator := "" -}}
   {{- if gt $pageSize 0 -}}
     {{- $paginator = .Paginate $posts $pageSize -}}
   {{- else -}}
     {{- $paginator = .Paginate $posts -}}
   {{- end -}}
-  {{- $sort_config := .Site.Params.sort_order.home -}}
   {{- if and (eq 1 $paginator.PageNumber) ($ctx.Site.Params.home_categories.enable) -}}
     <div class="post-categories-wrapper" data-aos="{{ $ctx.Site.Params.animation.options.home.post }}">
       {{- range $k, $v := $ctx.Site.Params.home_categories.content -}}
@@ -56,26 +65,8 @@
       {{- end -}}
     </div>
   {{- end -}}
-  {{- if eq $sort_config "weight" -}}
-    {{- range $k, $v := $paginator.Pages.ByWeight -}}
-      {{- partial "post.html"  (dict "index" $k "ctx" . "page" $v ) -}}
-    {{- end -}}
-  {{- else if eq $sort_config "weight-reverse" -}}
-    {{- range $k, $v := $paginator.Pages.ByWeight.Reverse -}}
-      {{- partial "post.html"  (dict "index" $k "ctx" . "page" $v ) -}}
-    {{- end -}}
-  {{- else if eq $sort_config "date" -}}
-    {{- range $k, $v := $paginator.Pages.ByDate -}}
-      {{- partial "post.html" (dict "index" $k "ctx" . "page" $v ) -}}
-    {{- end -}}
-  {{- else if eq $sort_config "date-reverse" -}}
-    {{- range $k, $v := $paginator.Pages.ByDate.Reverse -}}
-      {{- partial "post.html" (dict "index" $k "ctx" . "page" $v ) -}}
-    {{- end -}}
-  {{- else if eq $sort_config "default" -}}
-    {{- range $k, $v := $paginator.Pages -}}
-      {{- partial "post.html"  (dict "index" $k "ctx" . "page" $v ) -}}
-    {{- end -}}
+  {{- range $k, $v := $paginator.Pages -}}
+    {{- partial "post.html"  (dict "index" $k "ctx" . "page" $v ) -}}
   {{- end -}}
   {{- partial "pagination.html" . -}}
 {{- end -}}

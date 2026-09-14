@@ -8,10 +8,6 @@
     {{- $sort_config = .Site.Params.sort_order.taxonomy.tag -}}
   {{- end -}}
 
-  {{- $pageSize := 0 -}}
-  {{- with $.Site.Params.paginate.archive -}}
-    {{- $pageSize = . -}}
-  {{- end -}}
   {{- /* a term page gets its own surface (categories or tags), which also
        inherits every taxonomy exclusion; the taxonomy index page keeps the
        umbrella surface */ -}}
@@ -19,12 +15,26 @@
   {{- if eq .Kind "term" -}}
     {{- $surface = .Data.Plural -}}
   {{- end -}}
-  {{- $posts := partial "helpers/posts.html" (dict "ctx" . "surface" $surface "pages" .Pages) -}}
+  {{- $pages := partial "helpers/posts.html" (dict "ctx" . "surface" $surface "pages" .Pages) -}}
+  {{- if eq $sort_config "weight" -}}
+    {{- $pages = $pages.ByWeight -}}
+  {{- else if eq $sort_config "weight-reverse" -}}
+    {{- $pages = $pages.ByWeight.Reverse -}}
+  {{- else if eq $sort_config "date" -}}
+    {{- $pages = $pages.ByDate -}}
+  {{- else if eq $sort_config "date-reverse" -}}
+    {{- $pages = $pages.ByDate.Reverse -}}
+  {{- end -}}
+
+  {{- $pageSize := 0 -}}
+  {{- with $.Site.Params.paginate.archive -}}
+    {{- $pageSize = . -}}
+  {{- end -}}
   {{- $paginator := "" -}}
   {{- if gt $pageSize 0 -}}
-    {{- $paginator = .Paginate $posts $pageSize -}}
+    {{- $paginator = .Paginate $pages $pageSize -}}
   {{- else -}}
-    {{- $paginator = .Paginate $posts -}}
+    {{- $paginator = .Paginate $pages -}}
   {{- end -}}
 
   {{- $sortedPages := $paginator.Pages.GroupByDate .Site.Params.yearFormat "desc" -}}

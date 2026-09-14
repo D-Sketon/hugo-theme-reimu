@@ -1,10 +1,19 @@
 {{- define "main" -}}
   {{- $sort_config := .Site.Params.sort_order.archive -}}
+  {{- $posts := partialCached "helpers/posts.html" (dict "ctx" . "surface" "archive") "archive" .Site.Language.Lang -}}
+  {{- if eq $sort_config "weight" -}}
+    {{- $posts = $posts.ByWeight -}}
+  {{- else if eq $sort_config "weight-reverse" -}}
+    {{- $posts = $posts.ByWeight.Reverse -}}
+  {{- else if eq $sort_config "date" -}}
+    {{- $posts = $posts.ByDate -}}
+  {{- else if eq $sort_config "date-reverse" -}}
+    {{- $posts = $posts.ByDate.Reverse -}}
+  {{- end -}}
   {{- $pageSize := 0 -}}
   {{- with $.Site.Params.paginate.archive -}}
     {{- $pageSize = . -}}
   {{- end -}}
-  {{- $posts := partialCached "helpers/posts.html" (dict "ctx" . "surface" "archive") "archive" .Site.Language.Lang -}}
   {{- $paginator := "" -}}
   {{- if gt $pageSize 0 -}}
     {{- $paginator = .Paginate $posts $pageSize -}}
