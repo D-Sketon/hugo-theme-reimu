@@ -197,6 +197,7 @@
     },
     {{- end -}}
     {{- if $commentSystems.giscus -}}
+    {{- $giscusMapping := .Params.giscus.mapping | default $params.giscus.mapping -}}
     giscus: {
       enable: {{ if and $params.giscus.enable }}true{{ else }}false{{ end }},
       load: async () => {
@@ -253,7 +254,11 @@
         giscusScript.setAttribute('data-repo-id', '{{ $params.giscus.repoId }}');
         giscusScript.setAttribute('data-category', '{{ $params.giscus.category }}');
         giscusScript.setAttribute('data-category-id', '{{ $params.giscus.categoryId }}');
-        giscusScript.setAttribute('data-mapping', '{{ $params.giscus.mapping }}');
+        giscusScript.setAttribute('data-mapping', '{{ $giscusMapping }}');
+        {{- with .Params.giscus.term }}
+        // A stored per-page term keeps the discussion associated when its URL changes.
+        giscusScript.setAttribute('data-term', '{{ . }}');
+        {{- end }}
         giscusScript.setAttribute('data-strict', '{{ $params.giscus.strict }}');
         giscusScript.setAttribute('data-reactions-enabled', '{{ $params.giscus.reactionsEnabled }}');
         giscusScript.setAttribute('data-emit-metadata', '{{ $params.giscus.emitMetadata }}');
