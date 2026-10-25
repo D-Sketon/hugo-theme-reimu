@@ -82,12 +82,11 @@
     min-height: 100px;
     width: 100px;
     height: 100px;
-    border-radius: 50%;
+    border-radius: $post-radius;
     transition: all 0.3s;
     opacity: 0;
     object-fit: cover;
     margin: 20px;
-    box-shadow: 0 0 15px 5px var(--color-red-6-shadow);
     will-change: transform;
 
     &:hover {
@@ -121,8 +120,8 @@
   color: var(--red-0);
   opacity: 0.8;
   transition:
-    opacity 0.5s,
-    color 0.5s;
+    opacity 0.3s,
+    color 0.3s;
 
   &:hover {
     opacity: 1;
@@ -408,9 +407,9 @@
   justify-content: center;
   border: 10px var(--color-red-3-shadow) double;
   transition:
-    border 0.5s,
-    background 0.5s,
-    color 0.5s;
+    border 0.3s,
+    background 0.3s,
+    color 0.3s;
   width: 70%;
   max-width: 200px;
   margin: 8px auto;
