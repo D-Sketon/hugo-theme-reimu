@@ -532,7 +532,7 @@ giscus:
   repoId: "your repoId"
   category: "your category"
   categoryId: "your categoryId"
-  mapping: mapping
+  mapping: pathname
   strict: 0
   reactionsEnabled: 1
   emitMetadata: 0
@@ -541,6 +541,22 @@ giscus:
     light: # 可选，支持 giscus 内置主题名或自定义 CSS URL
     dark: # 可选，支持 giscus 内置主题名或自定义 CSS URL
 ```
+
+可以在文章 front matter 中覆盖 `giscus.mapping`，并通过页级参数 `giscus.term` 指定讨论标识。例如，使用永久标识关联评论：
+
+```yml
+---
+title: 示例文章
+giscus:
+  mapping: specific
+  term: "post-7f01358d-c8ee-43ae-97bc-783ad61f23d6"
+---
+```
+
+- 未设置文章级 `mapping` 时，沿用 `params.yml` 中的 `giscus.mapping`。也可以全局设为 `specific`，并为每篇需要评论的文章填写 `giscus.term`。
+- `specific` 模式需要填写 `term`。标识应生成一次并保存在 front matter 中；修改标题、目录或 URL 时保留该值。建议在 `params.yml` 中同时设置 `giscus.strict: 1`。
+- 每篇需要独立评论的文章使用不同的 `term`；同一文章的多语言版本可以复用标识来共享评论。
+- `number` 模式下，`term` 为已有 Discussion 的编号，例如 `giscus: { mapping: number, term: 123 }`；该模式不会自动创建 Discussion。
 
 说明：
 

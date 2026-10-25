@@ -519,7 +519,7 @@ giscus:
   repoId: "your repoId"
   category: "your category"
   categoryId: "your categoryId"
-  mapping: mapping
+  mapping: pathname
   strict: 0
   reactionsEnabled: 1
   emitMetadata: 0
@@ -528,6 +528,22 @@ giscus:
     light: # optional, supports built-in giscus theme names or custom CSS URL
     dark: # optional, supports built-in giscus theme names or custom CSS URL
 ```
+
+Override `giscus.mapping` in a page's front matter and set the page-level `giscus.term` to choose its discussion identifier. For example, associate comments with a permanent identifier:
+
+```yml
+---
+title: Example post
+giscus:
+  mapping: specific
+  term: "post-7f01358d-c8ee-43ae-97bc-783ad61f23d6"
+---
+```
+
+- If the page does not specify `mapping`, it inherits `giscus.mapping` from `params.yml`. You can also set the global mapping to `specific` and provide `giscus.term` for each page that needs comments.
+- The `specific` mapping requires a `term`. Generate the identifier once and store it in front matter; keep it when changing the title, directory, or URL. Setting `giscus.strict: 1` in `params.yml` is also recommended.
+- Use different terms for pages that need separate discussions. Translations of the same article can reuse a term to share comments.
+- With the `number` mapping, `term` is an existing Discussion number, for example `giscus: { mapping: number, term: 123 }`. This mapping does not create discussions automatically.
 
 Notes:
 
