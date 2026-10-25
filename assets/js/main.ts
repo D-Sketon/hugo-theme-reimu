@@ -2,15 +2,14 @@ window.throttle = (func: (...args: any[]) => void, limit: number) => {
   let lastFunc: number | undefined, lastRan: number;
 
   return (...args) => {
-    const context = this;
     if (!lastRan || Date.now() - lastRan >= limit) {
-      func.apply(context, args);
+      func(...args);
       lastRan = Date.now();
     } else {
       clearTimeout(lastFunc);
       lastFunc = setTimeout(
         () => {
-          func.apply(context, args);
+          func(...args);
           lastRan = Date.now();
         },
         limit - (Date.now() - lastRan),
@@ -198,8 +197,7 @@ window.throttle = (func: (...args: any[]) => void, limit: number) => {
       style.textContent = css;
       document.body.appendChild(style);
     }
-    async function generateScheme(imageFile: HTMLImageElement) {
-      const scheme = await extractor.generateThemeSchemeFromImage(imageFile);
+    const applyScheme = (scheme: any) => {
       document.documentElement.style.setProperty(
         "--md-sys-color-primary-light",
         extractor.hexFromArgb(scheme.schemes.light.props.primary),
@@ -208,6 +206,10 @@ window.throttle = (func: (...args: any[]) => void, limit: number) => {
         "--md-sys-color-primary-dark",
         extractor.hexFromArgb(scheme.schemes.dark.props.primary),
       );
+    };
+    async function generateScheme(imageFile: HTMLImageElement) {
+      const scheme = await extractor.generateThemeSchemeFromImage(imageFile);
+      applyScheme(scheme);
       appendStylesheet();
     }
 
@@ -231,14 +233,7 @@ window.throttle = (func: (...args: any[]) => void, limit: number) => {
           g: parseInt(rgba[1]),
           b: parseInt(rgba[2]),
         });
-        document.documentElement.style.setProperty(
-          "--md-sys-color-primary-light",
-          extractor.hexFromArgb(scheme.schemes.light.props.primary),
-        );
-        document.documentElement.style.setProperty(
-          "--md-sys-color-primary-dark",
-          extractor.hexFromArgb(scheme.schemes.dark.props.primary),
-        );
+        applyScheme(scheme);
         appendStylesheet();
       }
     };
