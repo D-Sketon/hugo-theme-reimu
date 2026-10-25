@@ -40,7 +40,6 @@
   --highlight-comment: #{$light-highlight-comment};
   --highlight-red: #{$light-highlight-red};
   --highlight-orange: #{$light-highlight-orange};
-  --highlight-yellow: #{$light-highlight-yellow};
   --highlight-green: #{$light-highlight-green};
   --highlight-aqua: #{$light-highlight-aqua};
   --highlight-blue: #{$light-highlight-blue};
@@ -90,7 +89,6 @@
     --highlight-comment: #{$dark-highlight-comment};
     --highlight-red: #{$dark-highlight-red};
     --highlight-orange: #{$dark-highlight-orange};
-    --highlight-yellow: #{$dark-highlight-yellow};
     --highlight-green: #{$dark-highlight-green};
     --highlight-aqua: #{$dark-highlight-aqua};
     --highlight-blue: #{$dark-highlight-blue};
@@ -140,13 +138,11 @@ $mobile-nav-width: 280px;
 
 // Media queries
 $mq-mobile: "screen and (max-width: 479px)";
-$no-mobile: "screen and (min-width: 480px)";
 $mq-tablet: "screen and (min-width: 480px) and (max-width: 767px)";
 $mq-normal: "screen and (min-width: 768px)";
 $mg-normal: "screen and (max-width: 767px)";
 $mq-large: "screen and (min-width: 960px)";
 $mg-large: "screen and (max-width: 959px)";
-$mq-extra-large: "screen and (min-width: 1242px)";
 $mg-extra-large: "screen and (max-width: 1241px)";
 $post-radius: 10px;
 $tag-radius: 8px;
