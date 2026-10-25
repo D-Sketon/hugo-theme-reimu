@@ -122,7 +122,6 @@
     {{- end -}}
     {{- if and (.Store.Get "hasMermaid") .Params.mermaid -}}
       {{- partial "helpers/cdnJs.html" (dict "name" "mermaid" "ctx" . "pjax" true) -}}
-      {{- partial "helpers/cdnJs.html" (dict "name" "dompurify" "ctx" . "pjax" true) -}}
       {{- if $params.mermaid.zoom -}}
         {{- partial "helpers/cdnJs.html" (dict "name" "svg_pan_zoom" "ctx" . "pjax" true) -}}
       {{- end -}}
@@ -144,16 +143,15 @@
             });
           };
           const saveOriginalData = () => processElements(el => {
-            if (!el.getAttribute('data-original-code')) {
-              el.setAttribute('data-original-code', el.innerHTML);
+            if (!el.__originalNodes) {
+              el.__originalNodes = Array.from(el.childNodes);
             }
           });
 
           const resetProcessed = () => processElements(el => {
-            const originalCode = el.getAttribute('data-original-code');
-            if (originalCode) {
+            if (el.__originalNodes) {
               el.removeAttribute('data-processed');
-              el.innerHTML = DOMPurify.sanitize(originalCode);
+              el.replaceChildren(...el.__originalNodes);
             }
           });
           const loadMermaid = async (theme) => {

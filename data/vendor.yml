@@ -92,9 +92,6 @@ js:
   snapdom:
     src: webcache|@zumer/snapdom@1.9.14/dist/snapdom.min.js
     integrity: sha384-OEQ+fJp/Mvi2uzBREXybtxryJvLytWapuHu4EE6LPwTKUwATYcc55tPPcZTzVcmx
-  dompurify:
-    src: webcache|dompurify@3.2.6/dist/purify.min.js
-    integrity: sha384-JEyTNhjM6R1ElGoJns4U2Ln4ofPcqzSsynQkmEc/KGy6336qAZl70tDLufbkla+3
   material_theme:
     src: webcache|material-theme@1.0.0/dist/material-theme.umd.js
     integrity: sha384-vLev0II0HKFaxkcm+/7kX5IGwVFBASkGchU311wmU/veIj2bB0UcBkQbW6yw2asK
