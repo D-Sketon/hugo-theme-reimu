@@ -431,8 +431,8 @@
             loop: '{{ $params.player.aplayer.options.loop }}' || 'all',
             order: '{{ $params.player.aplayer.options.order }}' || 'list',
             preload: '{{ $params.player.aplayer.options.preload }}' || 'auto',
-            volume: {{ $params.player.aplayer.options.volume }} || 0.7,
-            mutex: {{ $params.player.aplayer.options.mutex }} || true,
+            volume: {{ $params.player.aplayer.options.volume }} ?? 0.7,
+            mutex: {{ $params.player.aplayer.options.mutex }} ?? true,
             listFolded: {{ $params.player.aplayer.options.listFolded }} || false,
             lrcType: {{ $params.player.aplayer.options.lrcType }} || 0,
         });
