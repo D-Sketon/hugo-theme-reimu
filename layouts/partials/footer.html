@@ -1,6 +1,6 @@
 {{- $totalWordCount := 0 -}}
 {{- $totalReadingTime := 0 -}}
-{{- $posts := (where .Page.Site.RegularPages "Section" "in" .Site.Params.mainSections) -}}
+{{- $posts := partialCached "helpers/posts.html" (dict "ctx" . "surface" "widget") "widget" .Site.Language.Lang -}}
 {{- range $posts -}}
   {{- $totalWordCount = add $totalWordCount .WordCount -}}
   {{- $totalReadingTime = add $totalReadingTime .ReadingTime -}}

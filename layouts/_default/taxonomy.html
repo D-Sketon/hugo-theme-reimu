@@ -8,7 +8,14 @@
     {{- $sort_config = .Site.Params.sort_order.taxonomy.tag -}}
   {{- end -}}
 
-  {{- $pages := .Pages -}}
+  {{- /* a term page gets its own surface (categories or tags), which also
+       inherits every taxonomy exclusion; the taxonomy index page keeps the
+       umbrella surface */ -}}
+  {{- $surface := "taxonomy" -}}
+  {{- if eq .Kind "term" -}}
+    {{- $surface = .Data.Plural -}}
+  {{- end -}}
+  {{- $pages := partial "helpers/posts.html" (dict "ctx" . "surface" $surface "pages" .Pages) -}}
   {{- if eq $sort_config "weight" -}}
     {{- $pages = $pages.ByWeight -}}
   {{- else if eq $sort_config "weight-reverse" -}}

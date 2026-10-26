@@ -1,6 +1,6 @@
 {{- $limit := 1000 -}}
 [
-  {{- range $index, $entry := where .Page.Site.RegularPages "Section" "in" .Site.Params.mainSections -}}
+  {{- range $index, $entry := partialCached "helpers/posts.html" (dict "ctx" . "surface" "search") "search" .Site.Language.Lang -}}
   {{ if $index }}, {{ end }}
   {
     "objectID": "{{ sha1 .RelPermalink }}",

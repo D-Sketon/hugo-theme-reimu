@@ -1,6 +1,6 @@
 {{- define "main" -}}
   {{- $sort_config := .Site.Params.sort_order.archive -}}
-  {{- $posts := where .Page.Site.RegularPages "Section" "in" .Site.Params.mainSections -}}
+  {{- $posts := partialCached "helpers/posts.html" (dict "ctx" . "surface" "archive") "archive" .Site.Language.Lang -}}
   {{- if eq $sort_config "weight" -}}
     {{- $posts = $posts.ByWeight -}}
   {{- else if eq $sort_config "weight-reverse" -}}

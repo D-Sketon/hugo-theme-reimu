@@ -1,0 +1,88 @@
+{{- /*
+  Returns the post collection for a surface, with excluded posts removed.
+
+  Exclusions come from two independent places:
+
+    - Site params `exclude.<surface>`: a list of content path prefixes, matched
+      against `.Path`. Use this to hide a whole directory, e.g. "/post/repost/".
+      `.Path` is the logical content path, so it keeps working when `permalinks`
+      remaps the URL.
+    - Front matter `exclude`: a list of surface names, or the string "all".
+      Use this for a single post.
+
+  Hugo's native `_build.list` already hides a page from every collection at
+  once; this helper exists for the cases where a post should stay visible on
+  some surfaces and not others.
+
+  `categories` and `tags` are refinements of `taxonomy`: on a category term
+  page both `exclude: [taxonomy]` and `exclude: [categories]` apply, while
+  `exclude: [tags]` does not (and vice versa on a tag term page). The same
+  layering holds for the params keys `exclude.taxonomy` / `exclude.categories`
+  / `exclude.tags`.
+
+  The source collection keeps its original type when nothing is excluded, so
+  the common case costs one length comparison.
+
+  @param {page} ctx The page context.
+  @param {string} surface One of home, archive, taxonomy, categories, tags, widget, search, rss, sitemap.
+  @param {page.Pages} [pages] Source collection. Defaults to every page in mainSections.
+
+  @returns {page.Pages}
+
+  @example {{ $posts := partialCached "helpers/posts.html" (dict "ctx" . "surface" "home") "home" .Language.Lang }}
+*/ -}}
+{{- $ctx := .ctx -}}
+{{- $surface := .surface -}}
+{{- $pages := .pages -}}
+{{- if not (isset . "pages") -}}
+  {{- $pages = where $ctx.Site.RegularPages "Section" "in" $ctx.Site.Params.mainSections -}}
+{{- end -}}
+
+{{- $surfaces := slice $surface -}}
+{{- if in (slice "categories" "tags") $surface -}}
+  {{- $surfaces = $surfaces | append "taxonomy" -}}
+{{- end -}}
+
+{{- $prefixes := slice -}}
+{{- with $exclude := $ctx.Site.Params.exclude -}}
+  {{- range $s := $surfaces -}}
+    {{- with index $exclude $s -}}
+      {{- range . -}}
+        {{- $prefixes = $prefixes | append . -}}
+      {{- end -}}
+    {{- end -}}
+  {{- end -}}
+{{- end -}}
+
+{{- $excluded := slice -}}
+{{- range $pages -}}
+  {{- $page := . -}}
+  {{- $skip := false -}}
+  {{- with $page.Params.exclude -}}
+    {{- if eq . "all" -}}
+      {{- $skip = true -}}
+    {{- else -}}
+      {{- range $s := $surfaces -}}
+        {{- if in $page.Params.exclude $s -}}
+          {{- $skip = true -}}
+        {{- end -}}
+      {{- end -}}
+    {{- end -}}
+  {{- end -}}
+  {{- if not $skip -}}
+    {{- range $prefixes -}}
+      {{- if hasPrefix $page.Path . -}}
+        {{- $skip = true -}}
+      {{- end -}}
+    {{- end -}}
+  {{- end -}}
+  {{- if $skip -}}
+    {{- $excluded = $excluded | append $page -}}
+  {{- end -}}
+{{- end -}}
+
+{{- with $excluded -}}
+  {{- $pages = complement . $pages -}}
+{{- end -}}
+
+{{- return $pages -}}

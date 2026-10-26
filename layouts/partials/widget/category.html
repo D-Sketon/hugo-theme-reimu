@@ -1,24 +1,25 @@
-{{- if len .Site.Taxonomies.categories -}}
+{{- $terms := partialCached "helpers/taxonomy.html" (dict "ctx" . "kind" "categories" "surface" "widget") "categories" "widget" .Site.Language.Lang -}}
+{{- with $terms -}}
   <div class="widget-wrapper">
     <div
       class="widget-wrap"
-      data-aos="{{ .Site.Params.animation.options.home.widget }}"
+      data-aos="{{ $.Site.Params.animation.options.home.widget }}"
     >
       <div style="display: flex; justify-content: space-between;">
         <h3 class="widget-title">{{ i18n "categories" }}</h3>
-        {{- if gt (len .Site.Taxonomies.categories) .Site.Params.category_limits -}}
+        {{- if gt (len .) $.Site.Params.category_limits -}}
           <a class="widget-link" href="{{ "categories/" | relLangURL }}">{{ i18n "more" }}</a>
         {{- end -}}
       </div>
       <div class="widget">
         <ul class="category-list">
           {{- $counter := 0 -}}
-          {{- range .Site.Taxonomies.categories -}}
+          {{- range . -}}
             {{- if lt $counter $.Site.Params.category_limits -}}
               <li class="category-list-item">
-                <a class="category-list-link" href="{{ .Page.RelPermalink }}" 
-                  title="{{ .Page.Title }}"
-                  >{{ .Page.Title }}</a
+                <a class="category-list-link" href="{{ .page.RelPermalink }}"
+                  title="{{ .page.Title }}"
+                  >{{ .page.Title }}</a
                 >
               </li>
               {{- $counter = add $counter 1 -}}

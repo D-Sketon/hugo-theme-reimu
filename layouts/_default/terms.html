@@ -1,4 +1,11 @@
 {{- define "main" -}}
+  {{- /* drop terms left without a single visible post, keep the original
+       term page order */ -}}
+  {{- $terms := partialCached "helpers/taxonomy.html" (dict "ctx" . "kind" .Data.Plural "surface" "taxonomy") .Data.Plural "taxonomy" .Site.Language.Lang -}}
+  {{- $keep := slice -}}
+  {{- range $terms -}}
+    {{- $keep = $keep | append .page.RelPermalink -}}
+  {{- end -}}
   <div
     class="archives-outer-wrap"
     data-aos="{{ .Site.Params.animation.options.archive.whole }}"
@@ -11,24 +18,26 @@
       {{ end }}"
     >
       {{- range .Pages -}}
-        <div
-          class="{{ if eq $.Name "Tags" }}
-            archives-tag-list-item
-          {{ else }}
-            archives-category-list-item
-          {{ end }}"
-          data-aos="{{ $.Site.Params.animation.options.archive.tag }}"
-        >
-          <a
+        {{- if in $keep .RelPermalink -}}
+          <div
             class="{{ if eq $.Name "Tags" }}
-              archives-tag-list-link
+              archives-tag-list-item
             {{ else }}
-              archives-category-list-link
+              archives-category-list-item
             {{ end }}"
-            href="{{ .RelPermalink }}"
-            >{{ .LinkTitle }}</a
+            data-aos="{{ $.Site.Params.animation.options.archive.tag }}"
           >
-        </div>
+            <a
+              class="{{ if eq $.Name "Tags" }}
+                archives-tag-list-link
+              {{ else }}
+                archives-category-list-link
+              {{ end }}"
+              href="{{ .RelPermalink }}"
+              >{{ .LinkTitle }}</a
+            >
+          </div>
+        {{- end -}}
       {{- end -}}
     </div>
   </div>

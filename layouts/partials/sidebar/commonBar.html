@@ -18,18 +18,18 @@
 <div class="sidebar-state">
   <div class="sidebar-state-article">
     <div>{{ i18n "sidebar.post" }}</div>
-    {{- $posts := (where .ctx.Page.Site.RegularPages "Section" "in" $params.mainSections) -}}
+    {{- $posts := partialCached "helpers/posts.html" (dict "ctx" .ctx "surface" "widget") "widget" .ctx.Site.Language.Lang -}}
     <div class="sidebar-state-number">{{ len $posts }}</div>
   </div>
   <a class="sidebar-state-category" href="{{ "categories/" | relLangURL }}" aria-label="sidebar-state-category-link">
     <div>{{ i18n "sidebar.category" }}</div>
     <div class="sidebar-state-number">
-      {{ len .ctx.Site.Taxonomies.categories }}
+      {{ len (partialCached "helpers/taxonomy.html" (dict "ctx" .ctx "kind" "categories" "surface" "widget") "categories" "widget" .ctx.Site.Language.Lang) }}
     </div>
   </a>
   <a class="sidebar-state-tag" href="{{ "tags/" | relLangURL }}" aria-label="sidebar-state-tag-link">
     <div>{{ i18n "sidebar.tag" }}</div>
-    <div class="sidebar-state-number">{{ len .ctx.Site.Taxonomies.tags }}</div>
+    <div class="sidebar-state-number">{{ len (partialCached "helpers/taxonomy.html" (dict "ctx" .ctx "kind" "tags" "surface" "widget") "tags" "widget" .ctx.Site.Language.Lang) }}</div>
   </a>
 </div>
 <div class="sidebar-social" {{ if not (or $showMenu $mobile) }}style="margin-bottom: 20px;"{{ end }}>
