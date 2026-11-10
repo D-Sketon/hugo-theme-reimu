@@ -301,12 +301,14 @@ clipboard:
     zh-TW: 複製成功 (*^▽^*)
     ja: コピー成功 (*^▽^*)
     pt-BR: Copiado com sucesso (*^▽^*)
+    de: erfolgreich kopiert (*^▽^*)
   fail: 
     en: Copy failed (ﾟ⊿ﾟ)ﾂ
     zh-CN: 复制失败 (ﾟ⊿ﾟ)ﾂ
     zh-TW: 複製失敗 (ﾟ⊿ﾟ)ﾂ
     ja: コピー失敗 (ﾟ⊿ﾟ)ﾂ
     pt-BR: Falha ao copiar (ﾟ⊿ﾟ)ﾂ
+    de: Fehler beim kopieren (ﾟ⊿ﾟ)ﾂ
   copyright:
     enable: false
     count: 50 # The number of characters when the copyright is displayed
@@ -378,6 +380,7 @@ comment:
     zh-TW: 說些什麼吧！
     ja: コメントを残す
     pt-BR: Deixe um comentário
+    de: Lass einen Kommentar da
   default: waline # default comment system, when you enable multiple comment systems
 
 # valine comment system. https://valine.js.org
@@ -504,6 +507,7 @@ preloader:
     en: Loading...
     ja: 少女祈祷中...
     pt-BR: Carregando...
+    de: Lädt...
   icon: # default use inline svg for fast speed, you can use a image url, like '/images/taichi.png'
   rotate: true # whether to rotate the icon
 
@@ -595,6 +599,7 @@ outdate:
     zh-TW: 本文最後更新於 {time}，請注意文中內容可能已不適用。
     ja: この記事は最終更新日：{time}。記載内容が現在有効でない可能性がありますのでご注意ください。
     pt-BR: Este artigo foi atualizado pela última vez em {time}. Observe que o conteúdo pode não ser mais aplicável.
+    de: Dieser Artikel wurde zuletzt am {time} aktualisiert. Bitte beachte, dass der Inhalt veraltet sein könnte.
 
 # ICP 备案
 icp:
@@ -615,6 +620,7 @@ sponsor:
     en: Buy me a coffee
     ja: コーヒーを買ってください
     pt-BR: Compre-me um café
+    de: Spendiere mir einen Kaffee
   icon:
     url: "../images/taichi.png" # this path is relative to the css/main.css, so it needs to go up one level to reach the images folder
     rotate: true
