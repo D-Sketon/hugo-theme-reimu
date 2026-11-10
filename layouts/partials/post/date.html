@@ -10,7 +10,7 @@
       >{{ .Lastmod.Format .Site.Params.dateFormat }}</time
     >
   </span>
-  {{- if .Site.Params.show_update_time -}}
+  {{- if and .Site.Params.show_update_time (not (eq .Lastmod .Date)) -}}
     <span
       class="article-date-link icon-calendar-plus"
       data-aos="{{ .Site.Params.animation.options.article.date }}"
