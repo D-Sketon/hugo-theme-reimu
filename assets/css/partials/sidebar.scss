@@ -384,6 +384,12 @@
   }
 }
 
+@if index($social-keys, "mastodon") {
+  .icon-mastodon {
+    color: #6364ff;
+  }
+}
+
 @mixin menu-link {
   color: var(--color-link);
   opacity: 0.8;
