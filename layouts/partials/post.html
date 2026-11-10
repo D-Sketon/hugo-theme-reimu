@@ -73,7 +73,7 @@
           ><span class="icon-calendar"></span
           >{{ $page.Date.Format $ctx.Site.Params.dateFormat }}</span
         >
-        {{- if $ctx.Site.Params.show_update_time -}}
+        {{- if and $ctx.Site.Params.show_update_time (not (eq $page.Lastmod $page.Date)) -}}
           <span
             ><span class="icon-calendar-plus"></span
             >{{ $page.Lastmod.Format $ctx.Site.Params.dateFormat }}</span
